@@ -6,7 +6,7 @@ const MainWrapper = styled.div`
   padding-top: 10px;
   flex-direction: column;
   height: calc(100% - 10px);
-  width: 570px;
+  width: 595px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;

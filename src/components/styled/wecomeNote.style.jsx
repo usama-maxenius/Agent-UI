@@ -12,16 +12,15 @@ const Title = styled.h3`
   font-family: 'Poppins';
   font-weight: 600;
 `;
-const Description = styled.div`
-  color: #161616;
-  font-family: 'Poppins';
-  width: 519px;
-`;
 const RegularPoppin = styled.p`
   color: #161616;
   font-family: 'Poppins';
   font-weight: 400;
   font-size: 16px;
+`;
+const Description = styled.div`
+  color: #161616;
+  font-family: 'Poppin';
 `;
 const MediumPoppin = styled.span`
   color: #161616;
@@ -47,8 +46,8 @@ const RecordingDisclosed = styled.button`
 export {
   MainWrapper,
   Title,
-  Description,
   RegularPoppin,
+  Description,
   MediumPoppin,
   RecordingDisclosed,
 };

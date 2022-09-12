@@ -186,6 +186,7 @@ let contact = [
     dropdown: true,
     HomeIcon: true,
     isDouble: true,
+    placeholder: 'Street address',
   },
 ];
 

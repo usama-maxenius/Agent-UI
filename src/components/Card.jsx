@@ -10,7 +10,8 @@ import styled from 'styled-components';
 // import InputAdornment from '@mui/material/InputAdornment';
 // import IconButton from '@mui/material/IconButton';
 // import DoneIcon from '@mui/icons-material/Done';
-import InputIcon from './inputWithIcon';
+import InputLeftIcon from './inputWithLeftIcon';
+import InputRightIcon from './inputWithRightIcon';
 import { RegularPoppin, MediumPoppin } from './styled/userDetails.style';
 
 const DoubleInput = styled.div`
@@ -40,29 +41,17 @@ let title = {
 };
 
 function FormCard({ item, key }) {
-  //   const [values, setValues] = React.useState({
-  //     amount: '',
-  //     password: '',
-  //     weight: '',
-  //     weightRange: '',
-  //     showPassword: false,
-  //   });
-  //   const handleChange = (prop) => (event) => {
-  //     setValues({ ...values, [prop]: event.target.value });
-  //   };
-
   return (
     <Card sx={cardStyle} key={key}>
       <CardContent>
         {item.title && <Typography sx={title}>{item.title}</Typography>}
-
-        {item.ticked && <InputIcon />}
-        {item.HomeIcon && <InputIcon leftIcon={item.HomeIcon} />}
+        {item.ticked && <InputRightIcon />}
+        {item.HomeIcon && <InputLeftIcon item={item} />}
         {item.dropdown && <Dropdown item={item} />}
         {item.isDouble && (
           <DoubleInput>
-            <Dropdown item={item} width={50} small={true} />
-            <InputIcon width="48%" ml="10px" />
+            <Dropdown item={item} width={50} />
+            <InputRightIcon isDouble={item.isDouble} />
           </DoubleInput>
         )}
         {item.bottomLine && (

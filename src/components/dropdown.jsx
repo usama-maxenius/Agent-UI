@@ -13,9 +13,12 @@ const Select = styled.select`
   background: #fafafa 0% 0% no-repeat padding-box;
   outline: none;
   margin-top: 26px;
+  margin-left: -25px;
   border: ${(props) =>
     props.width ? '1px solid #2541B2' : '1px solid #16161640'};
   border-radius: 8px;
+  width: ${(props) => props.center && '100%'};
+  margin-top: ${(props) => props.center && '0px'};
   option {
     color: black;
     background: white;
@@ -25,26 +28,38 @@ const Select = styled.select`
     padding: 0px 2px 1px;
   }
 `;
+const DropdownWrapper = styled.div`
+  width: ${(props) => props.center && '95%'};
+  margin: ${(props) => props.center && 'auto'};
+`;
 let icon = {
   color: '#16161680',
   position: 'relative',
-  top: '7px',
-  left: '-438px',
+
+  left: '4px',
+  width: '25px',
+};
+let display = {
+  visibility: 'hidden',
+  width: '25px',
 };
 
 Dropdown.propTypes = {
   item: PropTypes.object,
   width: PropTypes.number,
+  center: PropTypes.bool,
 };
-export default function Dropdown({ item, width, small }) {
+export default function Dropdown({ item, width, center }) {
   let [selected, setSelected] = React.useState(false);
 
   return (
-    <React.Fragment>
+    <DropdownWrapper center={center}>
+      <SchoolIcon sx={!selected ? icon : [display, icon]} />
       <Select
         selected={selected}
         onChange={(e) => setSelected(e.target.value)}
         width={width}
+        center={center}
       >
         {item.options.map((ele, idx) => {
           return (
@@ -54,7 +69,6 @@ export default function Dropdown({ item, width, small }) {
           );
         })}
       </Select>
-      {!selected && <SchoolIcon sx={[icon, small]} />}
-    </React.Fragment>
+    </DropdownWrapper>
   );
 }

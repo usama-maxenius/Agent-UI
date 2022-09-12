@@ -10,13 +10,13 @@ const LeftContentWrapper = styled('div')(() => ({
   paddingLeft: 90,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: 'calc(100vh - 65px )',
+  height: '100vh',
 }));
 const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: 'calc(100vh - 65px )',
+  height: '100vh',
 }));
 const Home = () => {
   return (

@@ -3,27 +3,24 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import {
-  MediumPoppin22,
-  MediumPoppin16,
-  ExpandedText,
-  WrappingDropdown,
-} from './styled/commonDesign';
+import NavigationRoundedIcon from '@mui/icons-material/NavigationRounded';
+import DirectionsCarRoundedIcon from '@mui/icons-material/DirectionsCarRounded';
+import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+
+import { MediumPoppin22, MediumPoppin16 } from './styled/commonDesign';
+import SearchDropDown from './dropdownWithSearch';
 import Dropdown from './dropdown';
+
+function classNames(...classes) {
+  return classes.filter(Boolean).join(' ');
+}
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -36,7 +33,9 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function ExpandableCard() {
+let cardRoot = { maxWidth: '100%', overflow: 'unset' };
+
+export default function ExpandableCard({ setPopUp }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -44,31 +43,46 @@ export default function ExpandableCard() {
   };
 
   return (
-    <Card sx={{ maxWidth: '100%' }}>
+    <Card sx={cardRoot}>
       <CardHeader
         avatar={
           <Avatar
             sx={{ bgcolor: '#F5F5F5', border: '1px solid #16161640' }}
             aria-label="recipe"
+            className={classNames('cursor-pointer  ', 'hover:border-blue  ')}
+            onClick={() => {
+              if (setPopUp) {
+                setPopUp(true);
+              }
+            }}
           >
-            <DoneRoundedIcon sx={{ color: '#16161640' }} />
+            <DoneRoundedIcon
+              className={classNames('text-gray', 'hover:text-blue ')}
+            />
           </Avatar>
         }
         action={
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon sx={{ color: '#2541b2' }} />
-          </ExpandMore>
+          <div className="flex flex-row items-center">
+            <img
+              src={require('../assets/images/logos.png')}
+              alt="some here"
+              className=" h-6 w-20 "
+            />
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon sx={{ color: '#2541b2' }} />
+            </ExpandMore>
+          </div>
         }
         title={<MediumPoppin22>Colorado Technical University</MediumPoppin22>}
         subheader={<MediumPoppin16>Colorado Springs, CO</MediumPoppin16>}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <ExpandedText>
+        <div className="w-11/12 bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
           <Typography paragraph>
             The University of Colorado Colorado Springs is a public institution
             that was founded in 1965. It has a total undergraduate enrollment of
@@ -78,24 +92,26 @@ export default function ExpandableCard() {
             Colleges is National Universities, #299-391. Its in-state tuition
             and fees are $10,480; out-of-state tuition and fees are $25,600.
           </Typography>
-        </ExpandedText>
+        </div>
       </Collapse>
-      <WrappingDropdown>
-        <Dropdown
-          item={{
-            options: [
-              { name: 'Additional area of study', value: '1' },
-              { name: '2022', value: '2' },
-            ],
-          }}
-        />
-      </WrappingDropdown>
+      <div className="mx-auto w-11/12">
+        <SearchDropDown />
+      </div>
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
+        <div className="flex flex-row items-center text-blue">
+          <div className="flex flex-row text-small items-center mr-7">
+            <NavigationRoundedIcon className=" rotate-45" />
+            1,789 miles
+          </div>
+          <div className="flex flex-row text-small items-center ml-5 mr-7">
+            <DirectionsCarRoundedIcon className="mr-2" />
+            27 hr
+          </div>
+          <div className="flex flex-row text-small items-center ml-5 ">
+            <LocationOnRoundedIcon className="mr-2" />
+            view in maps
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

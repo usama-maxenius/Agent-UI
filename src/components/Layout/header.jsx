@@ -19,7 +19,7 @@ const HeaderWrapper = styled(Paper)(() => ({
   backgroundColor: '#FFFFFF',
   textAlign: 'center',
   color: '#161616',
-  width: '90%',
+  width: '100%',
   height: '63px',
   borderRadius: 0,
   paddingLeft: 90,
