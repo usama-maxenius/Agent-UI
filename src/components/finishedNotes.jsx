@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Title,
   Description,
@@ -8,6 +9,7 @@ import {
 } from './styled/wecomeNote.style';
 
 const FinishedNotes = () => {
+  let navigate = useNavigate();
   return (
     <React.Fragment>
       <Title>READ WORD FOR WORD</Title>
@@ -25,7 +27,9 @@ const FinishedNotes = () => {
           unchanged
         </MediumPoppin>
       </Description>
-      <RecordingDisclosed>Display matched schools</RecordingDisclosed>
+      <RecordingDisclosed onClick={() => navigate('/school/matches')}>
+        Display matched schools
+      </RecordingDisclosed>
     </React.Fragment>
   );
 };

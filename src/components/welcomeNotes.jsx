@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Title,
   Description,
@@ -8,6 +9,7 @@ import {
 } from './styled/wecomeNote.style';
 
 const WelcomeNotes = () => {
+  let navigate = useNavigate();
   return (
     <React.Fragment>
       <Title>READ WORD FOR WORD</Title>
@@ -26,7 +28,9 @@ const WelcomeNotes = () => {
           students find school options.
         </MediumPoppin>
       </Description>
-      <RecordingDisclosed>Recording disclosed</RecordingDisclosed>
+      <RecordingDisclosed onClick={() => navigate(`/education/form`)}>
+        Recording disclosed
+      </RecordingDisclosed>
     </React.Fragment>
   );
 };

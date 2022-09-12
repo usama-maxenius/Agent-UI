@@ -1,7 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Modal({ popup, setPopUp }) {
+  let navigate = useNavigate();
   return (
     <>
       {popup ? (
@@ -24,6 +26,7 @@ export default function Modal({ popup, setPopUp }) {
                     onClick={(e) => {
                       e.preventDefault();
                       setPopUp(!popup);
+                      navigate('/school/matches/transfer');
                     }}
                   >
                     Continue

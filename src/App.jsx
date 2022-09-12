@@ -26,10 +26,6 @@ function App() {
               element={<MatchingNotes />}
             />
           </Route>
-          {/* <Route
-            path="/school/matchestransfer"
-            element={<SchoolMatchesWarmTransfer />}
-          /> */}
         </Route>
       </Routes>
     </Router>
