@@ -15,14 +15,17 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-const HeaderWrapper = styled(Paper)(() => ({
+import { useState } from 'react';
+import { useExpand } from '../../store/context';
+
+const HeaderWrapper = styled(Paper)(({ expand }) => ({
   backgroundColor: '#FFFFFF',
   textAlign: 'center',
   color: '#161616',
   width: '100%',
   height: '63px',
   borderRadius: 0,
-  paddingLeft: 90,
+  paddingLeft: expand ? 160 : 90,
   paddingRight: '5%',
   display: 'flex',
   flexDirection: 'row',
@@ -156,7 +159,7 @@ let style = {
     backgroundColor: 'transparent',
     height: '2px',
   },
-  iconStyle: { fontSize: 18 },
+  iconStyle: { fontSize: 22 },
   redDivider: {
     backgroundColor: '#FF0000',
   },
@@ -208,8 +211,11 @@ const data2 = [
   },
 ];
 const Header = () => {
+  let [switchChecked, setSwitchChecked] = useState(false);
+  let expand = useExpand().state.expand;
+
   return (
-    <HeaderWrapper>
+    <HeaderWrapper expand={expand}>
       <Grid container spacing={0}>
         <Grid item xs={3}>
           <TitleWrapper row spaceBetween marginTop>
@@ -247,13 +253,23 @@ const Header = () => {
         </Grid>
         <Grid item xs={2.5}>
           <SwitchWrapper>
-            <SwitchLabel left checked>
+            <SwitchLabel left checked={!switchChecked ? true : false}>
               Beginner
             </SwitchLabel>
             <FormControlLabel
-              control={<IOSSwitch sx={{ m: 1 }} defaultChecked />}
+              control={
+                <IOSSwitch
+                  sx={{ m: 1 }}
+                  defaultChecked
+                  onChange={(e) => {
+                    setSwitchChecked(e.target.checked);
+                  }}
+                />
+              }
             />
-            <SwitchLabel>Pro</SwitchLabel>
+            <SwitchLabel checked={switchChecked ? true : false}>
+              Pro
+            </SwitchLabel>
           </SwitchWrapper>
         </Grid>
         <Grid item xs={4}>
@@ -267,7 +283,9 @@ const Header = () => {
                   <Typography component="p" style={style.subTitle}>
                     {item.subTitle}
                   </Typography>
-                  <Divider sx={[style.divider, item.style]} />
+                  {item.subTitle !== '-' && (
+                    <Divider sx={[style.divider, item.style]} />
+                  )}
                 </TitleWrapper>
               </>
             ))}

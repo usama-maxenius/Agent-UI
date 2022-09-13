@@ -68,7 +68,7 @@ const WelcomeNotes = () => {
               }}
             />
           </div>
-          <RecordingDisclosed>Recording disclosed</RecordingDisclosed>
+          <RecordingDisclosed>Submit Match</RecordingDisclosed>
         </div>
       </Wrapper>
     </MainWrapper>

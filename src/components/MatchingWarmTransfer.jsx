@@ -57,18 +57,34 @@ export default function Example({ setPopUp }) {
       },
     ],
   });
+  const [selected, setSelected] = useState([]);
+
+  const selectCard = (ind) => {
+    let ele = ind;
+    if (selected.includes(ind)) {
+      setSelected([]);
+    }
+    if (!selected.includes(ind)) {
+      if (selected.length < 1) {
+        setSelected([...selected, ele]);
+      } else {
+        setPopUp(true);
+      }
+    }
+  };
 
   return (
     <div className="w-full px-2 py-4 sm:px-0">
       <Tab.Group>
-        <Tab.List className="flex space-x-1 rounded-xl p-1">
+        <Tab.List className="flex justify-between space-x-1 rounded-xl p-1">
           {Object.keys(categories).map((category) => (
             <Tab
               key={category}
               className={({ selected }) =>
                 classNames(
-                  'w-full rounded-lg py-2.5 text-md font-Poppin leading-5 text-gray font-medium text-lg',
+                  'w-40 rounded-lg py-2.5 mx-4.5 text-md font-Poppin leading-5 text-gray font-medium text-lg ',
                   'ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none',
+                  'hover:text-blue',
                   selected
                     ? ' border-b-2 border-blue rounded-none text-blue'
                     : 'text-blue-100 '
@@ -81,15 +97,23 @@ export default function Example({ setPopUp }) {
         </Tab.List>
         <Tab.Panels className="mt-4">
           <Tab.Panel>
-            <div className="overflow-y-scroll h-[calc(100vh-175px)] no-scrollbar">
+            <div className="overflow-y-scroll h-[calc(100vh-150px)] no-scrollbar pb-5">
+              {[1, 2, 3].map((item, key) => (
+                <div className="mt-5" key={key}>
+                  <ExpandableCard
+                    setPopUp={setPopUp}
+                    ind={item}
+                    selectCard={selectCard}
+                    selected={selected.includes(item)}
+                  />
+                </div>
+              ))}
+            </div>
+          </Tab.Panel>
+          <Tab.Panel>
+            <div className="overflow-y-scroll h-[calc(100vh-150px)] no-scrollbar pb-5">
               <div className="mt-5">
                 <ExpandableCard setPopUp={setPopUp} />
-              </div>
-              <div className="mt-5">
-                <ExpandableCard />
-              </div>
-              <div className="mt-5">
-                <ExpandableCard />
               </div>
               <div className="mt-5">
                 <ExpandableCard />

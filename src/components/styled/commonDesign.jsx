@@ -16,7 +16,7 @@ const MediumPoppin22 = styled.span`
   font-size: 22px;
 `;
 const MediumPoppin16 = styled.span`
-  color: #161616;
+  color: ${(props) => (props.color ? props.color : '#161616')};
   font-family: 'Poppins';
   font-weight: 500;
   font-size: 16px;

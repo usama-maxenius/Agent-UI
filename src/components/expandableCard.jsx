@@ -16,7 +16,9 @@ import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
 
 import { MediumPoppin22, MediumPoppin16 } from './styled/commonDesign';
 import SearchDropDown from './dropdownWithSearch';
-import Dropdown from './dropdown';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
+import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -34,55 +36,89 @@ const ExpandMore = styled((props) => {
 }));
 
 let cardRoot = { maxWidth: '100%', overflow: 'unset' };
-
-export default function ExpandableCard({ setPopUp }) {
+export default function ExpandableCard({
+  setPopUp,
+  selectCard,
+  ind,
+  selected,
+}) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+  console.log(selected);
 
   return (
-    <Card sx={cardRoot}>
+    <Card
+      sx={[
+        cardRoot,
+        {
+          bgcolor: selected ? '#2541B2' : 'white',
+        },
+      ]}
+    >
       <CardHeader
         avatar={
           <Avatar
-            sx={{ bgcolor: '#F5F5F5', border: '1px solid #16161640' }}
+            sx={{
+              bgcolor: selected ? '#2541B2' : '#F5F5F5',
+              border: selected ? '1px solid white' : '1px solid #16161640',
+            }}
             aria-label="recipe"
-            className={classNames('cursor-pointer  ', 'hover:border-blue  ')}
+            className={classNames(
+              'cursor-pointer  ',
+              selected ? 'hover:border-white' : 'hover:border-blue  '
+            )}
             onClick={() => {
-              if (setPopUp) {
-                setPopUp(true);
-              }
+              selectCard(ind);
             }}
           >
             <DoneRoundedIcon
-              className={classNames('text-gray', 'hover:text-blue ')}
+              className={classNames(
+                selected ? 'text-white' : 'text-gray',
+                selected ? '' : 'hover:border-blue  '
+              )}
             />
           </Avatar>
         }
         action={
-          <div className="flex flex-row items-center">
+          <div className="flex flex-row items-center ">
             <img
-              src={require('../assets/images/logos.png')}
+              src={
+                ind == 2
+                  ? require('../assets/images/south.png')
+                  : require('../assets/images/logos.png')
+              }
               alt="some here"
-              className=" h-6 w-20 "
+              className=" w-20 "
             />
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
               aria-expanded={expanded}
               aria-label="show more"
+              className="hover:bg-none"
             >
-              <ExpandMoreIcon sx={{ color: '#2541b2' }} />
+              <ExpandMoreIcon sx={{ color: selected ? 'white' : '#2541b2' }} />
             </ExpandMore>
           </div>
         }
-        title={<MediumPoppin22>Colorado Technical University</MediumPoppin22>}
-        subheader={<MediumPoppin16>Colorado Springs, CO</MediumPoppin16>}
+        title={
+          <MediumPoppin22 color={selected ? 'white' : '#2541b2'}>
+            {ind == 2
+              ? 'South University Online'
+              : 'Colorado Technical University'}
+          </MediumPoppin22>
+        }
+        subheader={
+          <MediumPoppin16 color={selected ? 'white' : '#2541b2'}>
+            {ind == 2 ? 'Online' : 'Colorado Springs, CO'}
+          </MediumPoppin16>
+        }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <div className="w-11/12 bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
+        <div className="w-[606px] bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
           <Typography paragraph>
             The University of Colorado Colorado Springs is a public institution
             that was founded in 1965. It has a total undergraduate enrollment of
@@ -94,23 +130,72 @@ export default function ExpandableCard({ setPopUp }) {
           </Typography>
         </div>
       </Collapse>
-      <div className="mx-auto w-11/12">
-        <SearchDropDown />
-      </div>
+      {ind == 3 ? (
+        [1, 2, 3, 4].map((item, key) => {
+          return (
+            <div className="mx-auto w-[606px] mb-4" key={key}>
+              <SearchDropDown
+                Icon={
+                  item < 2 ? (
+                    <SchoolRoundedIcon className="text-gray mr-3" />
+                  ) : (
+                    <QuizRoundedIcon className="text-gray mr-3" />
+                  )
+                }
+                placeholder={
+                  item > 1 ? 'Additional Question one' : 'Select a program'
+                }
+              />
+            </div>
+          );
+        })
+      ) : (
+        <div className="mx-auto w-[606px] mb-4">
+          <SearchDropDown
+            Icon={<SchoolRoundedIcon className="text-gray mr-3" />}
+            placeholder="Select a program"
+          />
+        </div>
+      )}
       <CardContent>
         <div className="flex flex-row items-center text-blue">
-          <div className="flex flex-row text-small items-center mr-7">
-            <NavigationRoundedIcon className=" rotate-45" />
-            1,789 miles
-          </div>
-          <div className="flex flex-row text-small items-center ml-5 mr-7">
-            <DirectionsCarRoundedIcon className="mr-2" />
-            27 hr
-          </div>
-          <div className="flex flex-row text-small items-center ml-5 ">
-            <LocationOnRoundedIcon className="mr-2" />
-            view in maps
-          </div>
+          {ind == 2 ? (
+            <div className="flex flex-row text-small items-center mr-7">
+              <LaptopRoundedIcon
+                className={classNames(selected ? 'text-white' : 'text-blue')}
+              />
+            </div>
+          ) : (
+            <>
+              <div
+                className={classNames(
+                  'flex flex-row text-small items-center mr-7',
+                  selected ? 'text-white' : 'text-blue'
+                )}
+              >
+                <NavigationRoundedIcon className="rotate-45" />
+                1,789 miles
+              </div>
+              <div
+                className={classNames(
+                  'flex flex-row text-small items-center ml-5 mr-7',
+                  selected ? 'text-white' : 'text-blue'
+                )}
+              >
+                <DirectionsCarRoundedIcon className="mr-2" />
+                27 hr
+              </div>
+              <div
+                className={classNames(
+                  'flex flex-row text-small items-center ml-5 mr-7 ml-5',
+                  selected ? 'text-white' : 'text-blue'
+                )}
+              >
+                <LocationOnRoundedIcon className="mr-2" />
+                view in maps
+              </div>
+            </>
+          )}
         </div>
       </CardContent>
     </Card>

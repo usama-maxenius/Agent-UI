@@ -1,37 +1,33 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  Title,
-  Description,
-  RegularPoppin,
-  MediumPoppin,
-  RecordingDisclosed,
-} from './styled/wecomeNote.style';
+import { RecordingDisclosed } from './styled/wecomeNote.style';
 
 const WelcomeNotes = () => {
   let navigate = useNavigate();
   return (
-    <React.Fragment>
-      <Title>READ WORD FOR WORD</Title>
-      <Description>
-        <RegularPoppin>
+    <div className="w-[519px] h-full flex flex-col justify-center mx-auto">
+      <p className="text-blue text-[22px] font-Poppin font-semibold">
+        READ WORD FOR WORD
+      </p>
+      <div>
+        <p className="font-Poppin font-normal my-4 text-base">
           Hello this is Anna from Degree Transfers on a{' '}
-          <MediumPoppin> recorded line</MediumPoppin>, am I speaking with Angel?
-        </RegularPoppin>
-        <RegularPoppin>
+          <strong>recorded line</strong>, am I speaking with Angel?
+        </p>
+        <p className="font-Poppin font-normal my-4">
           Hello Angel, it looks like you have been online recently looking into
           furthering your education. Have you enrolled in a school already or
           just looking for options?
-        </RegularPoppin>
-        <MediumPoppin>
+        </p>
+        <p className="font-Poppin font-semibold ">
           Great! Degree Transfers partners with over 200 colleges to help
           students find school options.
-        </MediumPoppin>
-      </Description>
-      <RecordingDisclosed onClick={() => navigate(`/education/form`)}>
+        </p>
+      </div>
+      <RecordingDisclosed onClick={() => navigate('/education/form')}>
         Recording disclosed
       </RecordingDisclosed>
-    </React.Fragment>
+    </div>
   );
 };
 
