@@ -260,7 +260,6 @@ const Header = () => {
               control={
                 <IOSSwitch
                   sx={{ m: 1 }}
-                  defaultChecked
                   onChange={(e) => {
                     setSwitchChecked(e.target.checked);
                   }}
