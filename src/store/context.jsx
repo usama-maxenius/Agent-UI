@@ -4,12 +4,23 @@ let Context = React.createContext();
 
 let initVal = {
   expand: false,
+  isSecurityDrawer: false,
+  isHelperDrawer: false,
 };
 
 function countReducer(state, action) {
   switch (action.type) {
     case 'EXPAND': {
       return { expand: !state.expand };
+    }
+    case 'HELP_DRAWER': {
+      return { ...state, isSecurityDrawer: false, isHelperDrawer: true };
+    }
+    case 'SECURITY_DRAWER': {
+      return { ...state, isSecurityDrawer: true, isHelperDrawer: false };
+    }
+    case 'CLOSE_DRAWER': {
+      return { ...state, isSecurityDrawer: false, isHelperDrawer: false };
     }
 
     default: {
@@ -24,12 +35,12 @@ function ContextProvider({ children }) {
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
 
-function useExpand() {
+function useContextCustom() {
   const context = React.useContext(Context);
   if (context === undefined) {
-    throw new Error('useExpand must be used within a CountProvider');
+    throw new Error('useContextCustom must be used within a CountProvider');
   }
   return context;
 }
 
-export { ContextProvider, Context, useExpand };
+export { ContextProvider, Context, useContextCustom };

@@ -5,7 +5,7 @@ const MainWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   height: calc(100%-52px);
-  margin-top: 52px;
+  margin-top: 42px;
 `;
 const RegularPoppin = styled.div`
   color: ${(props) => (props.title ? '#161616' : '#2541B2')};
@@ -24,7 +24,7 @@ const MediumPoppin = styled.span`
 const ItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 56px;
+  height: 64px;
 `;
 
 export { MainWrapper, RegularPoppin, ItemWrapper, MediumPoppin };

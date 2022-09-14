@@ -6,13 +6,17 @@ import Grid from '@mui/material/Grid';
 import MatchingWarmTransfer from '../components/MatchingWarmTransfer';
 import { Outlet } from 'react-router-dom';
 import WarningPopOver from '../components/warningPopOver';
+import RightDrawer from '../components/rightDrawer';
+import DisclosureHelp from '../components/disclosureHelp';
+import DisclosureSecurity from '../components/disclosureSecurity';
+import { useContextCustom } from '../store/context';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: 90,
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '100vh',
+  height: '786px',
   overflowY: 'hidden',
   filter: props.popup && 'blur(5px)',
 }));
@@ -21,11 +25,12 @@ const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '100vh',
+  height: '786px',
 }));
 
 const Education = () => {
   const [popup, setPopUp] = useState(false);
+  const { state } = useContextCustom();
 
   return (
     <React.Fragment>
@@ -41,6 +46,10 @@ const Education = () => {
             <RightContentWrapper>
               <Outlet />
             </RightContentWrapper>
+            <RightDrawer>
+              {state.isSecurityDrawer && <DisclosureSecurity />}
+              {state.isHelperDrawer && <DisclosureHelp />}
+            </RightDrawer>
           </Grid>
         </Grid>
       </Box>

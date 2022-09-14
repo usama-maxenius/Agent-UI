@@ -1,16 +1,16 @@
-import React from 'react';
-import { styled } from '@mui/material/styles';
-import { Paper, Divider } from '@mui/material';
 import {
-  ExpandMoreRounded,
-  HomeRounded,
-  StarRounded,
   BarChartRounded,
-  MicRounded,
+  ExpandMoreRounded,
   HeadsetMicRounded,
+  HomeRounded,
+  MicRounded,
   SettingsRounded,
+  StarRounded,
 } from '@mui/icons-material';
-import { useExpand } from '../../store/context';
+import { Divider, Paper } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import React from 'react';
+import { useContextCustom } from '../../store/context';
 
 const SideBarWrapper = styled(Paper)((props) => ({
   backgroundColor: '#2541B2',
@@ -30,9 +30,9 @@ const SideBarWrapper = styled(Paper)((props) => ({
 }));
 
 const style = {
-  expand: { fontSize: 24, rotate: '270deg', marginTop: '25px' },
-  iconStyle: { fontSize: 25 },
-  divider: { backgroundColor: 'white', marginTop: '35px', width: 20 },
+  expand: { fontSize: 24, rotate: '270deg' },
+  iconStyle: { fontSize: 24, '&:hover': { transform: 'scale(1.2)' } },
+  divider: { backgroundColor: 'white', width: 20 },
 };
 
 function classNames(...classes) {
@@ -40,7 +40,7 @@ function classNames(...classes) {
 }
 
 const SideBar = () => {
-  let { state, dispatch } = useExpand();
+  let { state, dispatch } = useContextCustom();
   let expand = state.expand;
   const expandHandler = (e) => {
     e.preventDefault();
@@ -53,7 +53,11 @@ const SideBar = () => {
     <SideBarWrapper expand={expand}>
       <button
         onClick={expandHandler}
-        className={expand && 'ml-auto mr-2 rotate-180 -mb-6 mt-6  '}
+        className={classNames(
+          ' h-[46px] w-[46px] mt-[25px] mb-[29px] flex flex-row justify-center items-center transition ease-in-out duration-75',
+          'hover:shadow-[0px_3px_6px_#00000029] hover:rounded-3xl',
+          expand && 'ml-auto mr-2 rotate-180 -mb-6 mt-6'
+        )}
       >
         <ExpandMoreRounded sx={style.expand} />
       </button>
@@ -63,8 +67,8 @@ const SideBar = () => {
       />
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center mt-[26px] w-[24px] mb-[30px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <HomeRounded
@@ -74,8 +78,8 @@ const SideBar = () => {
       </div>
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center mb-[30px] w-[24px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <StarRounded
@@ -85,8 +89,8 @@ const SideBar = () => {
       </div>
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center mb-[30px] w-[24px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <BarChartRounded
@@ -96,8 +100,8 @@ const SideBar = () => {
       </div>
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center mb-[30px] w-[24px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <MicRounded sx={[style.iconStyle, expand && { marginRight: '10px' }]} />{' '}
@@ -105,8 +109,8 @@ const SideBar = () => {
       </div>
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center mb-[30px] w-[24px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <HeadsetMicRounded
@@ -116,8 +120,8 @@ const SideBar = () => {
       </div>
       <div
         className={classNames(
-          'flex flex-row items-center mt-5 w-11/12',
-          expand ? 'justify-start' : 'justify-center'
+          'flex flex-row items-center w-[24px]',
+          expand ? 'justify-start' : 'mr-[16px] ml-[16px]'
         )}
       >
         <SettingsRounded

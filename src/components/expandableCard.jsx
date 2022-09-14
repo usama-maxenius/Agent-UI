@@ -35,19 +35,19 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-let cardRoot = { maxWidth: '100%', overflow: 'unset' };
+let cardRoot = { maxWidth: '95%', overflow: 'unset' };
 export default function ExpandableCard({
   setPopUp,
   selectCard,
   ind,
   selected,
+  program,
 }) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  console.log(selected);
 
   return (
     <Card
@@ -55,6 +55,7 @@ export default function ExpandableCard({
         cardRoot,
         {
           bgcolor: selected ? '#2541B2' : 'white',
+          boxShadow: '0px 3px 10px #00000029',
         },
       ]}
     >
@@ -133,7 +134,10 @@ export default function ExpandableCard({
       {ind == 3 ? (
         [1, 2, 3, 4].map((item, key) => {
           return (
-            <div className="mx-auto w-[606px] mb-4" key={key}>
+            <div
+              className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]"
+              key={key}
+            >
               <SearchDropDown
                 Icon={
                   item < 2 ? (
@@ -150,9 +154,18 @@ export default function ExpandableCard({
           );
         })
       ) : (
-        <div className="mx-auto w-[606px] mb-4">
+        <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
           <SearchDropDown
-            Icon={<SchoolRoundedIcon className="text-gray mr-3" />}
+            Icon={
+              <SchoolRoundedIcon
+                className={classNames(
+                  ' mr-3',
+                  program == true ? 'text-red' : 'text-gray  '
+                )}
+              />
+            }
+            program={program}
+            programSelected={selectCard}
             placeholder="Select a program"
           />
         </div>

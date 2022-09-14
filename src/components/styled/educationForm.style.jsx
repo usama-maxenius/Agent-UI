@@ -29,9 +29,6 @@ const FormHeader = styled.div`
 const IconWrapper = styled.div`
   margin-top: 22px;
   text-align: right;
-  &:hover {
-    color: #2541b2;
-  }
 `;
 const IconButton = styled.button`
   &:hover {

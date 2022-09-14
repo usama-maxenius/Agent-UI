@@ -11,6 +11,7 @@ import {
 } from './styled/educationForm.style';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import SearchDropdown from './dropdownWithSearch';
+import { useContextCustom } from '../store/context';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -20,16 +21,30 @@ const Wrapper = styled('div')(() => ({
 }));
 
 const WelcomeNotes = () => {
+  const { dispatch } = useContextCustom();
+
   return (
     <MainWrapper>
       <Grid container>
         <Grid item xs={6}></Grid>
         <Grid item xs={6}>
           <IconWrapper>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: 'HELP_DRAWER',
+                });
+              }}
+            >
               <LiveHelpRoundedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: 'SECURITY_DRAWER',
+                });
+              }}
+            >
               <PolicyRoundedIcon />
             </IconButton>
             <IconButton>

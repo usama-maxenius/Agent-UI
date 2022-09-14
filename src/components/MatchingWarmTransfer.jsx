@@ -6,7 +6,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Example({ setPopUp }) {
+export default function SchoolCards({ setPopUp }) {
   let [categories] = useState({
     '3 Warm transfers': [
       {
@@ -57,8 +57,8 @@ export default function Example({ setPopUp }) {
       },
     ],
   });
+  // Methods for Tab 1
   const [selected, setSelected] = useState([]);
-
   const selectCard = (ind) => {
     let ele = ind;
     if (selected.includes(ind)) {
@@ -70,6 +70,18 @@ export default function Example({ setPopUp }) {
       } else {
         setPopUp(true);
       }
+    }
+  };
+  // Methods for Tab2
+  const [program, setProgram] = useState(null);
+
+  const selectProgram = (prop) => {
+    if (prop) {
+      setProgram(prop);
+      return;
+    }
+    if (!program) {
+      setProgram(true);
     }
   };
 
@@ -97,7 +109,7 @@ export default function Example({ setPopUp }) {
         </Tab.List>
         <Tab.Panels className="mt-4">
           <Tab.Panel>
-            <div className="overflow-y-scroll h-[calc(100vh-150px)] no-scrollbar pb-5">
+            <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
               {[1, 2, 3].map((item, key) => (
                 <div className="mt-5" key={key}>
                   <ExpandableCard
@@ -111,12 +123,12 @@ export default function Example({ setPopUp }) {
             </div>
           </Tab.Panel>
           <Tab.Panel>
-            <div className="overflow-y-scroll h-[calc(100vh-150px)] no-scrollbar pb-5">
+            <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
               <div className="mt-5">
-                <ExpandableCard setPopUp={setPopUp} />
+                <ExpandableCard selectCard={selectProgram} program={program} />
               </div>
               <div className="mt-5">
-                <ExpandableCard />
+                <ExpandableCard selectCard={selectProgram} program={program} />
               </div>
             </div>
           </Tab.Panel>

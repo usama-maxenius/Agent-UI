@@ -9,13 +9,13 @@ const LeftContentWrapper = styled('div')(() => ({
   paddingLeft: 90,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '100vh',
+  height: '786px',
 }));
 const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '100vh',
+  height: '786px',
 }));
 const Education = () => {
   return (

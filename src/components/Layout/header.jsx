@@ -14,9 +14,8 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React from 'react';
-import { useState } from 'react';
-import { useExpand } from '../../store/context';
+import React, { useState } from 'react';
+import { useContextCustom } from '../../store/context';
 
 const HeaderWrapper = styled(Paper)(({ expand }) => ({
   backgroundColor: '#FFFFFF',
@@ -25,7 +24,7 @@ const HeaderWrapper = styled(Paper)(({ expand }) => ({
   width: '100%',
   height: '63px',
   borderRadius: 0,
-  paddingLeft: expand ? 160 : 90,
+  paddingLeft: expand ? 160 : 87,
   paddingRight: '5%',
   display: 'flex',
   flexDirection: 'row',
@@ -34,6 +33,7 @@ const HeaderWrapper = styled(Paper)(({ expand }) => ({
   top: 0,
   left: 0,
   zIndex: 2,
+  boxShadow: 'none',
 }));
 const TitleWrapper = styled(Box)((props) => ({
   color: '#161616',
@@ -59,8 +59,8 @@ const SwitchWrapper = styled(Box)(() => ({
   marginTop: '5px',
 }));
 const IconButton = styled(Box)(() => ({
-  height: 45,
-  width: 45,
+  height: 42,
+  width: 42,
   borderRadius: 50,
   background: '#F5F5F5 0% 0% no-repeat padding-box',
   display: 'flex',
@@ -70,7 +70,7 @@ const IconButton = styled(Box)(() => ({
   marginLeft: 16,
 }));
 const SwitchLabel = styled(Typography)(({ left, checked }) => ({
-  marginRight: left ? 16 : 0,
+  marginRight: left ? 6 : 0,
   fontSize: '12px',
   color: checked ? '#2541B2' : '#AFAFAF',
   fontFamily: "'Poppins', sans-serif",
@@ -79,15 +79,19 @@ const SwitchLabel = styled(Typography)(({ left, checked }) => ({
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
 ))(({ theme }) => ({
-  width: 42,
-  height: 26,
+  width: 65,
+  height: 31,
   padding: 0,
+  borderRadius: 100,
   '& .MuiSwitch-switchBase': {
     padding: 0,
     margin: 1,
     transitionDuration: '300ms',
+    '&:hover': {
+      marginLeft: 3,
+    },
     '&.Mui-checked': {
-      transform: 'translateX(17px)',
+      transform: 'translateX(29px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
         backgroundColor: '#FFFFFF',
@@ -99,10 +103,7 @@ const IOSSwitch = styled((props) => (
         opacity: 0.5,
       },
     },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
+
     '&.Mui-disabled .MuiSwitch-thumb': {
       color:
         theme.palette.mode === 'light'
@@ -115,11 +116,13 @@ const IOSSwitch = styled((props) => (
   },
   '& .MuiSwitch-thumb': {
     boxSizing: 'border-box',
-    width: 24,
-    height: 24,
+    width: 31,
+    height: 31,
     color: '#2541B2',
     border: '2px solid #FFFFFF',
-    marginLeft: -1,
+    marginLeft: 1,
+    marginTop: -1,
+    borderRadius: 100,
   },
   '& .MuiSwitch-track': {
     borderRadius: 26 / 2,
@@ -159,7 +162,18 @@ let style = {
     backgroundColor: 'transparent',
     height: '2px',
   },
-  iconStyle: { fontSize: 22 },
+  iconStyle: {
+    fontSize: 22,
+    '&:hover': {
+      color: '#2541B2',
+    },
+  },
+  micIcon: {
+    fontSize: 24,
+    '&:hover': {
+      color: '#2541B2',
+    },
+  },
   redDivider: {
     backgroundColor: '#FF0000',
   },
@@ -212,7 +226,7 @@ const data2 = [
 ];
 const Header = () => {
   let [switchChecked, setSwitchChecked] = useState(false);
-  let expand = useExpand().state.expand;
+  let expand = useContextCustom().state.expand;
 
   return (
     <HeaderWrapper expand={expand}>
@@ -247,7 +261,7 @@ const Header = () => {
               <PhonePausedRounded sx={style.iconStyle} />
             </IconButton>
             <IconButton>
-              <CallEndRounded sx={style.iconStyle} />
+              <CallEndRounded sx={style.micIcon} />
             </IconButton>
           </IconWrapper>
         </Grid>
@@ -259,12 +273,13 @@ const Header = () => {
             <FormControlLabel
               control={
                 <IOSSwitch
-                  sx={{ m: 1 }}
+                  sx={{ my: 1 }}
                   onChange={(e) => {
                     setSwitchChecked(e.target.checked);
                   }}
                 />
               }
+              sx={{ ml: 0, marginRight: '6px' }}
             />
             <SwitchLabel checked={switchChecked ? true : false}>
               Pro

@@ -10,6 +10,7 @@ import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { styled } from '@mui/material/styles';
+import { useContextCustom } from '../store/context';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -18,16 +19,29 @@ const Wrapper = styled('div')(() => ({
   height: 'calc(100vh - 250px )',
 }));
 const SchoolToProceed = () => {
+  const { dispatch } = useContextCustom();
   return (
     <MainWrapper>
       <Grid container>
         <Grid item xs={6}></Grid>
         <Grid item xs={6}>
           <IconWrapper>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: 'HELP_DRAWER',
+                });
+              }}
+            >
               <LiveHelpRoundedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: 'SECURITY_DRAWER',
+                });
+              }}
+            >
               <PolicyRoundedIcon />
             </IconButton>
             <IconButton>
