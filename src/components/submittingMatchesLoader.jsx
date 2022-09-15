@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   MainWrapper,
   IconWrapper,
   IconButton,
-  MediumPoppin,
 } from './styled/educationForm.style';
 import Grid from '@mui/material/Grid';
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
@@ -12,15 +11,24 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { styled } from '@mui/material/styles';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
+import { useNavigate } from 'react-router-dom';
 const Wrapper = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: '255px',
+  marginTop: '200px',
+  flexDirection: 'column',
 }));
 
-const SchoolToProceed = () => {
+const SubmittingMatchesLoader = () => {
   const { dispatch } = useContextCustom();
+  let navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      navigate('/school/loading');
+    }, 2000);
+  }, []);
   return (
     <MainWrapper>
       <Grid container>
@@ -58,10 +66,15 @@ const SchoolToProceed = () => {
         </Grid>
       </Grid>
       <Wrapper>
-        <MediumPoppin color="#16161680">Select schools to proceed</MediumPoppin>
+        <p className="font-Poppin text-[22px] text-blue font-medium">
+          Submitting matches
+        </p>
+        <div className="flex flex-row mt-10 justify-start">
+          <div className="matching-screen-animation"></div>
+        </div>
       </Wrapper>
     </MainWrapper>
   );
 };
 
-export default SchoolToProceed;
+export default SubmittingMatchesLoader;

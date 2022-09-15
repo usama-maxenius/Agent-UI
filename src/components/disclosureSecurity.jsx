@@ -33,7 +33,7 @@ import React from 'react';
 // ];
 function DisclosureHelp() {
   return (
-    <>
+    <div className="mt-[34px] flex flex-col">
       {[
         'RECORDING DISCLOSURE',
         'SOMETHING ELSE THAT’S NEEDED',
@@ -62,7 +62,7 @@ function DisclosureHelp() {
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
 

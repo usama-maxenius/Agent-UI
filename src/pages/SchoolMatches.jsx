@@ -10,6 +10,7 @@ import RightDrawer from '../components/rightDrawer';
 import DisclosureHelp from '../components/disclosureHelp';
 import DisclosureSecurity from '../components/disclosureSecurity';
 import { useContextCustom } from '../store/context';
+import DisclosureCallerDetails from '../components/disclosureCallerDetails';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: 90,
@@ -49,6 +50,7 @@ const Education = () => {
             <RightDrawer>
               {state.isSecurityDrawer && <DisclosureSecurity />}
               {state.isHelperDrawer && <DisclosureHelp />}
+              {state.isCallerDrawer && <DisclosureCallerDetails />}
             </RightDrawer>
           </Grid>
         </Grid>

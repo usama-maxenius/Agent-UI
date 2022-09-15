@@ -16,24 +16,32 @@ const Input = styled.input`
   border-radius: 8px;
   padding-right: 30px;
   padding-left: 10px;
+  font-size: ${(props) => props.callerID && '16px'};
+  font-family: ${(props) => props.callerID && 'Poppins'};
+  font-weight: ${(props) => props.callerID && '400'};
 `;
 const Wrapper = styled.div`
   margin-left: ${(props) => props.isDouble && '20px'};
 `;
-let icon = {
-  color: '#2541B2',
-  position: 'relative',
-  fontSize: '28px',
-  top: '-5px',
-  left: '-40px',
-};
 InputIcon.propTypes = {
   isDouble: PropTypes.bool,
 };
-export default function InputIcon({ isDouble }) {
+export default function InputIcon({ isDouble, callerID, placeholder }) {
+  let icon = {
+    color: '#2541B2',
+    position: 'relative',
+    fontSize: callerID ? '24px' : '28px',
+    top: '-5px',
+    left: callerID ? '-30px' : '-40px',
+  };
   return (
     <Wrapper isDouble={isDouble}>
-      <Input isDouble={isDouble} />
+      <Input
+        isDouble={isDouble}
+        placeholder={placeholder ? placeholder : 'Text Field'}
+        callerID={callerID}
+        value={placeholder && placeholder}
+      />
       <DoneIcon sx={icon} />
     </Wrapper>
   );

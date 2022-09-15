@@ -28,6 +28,67 @@ code {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.matching-screen-animation {
+  position: relative;
+  left: -9999px;
+  width: 30px;
+  height: 30px;
+  border-radius: 99999px;
+  background-color: #2541b2;
+  color: #2541b2;
+  box-shadow: 9920px 0 0 0 #2541b2, 9965px 0px 0px 0px #2541b2,
+    10010px 0 0 0px #2541b2, 10055px 0 0 0px #2541b2;
+  animation: matching-screen-animation 2s infinite linear;
+  margin-left: 20px;
+}
+
+@keyframes matching-screen-animation {
+  0% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  10% {
+    box-shadow: 9920px -50px 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  20% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  30% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px -50px 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  40% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  50% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px -50px 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  60% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  70% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px -50px 0 0px #2541b2;
+  }
+  80% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  90% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
+  100% {
+    box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,
+      10010px 0 0 0 #2541b2, 10055px 0 0 0px #2541b2;
+  }
 }

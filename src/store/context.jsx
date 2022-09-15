@@ -1,26 +1,50 @@
 import React from 'react';
-
+import constant from './constant';
 let Context = React.createContext();
 
 let initVal = {
   expand: false,
   isSecurityDrawer: false,
   isHelperDrawer: false,
+  isCallerDrawer: false,
 };
 
 function countReducer(state, action) {
   switch (action.type) {
-    case 'EXPAND': {
+    case constant.EXPAND: {
       return { expand: !state.expand };
     }
-    case 'HELP_DRAWER': {
-      return { ...state, isSecurityDrawer: false, isHelperDrawer: true };
+    case constant.HELP_DRAWER: {
+      return {
+        ...state,
+        isSecurityDrawer: false,
+        isHelperDrawer: true,
+        isCallerDrawer: false,
+      };
     }
-    case 'SECURITY_DRAWER': {
-      return { ...state, isSecurityDrawer: true, isHelperDrawer: false };
+    case constant.SECURITY_DRAWER: {
+      return {
+        ...state,
+        isSecurityDrawer: true,
+        isHelperDrawer: false,
+        isCallerDrawer: false,
+      };
     }
-    case 'CLOSE_DRAWER': {
-      return { ...state, isSecurityDrawer: false, isHelperDrawer: false };
+    case constant.CALLER_DETAILS_DRAWER: {
+      return {
+        ...state,
+        isSecurityDrawer: false,
+        isHelperDrawer: false,
+        isCallerDrawer: true,
+      };
+    }
+    case constant.CLOSE_DRAWER: {
+      return {
+        ...state,
+        isSecurityDrawer: false,
+        isHelperDrawer: false,
+        isCallerDrawer: false,
+      };
     }
 
     default: {

@@ -12,6 +12,8 @@ import {
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import SearchDropdown from './dropdownWithSearch';
 import { useContextCustom } from '../store/context';
+import constant from '../store/constant';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -22,6 +24,7 @@ const Wrapper = styled('div')(() => ({
 
 const WelcomeNotes = () => {
   const { dispatch } = useContextCustom();
+  const navigate = useNavigate();
 
   return (
     <MainWrapper>
@@ -32,7 +35,7 @@ const WelcomeNotes = () => {
             <IconButton
               onClick={() => {
                 dispatch({
-                  type: 'HELP_DRAWER',
+                  type: constant.HELP_DRAWER,
                 });
               }}
             >
@@ -41,13 +44,19 @@ const WelcomeNotes = () => {
             <IconButton
               onClick={() => {
                 dispatch({
-                  type: 'SECURITY_DRAWER',
+                  type: constant.SECURITY_DRAWER,
                 });
               }}
             >
               <PolicyRoundedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: constant.CALLER_DETAILS_DRAWER,
+                });
+              }}
+            >
               <PersonRoundedIcon />
             </IconButton>
           </IconWrapper>
@@ -83,7 +92,13 @@ const WelcomeNotes = () => {
               }}
             />
           </div>
-          <RecordingDisclosed>Submit Match</RecordingDisclosed>
+          <RecordingDisclosed
+            onClick={() => {
+              navigate('/school/matches/submittingLoading');
+            }}
+          >
+            Submit Match
+          </RecordingDisclosed>
         </div>
       </Wrapper>
     </MainWrapper>

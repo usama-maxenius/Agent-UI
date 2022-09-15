@@ -33,7 +33,7 @@ const data = [
 ];
 function DisclosureHelp() {
   return (
-    <>
+    <div className="mt-[34px] flex flex-col">
       {data.map((item, key) => {
         return (
           <div key={key}>
@@ -46,7 +46,7 @@ function DisclosureHelp() {
           </div>
         );
       })}
-    </>
+    </div>
   );
 }
 

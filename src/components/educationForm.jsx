@@ -12,6 +12,8 @@ import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import FormCard from './Card';
 import FinishedNotes from './finishedNotes';
 import styled from 'styled-components';
+import { useContextCustom } from '../store/context';
+import constant from '../store/constant';
 
 let BottomNoteWrapper = styled.div`
   padding: 10px;
@@ -191,6 +193,7 @@ let contact = [
 ];
 
 const EducationForm = () => {
+  const { dispatch } = useContextCustom();
   return (
     <MainWrapper>
       <Grid container>
@@ -201,10 +204,22 @@ const EducationForm = () => {
         </Grid>
         <Grid item xs={6}>
           <IconWrapper>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: constant.HELP_DRAWER,
+                });
+              }}
+            >
               <LiveHelpRoundedIcon />
             </IconButton>
-            <IconButton>
+            <IconButton
+              onClick={() => {
+                dispatch({
+                  type: constant.SECURITY_DRAWER,
+                });
+              }}
+            >
               <PolicyRoundedIcon />
             </IconButton>
           </IconWrapper>

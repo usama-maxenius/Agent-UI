@@ -13,6 +13,7 @@ export default function Example({
   placeholder,
   program,
   programSelected,
+  callerID,
 }) {
   const people = [
     { name: placeholder ? placeholder : 'Select an agent to transfer to' },
@@ -38,28 +39,36 @@ export default function Example({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              'relative w-full cursor-default rounded-lg bg-lightGray py-2 pl-3 pr-10 text-left rounded border  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm',
-              program == true ? 'border-red' : 'border-gray'
+              'relative w-full cursor-default rounded-lg bg-lightGray py-2 pl-3 pr-10 text-left rounded border  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
+              program == true ? 'border-red' : 'border-gray',
+              callerID == true
+                ? 'border-blue  h-[52px] font-Poppin text-base rounded-[8px]'
+                : 'sm:text-sm'
             )}
           >
             <span
               className={classNames(
                 'block truncate  font-Poppin',
-                program == true ? 'text-red' : 'text-gray'
+                program == true
+                  ? 'text-red'
+                  : callerID == true
+                  ? 'text-blue'
+                  : 'text-gray'
               )}
             >
-              {Icon ? (
-                Icon
-              ) : (
-                <SupportAgentRoundedIcon className="text-gray mr-3" />
-              )}{' '}
+              {Icon
+                ? Icon
+                : !callerID && (
+                    <SupportAgentRoundedIcon className="text-gray mr-3" />
+                  )}
               {selected.name}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
                 className={classNames(
                   'h-5 w-5',
-                  program == true ? 'text-red' : 'text-gray-400'
+                  program == true ? 'text-red' : 'text-gray-400',
+                  callerID == true && 'text-blue h-6 w-6'
                 )}
                 aria-hidden="true"
               />

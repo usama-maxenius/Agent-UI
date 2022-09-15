@@ -132,6 +132,11 @@ export default function SchoolCards({ setPopUp }) {
               </div>
             </div>
           </Tab.Panel>
+          <Tab.Panel>
+            <div className="mt-[244px] w-[437px] flex flex-row justify-center items-center text-gray100 font-Poppin text-[22px] mx-auto text-center">
+              The caller hasn’t matched with any Schools for external transfer
+            </div>
+          </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
     </div>

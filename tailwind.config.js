@@ -7,6 +7,8 @@ module.exports = {
     extend: {
       fontFamily: {
         Poppin: ['Poppin', 'sans-serif'],
+        IBM_sans: ['IBM Plex', 'sans'],
+        IBM_serif: ['IBM Plex', 'sans-serif'],
         serif: ['Merriweather', 'serif'],
       },
       colors: {
@@ -15,11 +17,13 @@ module.exports = {
         darkBlack: '#161616',
         lightGray: '#FAFAFA',
         red: '#FF0000',
+        gray100: '#888888',
+        green: '#2FBE68',
       },
       fontSize: {
         small: '10px',
       },
     },
   },
-  plugins: [],
+  plugins: [require('tailwindcss-animate')],
 };
