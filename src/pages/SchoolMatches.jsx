@@ -13,7 +13,7 @@ import { useContextCustom } from '../store/context';
 import DisclosureCallerDetails from '../components/disclosureCallerDetails';
 
 const LeftContentWrapper = styled('div')((props) => ({
-  paddingLeft: 90,
+  paddingLeft: props.expand ? 160 : 87,
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
@@ -32,14 +32,13 @@ const RightContentWrapper = styled('div')(() => ({
 const Education = () => {
   const [popup, setPopUp] = useState(false);
   const { state } = useContextCustom();
-  console.log(state);
 
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={6}>
-            <LeftContentWrapper popup={popup}>
+            <LeftContentWrapper popup={popup} expand={state.expand}>
               <MatchingWarmTransfer setPopUp={setPopUp} />
             </LeftContentWrapper>
             <WarningPopOver popup={popup} setPopUp={setPopUp} />

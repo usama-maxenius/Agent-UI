@@ -9,8 +9,8 @@ import DisclosureHelp from '../components/disclosureHelp';
 import DisclosureSecurity from '../components/disclosureSecurity';
 import { useContextCustom } from '../store/context';
 
-const LeftContentWrapper = styled('div')(() => ({
-  paddingLeft: 90,
+const LeftContentWrapper = styled('div')(({ expand }) => ({
+  paddingLeft: expand ? 160 : 87,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
   height: '768px',
@@ -28,7 +28,7 @@ const Education = () => {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={6}>
-            <LeftContentWrapper>
+            <LeftContentWrapper expand={state.expand}>
               <UserDetails />
             </LeftContentWrapper>
           </Grid>
