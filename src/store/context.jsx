@@ -7,6 +7,7 @@ let initVal = {
   isSecurityDrawer: false,
   isHelperDrawer: false,
   isCallerDrawer: false,
+  isDraggable: false,
 };
 
 function countReducer(state, action) {
@@ -20,6 +21,7 @@ function countReducer(state, action) {
         isSecurityDrawer: false,
         isHelperDrawer: true,
         isCallerDrawer: false,
+        isDraggable: false,
       };
     }
     case constant.SECURITY_DRAWER: {
@@ -28,6 +30,7 @@ function countReducer(state, action) {
         isSecurityDrawer: true,
         isHelperDrawer: false,
         isCallerDrawer: false,
+        isDraggable: false,
       };
     }
     case constant.CALLER_DETAILS_DRAWER: {
@@ -36,6 +39,16 @@ function countReducer(state, action) {
         isSecurityDrawer: false,
         isHelperDrawer: false,
         isCallerDrawer: true,
+        isDraggable: false,
+      };
+    }
+    case constant.DRAGABBLE_FORM: {
+      return {
+        ...state,
+        isSecurityDrawer: false,
+        isHelperDrawer: false,
+        isCallerDrawer: false,
+        isDraggable: !state.isDraggable,
       };
     }
     case constant.CLOSE_DRAWER: {

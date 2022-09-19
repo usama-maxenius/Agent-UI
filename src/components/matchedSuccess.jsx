@@ -6,7 +6,7 @@ function MatchedSuccess() {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate('/education/form');
+      navigate('/school/matches/callerDetails');
     }, 2000);
   }, []);
   return (

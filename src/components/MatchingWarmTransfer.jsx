@@ -108,7 +108,7 @@ export default function SchoolCards({ setPopUp }) {
           ))}
         </Tab.List>
         <Tab.Panels className="mt-4">
-          <Tab.Panel>
+          <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
               {[1, 2, 3].map((item, key) => (
                 <div className="mt-5" key={key}>
@@ -122,7 +122,7 @@ export default function SchoolCards({ setPopUp }) {
               ))}
             </div>
           </Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
               <div className="mt-5">
                 <ExpandableCard selectCard={selectProgram} program={program} />
@@ -132,7 +132,7 @@ export default function SchoolCards({ setPopUp }) {
               </div>
             </div>
           </Tab.Panel>
-          <Tab.Panel>
+          <Tab.Panel className="outline-none">
             <div className="mt-[244px] w-[437px] flex flex-row justify-center items-center text-gray100 font-Poppin text-[22px] mx-auto text-center">
               The caller hasn’t matched with any Schools for external transfer
             </div>

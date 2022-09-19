@@ -17,7 +17,7 @@ const SideBarWrapper = styled(Paper)((props) => ({
   textAlign: props.expand ? 'left' : 'center',
   color: 'white',
   width: props.expand ? 130 : 60,
-  height: '100vh',
+  height: '768px',
   position: 'fixed',
   left: 0,
   top: 0,
@@ -30,7 +30,7 @@ const SideBarWrapper = styled(Paper)((props) => ({
 }));
 
 const style = {
-  expand: { fontSize: 24, rotate: '270deg' },
+  expand: { fontSize: 24, transform: 'rotate(270deg)' },
   iconStyle: { fontSize: 24, '&:hover': { transform: 'scale(1.2)' } },
   divider: { backgroundColor: 'white', width: 20 },
 };
@@ -56,7 +56,7 @@ const SideBar = () => {
         className={classNames(
           ' h-[46px] w-[46px] mt-[25px] mb-[29px] flex flex-row justify-center items-center transition ease-in-out duration-75',
           'hover:shadow-[0px_3px_6px_#00000029] hover:rounded-3xl',
-          expand && 'ml-auto mr-2 rotate-180 -mb-6 mt-6'
+          expand && 'ml-auto mr-2 rotate-180 mt-6'
         )}
       >
         <ExpandMoreRounded sx={style.expand} />

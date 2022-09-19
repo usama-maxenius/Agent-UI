@@ -17,7 +17,7 @@ const LeftContentWrapper = styled('div')((props) => ({
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '786px',
+  height: '768px',
   overflowY: 'hidden',
   filter: props.popup && 'blur(5px)',
 }));
@@ -26,12 +26,13 @@ const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '786px',
+  height: '768px',
 }));
 
 const Education = () => {
   const [popup, setPopUp] = useState(false);
   const { state } = useContextCustom();
+  console.log(state);
 
   return (
     <React.Fragment>

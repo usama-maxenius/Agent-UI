@@ -26,7 +26,7 @@ const SubmittingMatchesLoader = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      navigate('/school/loading');
+      navigate('/school/matches/submitMatchError');
     }, 2000);
   }, []);
   return (

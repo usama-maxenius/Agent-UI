@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import InputLeftIcon from './inputWithLeftIcon';
 import InputRightIcon from './inputWithRightIcon';
 import { RegularPoppin, MediumPoppin } from './styled/userDetails.style';
+import DoubleHalfWidth from './doubleInput';
 
 const DoubleInput = styled.div`
   width: 100%;
@@ -30,6 +31,7 @@ let cardStyle = {
   maxWidth: 570,
   marginTop: '16px',
   overflow: 'unset',
+  boxShadow: 'none',
 };
 
 let title = {
@@ -42,8 +44,16 @@ let title = {
 
 function FormCard({ item, key }) {
   return (
-    <Card sx={cardStyle} key={key}>
-      <CardContent>
+    <Card
+      sx={[
+        cardStyle,
+        item.noPad && { padding: 0, paddingBottom: '0 !important' },
+      ]}
+      key={key}
+    >
+      <CardContent
+        sx={item.noPad ? { padding: 0, paddingBottom: '0 !important' } : {}}
+      >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
         {item.ticked && <InputRightIcon />}
         {item.HomeIcon && <InputLeftIcon item={item} />}
@@ -54,6 +64,7 @@ function FormCard({ item, key }) {
             <InputRightIcon isDouble={item.isDouble} />
           </DoubleInput>
         )}
+        {item.doubleHalf && <DoubleHalfWidth />}
         {item.bottomLine && (
           <BottomLine>
             <RegularPoppin title blue>

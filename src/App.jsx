@@ -6,22 +6,25 @@ import { ContextProvider } from './store/context';
 import Home from './pages/Home';
 import Education from './pages/Education';
 import SchoolMatches from './pages/SchoolMatches';
-import PrivateRoutes from './navigation/privateRoutes';
+// import PrivateRoutes from './navigation/privateRoutes';
 import Layout from './components/Layout/index';
 import SchoolToProceed from './components/SchoolToProceed';
 import MatchingNotes from './components/matchingNotes';
 import MatchingLoader from './components/matchingLoading';
 import MatchedSuccess from './components/matchedSuccess';
 import SubmittingLoading from './components/submittingMatchesLoader';
+import CallerDetails from './components/CallerDetails';
+import SubmitMatch from './components/submitMatch';
+import SubmitMatchError from './components/submitMatchError';
 
 function App() {
   return (
     <ContextProvider>
       <Router>
         <Routes>
-          <Route element={<PrivateRoutes />}>
+          {/* <Route element={<PrivateRoutes />}>
             <Route path="/home" element={<Home />} />
-          </Route>
+          </Route> */}
           <Route element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/education/form" element={<Education />} />
@@ -34,6 +37,18 @@ function App() {
               <Route
                 path="/school/matches/submittingLoading"
                 element={<SubmittingLoading />}
+              />
+              <Route
+                path="/school/matches/callerDetails"
+                element={<CallerDetails />}
+              />
+              <Route
+                path="/school/matches/submitMatch"
+                element={<SubmitMatch />}
+              />
+              <Route
+                path="/school/matches/submitMatchError"
+                element={<SubmitMatchError />}
               />
             </Route>
             <Route path="/school/loading" element={<MatchingLoader />} />

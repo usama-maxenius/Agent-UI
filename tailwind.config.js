@@ -23,6 +23,9 @@ module.exports = {
       fontSize: {
         small: '10px',
       },
+      borderRadius: {
+        box: '8px',
+      },
     },
   },
   plugins: [require('tailwindcss-animate')],

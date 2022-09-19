@@ -12,12 +12,20 @@ function DisclosureCallerDetails() {
       </div>
       <div className="w-[527px]">
         <div className="-mt-2.5">
-          <InputWithRightIcon callerID={true} placeholder="Angel" />
+          <InputWithRightIcon
+            callerID={true}
+            placeholder="Angel"
+            width={'84%'}
+          />
         </div>
       </div>
       <div className="w-[527px]">
         <div className="-mt-2.5">
-          <InputWithRightIcon callerID={true} placeholder="Rubio" />
+          <InputWithRightIcon
+            width={'84%'}
+            callerID={true}
+            placeholder="Rubio"
+          />
         </div>
       </div>
       <div className="w-[443px]">
@@ -40,7 +48,11 @@ function DisclosureCallerDetails() {
       </div>
       <div className="w-[527px]">
         <div className="-mt-2.5">
-          <InputWithRightIcon callerID={true} placeholder="929-205-3200" />
+          <InputWithRightIcon
+            width={'84%'}
+            callerID={true}
+            placeholder="929-205-3200"
+          />
         </div>
       </div>
       <div className="w-[443px]">
@@ -51,6 +63,7 @@ function DisclosureCallerDetails() {
       <div className="w-[527px]">
         <div className="-mt-2.5">
           <InputWithRightIcon
+            width={'84%'}
             callerID={true}
             placeholder="Angel.rubio@gmail.com"
           />
@@ -58,7 +71,11 @@ function DisclosureCallerDetails() {
       </div>
       <div className="w-[527px]">
         <div className="-mt-2.5">
-          <InputWithRightIcon callerID={true} placeholder="10 Hudson Yards" />
+          <InputWithRightIcon
+            width={'84%'}
+            callerID={true}
+            placeholder="10 Hudson Yards"
+          />
         </div>
       </div>
       <div className="w-[443px]">

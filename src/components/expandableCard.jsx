@@ -35,7 +35,7 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-let cardRoot = { maxWidth: '95%', overflow: 'unset' };
+let cardRoot = { maxWidth: '574px', overflow: 'unset' };
 export default function ExpandableCard({
   setPopUp,
   selectCard,
@@ -119,8 +119,8 @@ export default function ExpandableCard({
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <div className="w-[606px] bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
-          <Typography paragraph>
+        <div className="w-[518px] bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
+          <p className="w-[450px] font-Poppin text-base rounded-[8px]">
             The University of Colorado Colorado Springs is a public institution
             that was founded in 1965. It has a total undergraduate enrollment of
             10,119 (fall 2020), its setting is urban, and the campus size is 550
@@ -128,7 +128,7 @@ export default function ExpandableCard({
             Colorado Colorado Springs’ ranking in the 2022 edition of Best
             Colleges is National Universities, #299-391. Its in-state tuition
             and fees are $10,480; out-of-state tuition and fees are $25,600.
-          </Typography>
+          </p>
         </div>
       </Collapse>
       {ind == 3 ? (

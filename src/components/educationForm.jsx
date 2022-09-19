@@ -187,7 +187,8 @@ let contact = [
     ],
     dropdown: true,
     HomeIcon: true,
-    isDouble: true,
+    isDouble: false,
+    doubleHalf: true,
     placeholder: 'Street address',
   },
 ];

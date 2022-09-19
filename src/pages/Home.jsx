@@ -11,13 +11,13 @@ const LeftContentWrapper = styled('div')(({ expand }) => ({
   paddingLeft: expand ? 160 : 87,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '786px',
+  height: '768px',
 }));
 const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '786px',
+  height: '768px',
 }));
 const Home = () => {
   let expand = useContextCustom().state.expand;
