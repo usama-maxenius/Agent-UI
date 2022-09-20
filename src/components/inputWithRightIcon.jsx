@@ -32,7 +32,13 @@ const Wrapper = styled.div`
 InputIcon.propTypes = {
   isDouble: PropTypes.bool,
 };
-export default function InputIcon({ isDouble, callerID, placeholder, width }) {
+export default function InputIcon({
+  isDouble,
+  callerID,
+  placeholder,
+  width,
+  Icon,
+}) {
   let icon = {
     color: '#2541B2',
     position: 'relative',
@@ -49,7 +55,7 @@ export default function InputIcon({ isDouble, callerID, placeholder, width }) {
         value={placeholder && placeholder}
         width={width}
       />
-      <DoneIcon sx={icon} />
+      {Icon ? Icon : <DoneIcon sx={icon} />}
     </Wrapper>
   );
 }

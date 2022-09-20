@@ -15,6 +15,7 @@ import constant from '../store/constant';
 import DragnDropForm from './callerDetailFormDnD';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -24,6 +25,7 @@ const Wrapper = styled('div')(() => ({
 
 const CallerDetail = () => {
   const { dispatch } = useContextCustom();
+  const navigate = useNavigate();
 
   return (
     <MainWrapper>
@@ -89,9 +91,7 @@ const CallerDetail = () => {
               essentially unchanged.
             </p>
           </div>
-          <RecordingDisclosed
-          //   onClick={() => navigate('/education/form')}
-          >
+          <RecordingDisclosed onClick={() => navigate('/connector/layout')}>
             Display matched schools
           </RecordingDisclosed>
         </div>

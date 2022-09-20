@@ -2,12 +2,16 @@ import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ContextProvider } from './store/context';
-// Screens
+
+// Private Routing
+// import PrivateRoutes from './navigation/privateRoutes';
+
+// Basic Layout and Screens
+import Layout from './components/Layout/index';
 import Home from './pages/Home';
 import Education from './pages/Education';
 import SchoolMatches from './pages/SchoolMatches';
-// import PrivateRoutes from './navigation/privateRoutes';
-import Layout from './components/Layout/index';
+// Components
 import SchoolToProceed from './components/SchoolToProceed';
 import MatchingNotes from './components/matchingNotes';
 import MatchingLoader from './components/matchingLoading';
@@ -16,6 +20,10 @@ import SubmittingLoading from './components/submittingMatchesLoader';
 import CallerDetails from './components/CallerDetails';
 import SubmitMatch from './components/submitMatch';
 import SubmitMatchError from './components/submitMatchError';
+
+// Cap Management Layout
+import ConnectorLayout from './components/ConnectorLayout/index';
+import CapManagement from './pages/CapManagement';
 
 function App() {
   return (
@@ -53,6 +61,9 @@ function App() {
             </Route>
             <Route path="/school/loading" element={<MatchingLoader />} />
             <Route path="/school/matchedSuccess" element={<MatchedSuccess />} />
+          </Route>
+          <Route path="/connector/layout" element={<ConnectorLayout />}>
+            <Route index element={<CapManagement />} />
           </Route>
         </Routes>
       </Router>
