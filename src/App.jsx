@@ -24,6 +24,9 @@ import SubmitMatchError from './components/submitMatchError';
 // Cap Management Layout
 import ConnectorLayout from './components/ConnectorLayout/index';
 import CapManagement from './pages/CapManagement';
+import FieldConfiguration from './pages/FieldConfiguration';
+import ImportingCSV from './pages/ImportingCSV';
+import DragFiles from './pages/dragFiles';
 
 function App() {
   return (
@@ -64,6 +67,15 @@ function App() {
           </Route>
           <Route path="/connector/layout" element={<ConnectorLayout />}>
             <Route index element={<CapManagement />} />
+            <Route
+              path="/connector/layout/fieldConfiguration"
+              element={<FieldConfiguration />}
+            />
+            <Route
+              path="/connector/layout/importingCSV"
+              element={<ImportingCSV />}
+            />
+            <Route path="/connector/layout/dragFiles" element={<DragFiles />} />
           </Route>
         </Routes>
       </Router>

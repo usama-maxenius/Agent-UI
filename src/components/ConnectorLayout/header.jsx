@@ -1,18 +1,18 @@
 import { Grid, Paper } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
-import { useContextCustom } from '../../store/context';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import ManageAccountsRoundedIcon from '@mui/icons-material/ManageAccountsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-const HeaderWrapper = styled(Paper)(() => ({
+import { useLocation } from 'react-router-dom';
+const HeaderWrapper = styled(Paper)(({ location }) => ({
   backgroundColor: '#FFFFFF',
   textAlign: 'center',
   color: '#161616',
   width: '100%',
   height: '63px',
   borderRadius: 0,
-  paddingLeft: 281,
+  paddingLeft: location ? 281 : 84,
   paddingRight: 84,
   display: 'flex',
   flexDirection: 'row',
@@ -25,10 +25,9 @@ const HeaderWrapper = styled(Paper)(() => ({
 }));
 
 const Header = () => {
-  let expand = useContextCustom().state.expand;
-
+  let location = useLocation();
   return (
-    <HeaderWrapper expand={expand}>
+    <HeaderWrapper location={location.pathname == '/connector/layout'}>
       <Grid container spacing={0}>
         <Grid item xs={4}>
           <p className="font-Poppin text-cta font-semibold text-blue flex flex-row items-center ">
@@ -50,11 +49,17 @@ const Header = () => {
               />
               <SearchRoundedIcon className="text-[#8a8a8a]" />
             </div>
-            <button className="ml-[30px]">
-              <ManageAccountsRoundedIcon className="text-[#8a8a8a]" />
+            <button className="ml-[30px] group">
+              <ManageAccountsRoundedIcon className="text-[#8a8a8a] group-hover:text-blue" />
+              <p className="text-blue font-Poppin absolute top-10 -ml-2 text-sm font-semibold invisible group-hover:visible transition ease-in-out -translate-y-3 group-hover:translate-y-0 duration-300">
+                Profile
+              </p>
             </button>
-            <button className="ml-[30px]">
-              <LogoutRoundedIcon className="text-[#8a8a8a]" />
+            <button className="ml-[30px] group">
+              <LogoutRoundedIcon className="text-[#8a8a8a] group-hover:text-blue" />
+              <p className="text-blue font-Poppin absolute top-10 -ml-2 text-sm font-semibold invisible group-hover:visible transition ease-in-out -translate-y-3 group-hover:translate-y-0 duration-300">
+                Log Out
+              </p>
             </button>
           </div>
         </Grid>

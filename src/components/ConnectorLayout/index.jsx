@@ -1,7 +1,7 @@
 import React from 'react';
 import SideBar from './sidebar';
 import Header from './header';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 
 const MainWrapper = styled('div')(() => ({
@@ -9,10 +9,11 @@ const MainWrapper = styled('div')(() => ({
 }));
 
 const Layout = () => {
+  let location = useLocation();
   return (
     <React.Fragment>
       <MainWrapper>
-        <SideBar />
+        {location.pathname == '/connector/layout' && <SideBar />}
         <Header />
         <Outlet />
       </MainWrapper>

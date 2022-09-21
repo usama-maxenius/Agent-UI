@@ -22,7 +22,7 @@ function ExpandList({ item, key }) {
         </p>
         {list && (
           <button
-            className="icon relative group-hover:top-0.5"
+            className="icon relative transition ease-in-out group-hover:translate-y-1"
             onClick={() => {
               setExpand(!expand);
             }}
