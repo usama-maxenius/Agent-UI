@@ -27,6 +27,7 @@ import CapManagement from './pages/CapManagement';
 import FieldConfiguration from './pages/FieldConfiguration';
 import ImportingCSV from './pages/ImportingCSV';
 import DragFiles from './pages/dragFiles';
+import ImportingCSVError from './pages/ImportingCSVError';
 
 function App() {
   return (
@@ -76,6 +77,10 @@ function App() {
               element={<ImportingCSV />}
             />
             <Route path="/connector/layout/dragFiles" element={<DragFiles />} />
+            <Route
+              path="/connector/layout/importingCSVError"
+              element={<ImportingCSVError />}
+            />
           </Route>
         </Routes>
       </Router>

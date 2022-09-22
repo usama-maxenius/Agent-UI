@@ -20,6 +20,7 @@ module.exports = {
         gray100: '#888888',
         green: '#2FBE68',
         midGray: '#F5F5F5',
+        lightGray100: '#8A8A8A',
       },
       fontSize: {
         small: '10px',

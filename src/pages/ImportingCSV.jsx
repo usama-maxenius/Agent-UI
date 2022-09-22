@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RangeSlider from '../components/rangeSlider';
 
-const FieldConfiguration = () => {
+const ImportingCSV = () => {
   let navigate = useNavigate();
   const [value, setValue] = useState(30);
   const handleSliderChange = (event, newValue) => {
@@ -42,4 +42,4 @@ const FieldConfiguration = () => {
   );
 };
 
-export default FieldConfiguration;
+export default ImportingCSV;
