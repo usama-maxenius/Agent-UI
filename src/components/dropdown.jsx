@@ -1,7 +1,15 @@
+/* eslint-disable no-unused-vars */
 import * as React from 'react';
 import styled from 'styled-components';
-import SchoolIcon from '@mui/icons-material/School';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { getAllCities } from '../store/action';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
+import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
+import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
 
 const Select = styled.select`
   width: ${(props) => (props.width ? '135px' : '83%')};
@@ -35,7 +43,6 @@ const DropdownWrapper = styled.div`
 let icon = {
   color: '#16161680',
   position: 'relative',
-
   left: '4px',
   width: '25px',
 };
@@ -49,25 +56,84 @@ Dropdown.propTypes = {
   width: PropTypes.number,
   center: PropTypes.bool,
 };
-export default function Dropdown({ item, width, center }) {
+export default function Dropdown({
+  item,
+  width,
+  center,
+  setState,
+  state,
+  name,
+  options,
+  noIcon,
+}) {
   let [selected, setSelected] = React.useState(false);
-
+  let { states, search_identifier } = useSelector((store) => store.InitReducer);
+  let dispatch = useDispatch();
+  React.useEffect(() => {
+    if (selected) {
+      if (name == 'state') {
+        dispatch(getAllCities(selected));
+      }
+    }
+  }, [selected]);
   return (
     <DropdownWrapper center={center}>
-      <SchoolIcon sx={!selected ? icon : [display, icon]} />
+      {item.iconWifi ? (
+        <WifiRoundedIcon sx={!selected ? icon : [display, icon]} />
+      ) : item.iconCalendar ? (
+        <CalendarMonthRoundedIcon sx={!selected ? icon : [display, icon]} />
+      ) : item.iconMilitary ? (
+        <MilitaryTechOutlinedIcon sx={!selected ? icon : [display, icon]} />
+      ) : item.iconClock ? (
+        <QueryBuilderRoundedIcon sx={!selected ? icon : [display, icon]} />
+      ) : noIcon ? (
+        <QueryBuilderRoundedIcon sx={[display, icon]} />
+      ) : (
+        <SchoolOutlinedIcon sx={!selected ? icon : [display, icon]} />
+      )}
       <Select
         selected={selected}
-        onChange={(e) => setSelected(e.target.value)}
+        name={name}
+        onChange={(e) => {
+          setSelected(e.target.value);
+          setState({
+            ...state,
+            [e.target.name]: e.target.value,
+          });
+        }}
         width={width}
         center={center}
       >
-        {item.options.map((ele, idx) => {
-          return (
-            <option value={ele.value} hidden key={idx}>
-              {ele.name}
-            </option>
-          );
-        })}
+        {!['state', 'city'].includes(name) &&
+          item.options.map((ele, idx) => {
+            return (
+              <option value={ele.value} hidden key={idx}>
+                {ele.name}
+              </option>
+            );
+          })}
+        {name === 'state' &&
+          states &&
+          states.states.map((ele, idx) => {
+            return (
+              <option value={ele.name} hidden key={idx}>
+                {ele.name}
+              </option>
+            );
+          })}
+        {name == 'city' &&
+          options &&
+          (options.length > 0 ? (
+            options.map((ele, idx) => {
+              return (
+                <option value={ele} hidden key={idx}>
+                  {ele}
+                </option>
+              );
+            })
+          ) : (
+            <option>Selected State has 0 City</option>
+          ))}
       </Select>
     </DropdownWrapper>
   );

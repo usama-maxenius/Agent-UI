@@ -38,6 +38,10 @@ export default function InputIcon({
   placeholder,
   width,
   Icon,
+  setState,
+  state,
+  name,
+  inputType,
 }) {
   let icon = {
     color: '#2541B2',
@@ -46,14 +50,22 @@ export default function InputIcon({
     top: '-5px',
     left: callerID ? '-30px' : '-40px',
   };
+
   return (
     <Wrapper isDouble={isDouble}>
       <Input
         isDouble={isDouble}
-        placeholder={placeholder ? placeholder : 'Text Field'}
+        placeholder={placeholder ? placeholder : 'Your First Name'}
         callerID={callerID}
-        value={placeholder && placeholder}
         width={width}
+        name={name}
+        type={inputType ? inputType : 'text'}
+        onChange={(e) => {
+          setState({
+            ...state,
+            [e.target.name]: e.target.value,
+          });
+        }}
       />
       {Icon ? Icon : <DoneIcon sx={icon} />}
     </Wrapper>

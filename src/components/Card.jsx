@@ -1,15 +1,9 @@
-import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Dropdown from './dropdown';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-// import FormControl from '@mui/material/FormControl';
-// import OutlinedInput from '@mui/material/OutlinedInput';
-// import InputAdornment from '@mui/material/InputAdornment';
-// import IconButton from '@mui/material/IconButton';
-// import DoneIcon from '@mui/icons-material/Done';
 import InputLeftIcon from './inputWithLeftIcon';
 import InputRightIcon from './inputWithRightIcon';
 import { RegularPoppin, MediumPoppin } from './styled/userDetails.style';
@@ -42,7 +36,7 @@ let title = {
   marginTop: '15px',
 };
 
-function FormCard({ item, key }) {
+function FormCard({ item, key, setState, state }) {
   return (
     <Card
       sx={[
@@ -55,16 +49,57 @@ function FormCard({ item, key }) {
         sx={item.noPad ? { padding: 0, paddingBottom: '0 !important' } : {}}
       >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
-        {item.ticked && <InputRightIcon />}
-        {item.HomeIcon && <InputLeftIcon item={item} />}
-        {item.dropdown && <Dropdown item={item} />}
+        {item.ticked && (
+          <InputRightIcon
+            setState={setState}
+            state={state}
+            name={item.name}
+            placeholder={item.placeholder}
+          />
+        )}
+        {item.HomeIcon && (
+          <InputLeftIcon
+            item={item}
+            setState={setState}
+            state={state}
+            name={item.HomeIconName}
+          />
+        )}
+        {item.dropdown && (
+          <Dropdown
+            item={item}
+            setState={setState}
+            state={state}
+            name={item.name}
+          />
+        )}
         {item.isDouble && (
           <DoubleInput>
-            <Dropdown item={item} width={50} />
-            <InputRightIcon isDouble={item.isDouble} />
+            <Dropdown
+              item={item}
+              width={50}
+              setState={setState}
+              state={state}
+              name={item.name1}
+              noIcon={item.iconHidden}
+            />
+            <InputRightIcon
+              isDouble={item.isDouble}
+              setState={setState}
+              state={state}
+              name={item.name2}
+              placeholder={item.placeholder}
+            />
           </DoubleInput>
         )}
-        {item.doubleHalf && <DoubleHalfWidth />}
+        {item.doubleHalf && (
+          <DoubleHalfWidth
+            setState={setState}
+            state={state}
+            item={item}
+            placeholder={item.placeholder}
+          />
+        )}
         {item.bottomLine && (
           <BottomLine>
             <RegularPoppin title blue>

@@ -8,118 +8,89 @@ import DropdownAndInput from './doubleInput';
 import { classNames } from '../helper/classNames';
 import FormCard from './Card';
 
+function generateArrayOfYears(firstString) {
+  var max = new Date().getFullYear();
+  var min = max - 47;
+  var years = [{ name: firstString, value: '0' }];
+
+  for (var i = max; i >= min; i--) {
+    years.push({ name: i, value: i });
+  }
+  return years;
+}
 const formItems = [
   {
     id: '1',
-    placeholder: 'Male',
+    title: 'Firstly, what year did you graduate from high school?',
+    options: generateArrayOfYears('High School Graduation year'),
     dropdown: true,
+    name: 'hsyear',
   },
   {
     id: '2',
-    placeholder: 'Angel',
-    dropdown: false,
+    title: 'And that was in the US?',
+    options: [
+      { name: 'Graduated in the US?', value: '0' },
+      { name: 'Yes', value: 'yes' },
+      { name: 'No', value: 'no' },
+    ],
+    dropdown: true,
+    name: 'graduated_in_us',
   },
   {
     id: '3',
-    placeholder: 'Rubio',
-    dropdown: false,
+    title: 'And just to check, you are a US Citizen?',
+    options: [
+      { name: 'US Citizen?', value: '0' },
+      { name: 'Yes', value: 'yes' },
+      { name: 'No', value: 'no' },
+    ],
+    dropdown: true,
+    name: 'us_citizen',
   },
   {
     id: '4',
-    placeholder: 'Art & Design',
+    title:
+      'Great, can I ask is high school the highest level of education you’ve completed?',
+    options: [
+      { name: 'Highest level of education', value: '0' },
+      { name: 'Doctoral', value: 'Doctoral' },
+      { name: 'Masters', value: 'Masters' },
+      { name: 'Bachelors', value: 'Bachelors' },
+      { name: 'Associates', value: 'Associates' },
+      {
+        name: 'Some College 31-60 Credits',
+        value: 'Some College 31-60 Credits',
+      },
+      {
+        name: 'Some College 11-30 Credits',
+        value: 'Some College 11-30 Credits',
+      },
+      { name: 'Some College 1-10 Credits', value: 'Some College 1-10 Credits' },
+      { name: 'High School Diploma', value: 'High School Diploma' },
+      { name: 'GED', value: 'GED' },
+      {
+        name: 'No High School Diploma or GED',
+        value: 'No High School Diploma or GED',
+      },
+    ],
     dropdown: true,
+    name: 'current_education_level',
   },
   {
     id: '5',
-    placeholder: 'Education',
+    title: 'Do you have unrestricted access to a computer and internet?',
+    options: [
+      { name: 'Internet access?', value: '0' },
+      { name: 'Yes', value: 'yes' },
+      { name: 'No', value: 'no' },
+    ],
     dropdown: true,
-  },
-  {
-    id: '32',
-    placeholder: 'Education',
-    isDouble: true,
-  },
-  {
-    id: '6',
-    placeholder: 'Additional area of study',
-    dropdown: true,
-  },
-  {
-    id: '7',
-    placeholder: '929-205-3200',
-    dropdown: false,
-  },
-  {
-    id: '8',
-    placeholder: 'Time to contact',
-    dropdown: true,
-  },
-  {
-    id: '9',
-    placeholder: 'Angel.rubio@gmail.com',
-    dropdown: false,
-  },
-  {
-    id: '10',
-    placeholder: '10 Hudson Yards',
-    dropdown: false,
-  },
-  {
-    id: '11',
-    placeholder: 'New York',
-    dropdown: true,
-  },
-  {
-    id: '12',
-    placeholder: '2002 (year of birth)',
-    dropdown: true,
-  },
-  {
-    id: '13',
-    placeholder: 'Yes (US Citizen)',
-    dropdown: true,
-  },
-  {
-    id: '14',
-    placeholder: '2021 (HS Graduation year)',
-    dropdown: true,
-  },
-  {
-    id: '15',
-    placeholder: 'High School',
-    dropdown: true,
-  },
-  {
-    id: '16',
-    placeholder: 'No (military association)',
-    dropdown: true,
-  },
-  {
-    id: '17',
-    placeholder: 'Not in contact with Schools',
-    dropdown: true,
-  },
-  {
-    id: '18',
-    placeholder: 'Yes (internet access)',
-    dropdown: true,
-  },
-  {
-    id: '19',
-    placeholder: 'Online & campus',
-    dropdown: true,
-  },
-  {
-    id: '20',
-    placeholder: 'Enrolment timeline',
-    dropdown: true,
-  },
-  {
-    id: '21',
-    placeholder: 'Enrolment timeline',
-    doubleHalf: true,
+    name: 'computer_internet_access',
+    iconWifi: true,
   },
 ];
+
 let item = {
   options: [
     { name: 'Area of study', value: '1' },
@@ -131,7 +102,7 @@ let item = {
 
 function App() {
   const [dndItems, setDND] = useState(formItems);
-
+  const [value, setValue] = useState();
   const { state } = useContextCustom();
 
   function handleOnDragEnd(result) {
@@ -188,7 +159,12 @@ function App() {
                                 {state.isDraggable && (
                                   <ReorderRoundedIcon className="hover:text-blue text-base  mr-[13px] mt-[26px]" />
                                 )}
-                                <DropdownAndInput width={true} />
+                                <DropdownAndInput
+                                  width={true}
+                                  setState={setValue}
+                                  state={value}
+                                  name={''}
+                                />
                               </div>
                             ) : isDouble ? (
                               <div

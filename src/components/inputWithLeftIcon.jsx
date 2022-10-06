@@ -37,11 +37,20 @@ let leftIconStyle = {
 InputIcon.propTypes = {
   item: PropTypes.object,
 };
-export default function InputIcon({ item }) {
+export default function InputIcon({ item, setState, state, name }) {
   return (
     <React.Fragment>
       <HomeRounded sx={leftIconStyle} />
-      <Input placeholder={item.placeholder} />
+      <Input
+        placeholder={item.placeholder}
+        name={name}
+        onChange={(e) => {
+          setState({
+            ...state,
+            [e.target.name]: e.target.value,
+          });
+        }}
+      />
     </React.Fragment>
   );
 }

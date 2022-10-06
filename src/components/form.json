@@ -1,0 +1,114 @@
+
+// {
+// const formItems = [
+//     {
+//       id: '1',
+//       placeholder: 'Male',
+//       dropdown: true,
+//     },
+//     {
+//       id: '2',
+//       placeholder: 'Angel',
+//       dropdown: false,
+//     },
+//     {
+//       id: '3',
+//       placeholder: 'Rubio',
+//       dropdown: false,
+//     },
+//     {
+//       id: '4',
+//       placeholder: 'Art & Design',
+//       dropdown: true,
+//     },
+//     {
+//       id: '5',
+//       placeholder: 'Education',
+//       dropdown: true,
+//     },
+//     {
+//       id: '32',
+//       placeholder: 'Education',
+//       isDouble: true,
+//     },
+//     {
+//       id: '6',
+//       placeholder: 'Additional area of study',
+//       dropdown: true,
+//     },
+//     {
+//       id: '7',
+//       placeholder: '929-205-3200',
+//       dropdown: false,
+//     },
+//     {
+//       id: '8',
+//       placeholder: 'Time to contact',
+//       dropdown: true,
+//     },
+//     {
+//       id: '9',
+//       placeholder: 'Angel.rubio@gmail.com',
+//       dropdown: false,
+//     },
+//     {
+//       id: '10',
+//       placeholder: '10 Hudson Yards',
+//       dropdown: false,
+//     },
+//     {
+//       id: '11',
+//       placeholder: 'New York',
+//       dropdown: true,
+//     },
+//     {
+//       id: '12',
+//       placeholder: '2002 (year of birth)',
+//       dropdown: true,
+//     },
+//     {
+//       id: '13',
+//       placeholder: 'Yes (US Citizen)',
+//       dropdown: true,
+//     },
+//     {
+//       id: '14',
+//       placeholder: '2021 (HS Graduation year)',
+//       dropdown: true,
+//     },
+//     {
+//       id: '15',
+//       placeholder: 'High School',
+//       dropdown: true,
+//     },
+//     {
+//       id: '16',
+//       placeholder: 'No (military association)',
+//       dropdown: true,
+//     },
+//     {
+//       id: '17',
+//       placeholder: 'Not in contact with Schools',
+//       dropdown: true,
+//     },
+//     {
+//       id: '18',
+//       placeholder: 'Yes (internet access)',
+//       dropdown: true,
+//     },
+//     {
+//       id: '19',
+//       placeholder: 'Online & campus',
+//       dropdown: true,
+//     },
+//     {
+//       id: '20',
+//       placeholder: 'Enrolment timeline',
+//       dropdown: true,
+//     },
+//     {
+//       id: '21',
+//       placeholder: 'Enrolment timeline',
+//       doubleHalf: true,
+//     },
+//   ]}

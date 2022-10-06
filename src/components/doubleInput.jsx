@@ -1,16 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { classNames } from '../helper/classNames';
 import Dropdown from './dropdown';
 import InputIcon from './inputWithRightIcon';
 
-let item = {
-  options: [
-    { name: 'Area of study', value: '1' },
-    { name: '2022', value: '2' },
-  ],
-  isDouble: true,
-};
-function DropdownAndInput({ width }) {
+function DropdownAndInput({ width, item, setState, state }) {
+  let { cities } = useSelector((store) => store.InitReducer);
+
   return (
     <div
       className={classNames(
@@ -19,10 +15,24 @@ function DropdownAndInput({ width }) {
       )}
     >
       <div className="border-blue w-7/12">
-        <Dropdown item={item} />
+        <Dropdown
+          item={item}
+          setState={setState}
+          state={state}
+          name={item ? item.name1 : ''}
+          options={cities}
+          noIcon={true}
+        />
       </div>
       <div className="border-blue w-7/12 -ml-7">
-        <InputIcon item={item} />
+        <InputIcon
+          item={item}
+          setState={setState}
+          state={state}
+          name={item ? item.name2 : ''}
+          placeholder={item ? item.placeholderZip : ''}
+          inputType={item ? item.typeZip : ''}
+        />
       </div>
     </div>
   );
