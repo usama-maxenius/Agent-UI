@@ -59,7 +59,6 @@ function countReducer(state, action) {
         isCallerDrawer: false,
       };
     }
-
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }

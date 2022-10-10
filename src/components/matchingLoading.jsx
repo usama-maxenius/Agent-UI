@@ -1,17 +1,17 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ResultSchools } from '../store/action/searchAPI';
 
 function MatchingLoader() {
   let navigate = useNavigate();
   let { search_identifier } = useSelector((store) => store.InitReducer);
-
+  let dispatch = useDispatch();
   useEffect(() => {
     if (search_identifier.search_identifier) {
-      setTimeout(() => {
-        navigate('/school/matches');
-      }, 2000);
+      dispatch(ResultSchools(search_identifier.search_identifier, navigate));
     }
   }, [search_identifier]);
   return (

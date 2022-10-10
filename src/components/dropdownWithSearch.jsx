@@ -12,25 +12,23 @@ export default function Example({
   Icon,
   placeholder,
   program,
-  programSelected,
+  // programSelected,
   callerID,
+  options,
 }) {
   const people = [
-    { name: placeholder ? placeholder : 'Select an agent to transfer to' },
-    { name: 'Course 1' },
-    { name: 'Course 6' },
-    { name: 'Course 1' },
-    { name: 'Course 2' },
-    { name: 'Course 3' },
-    { name: 'Course 4' },
-    { name: 'Course 5' },
-    { name: 'Course 6' },
+    {
+      OptionLabel: placeholder ? placeholder : 'Select an agent to transfer to',
+      OptionValue: placeholder ? placeholder : 'Select an agent to transfer to',
+    },
+    ...options,
   ];
   const [selected, setSelected] = useState(people[0]);
 
   const onChangeHandler = (prop) => {
     setSelected(prop);
-    programSelected(prop.name);
+    // console.log(prop.OptionValue);
+    // programSelected(prop.OptionLabel);
   };
 
   return (
@@ -61,7 +59,7 @@ export default function Example({
                 : !callerID && (
                     <SupportAgentRoundedIcon className="text-gray mr-3" />
                   )}
-              {selected.name}
+              {selected.OptionLabel}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
@@ -81,20 +79,22 @@ export default function Example({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute z-30 no-scrollbar mt-1 max-h-80 w-full overflow-auto rounded-md bg-lightGray py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              <div
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? '  ' : 'text-gray-900'
-                  }`
-                }
-              >
-                <input
-                  type="text"
-                  className="w-8/12 rounded border border-blue ml-5 mt-5 rounded-3xl px-2 py-1"
-                  placeholder="Search"
-                />
-                <SearchRoundedIcon className="relative -left-8 text-sm text-blue -top-0.5" />
-              </div>
+              {options.length == 0 && (
+                <div
+                  className={({ active }) =>
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active ? '  ' : 'text-gray-900'
+                    }`
+                  }
+                >
+                  <input
+                    type="text"
+                    className="w-8/12 rounded border border-blue ml-5 mt-5 rounded-3xl px-2 py-1"
+                    placeholder="Search"
+                  />
+                  <SearchRoundedIcon className="relative -left-8 text-sm text-blue -top-0.5" />
+                </div>
+              )}
 
               {people.map((person, personIdx) => {
                 if (personIdx !== 0) {
@@ -118,7 +118,7 @@ export default function Example({
                             {personIdx < 3 && (
                               <RecommendRoundedIcon className="text-blue" />
                             )}{' '}
-                            {person.name}
+                            {person.OptionLabel}
                           </span>
                           {/* {selected ? (
                             <span className="absolute inset-y-0 left-0 flex items-center pl-0">

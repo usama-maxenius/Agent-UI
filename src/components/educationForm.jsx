@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import Grid from '@mui/material/Grid';
@@ -313,7 +314,6 @@ let contact = [
 
 const EducationForm = () => {
   const { dispatch } = useContextCustom();
-  const { search_identifier } = useSelector((store) => store.InitReducer);
   const navigation = useNavigate();
   let [state, setState] = useState({
     gender: '',
@@ -350,7 +350,6 @@ const EducationForm = () => {
     e.preventDefault();
     dispatchRedux(searchSchools(state, navigation));
   };
-  console.log(search_identifier);
 
   return (
     <MainWrapper>

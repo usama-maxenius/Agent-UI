@@ -1,24 +1,23 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
-import NavigationRoundedIcon from '@mui/icons-material/NavigationRounded';
 import DirectionsCarRoundedIcon from '@mui/icons-material/DirectionsCarRounded';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import LocationOnRoundedIcon from '@mui/icons-material/LocationOnRounded';
+import NavigationRoundedIcon from '@mui/icons-material/NavigationRounded';
+import Avatar from '@mui/material/Avatar';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+import * as React from 'react';
 
-import { MediumPoppin22, MediumPoppin16 } from './styled/commonDesign';
-import SearchDropDown from './dropdownWithSearch';
-import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import SearchDropDown from './dropdownWithSearch';
+import { MediumPoppin16, MediumPoppin22 } from './styled/commonDesign';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -66,7 +65,6 @@ export default function ExpandableCard({
               bgcolor: selected ? '#2541B2' : '#F5F5F5',
               border: selected ? '1px solid white' : '1px solid #16161640',
             }}
-            aria-label="recipe"
             className={classNames(
               'cursor-pointer  ',
               selected ? 'hover:border-white' : 'hover:border-blue  '
@@ -85,15 +83,7 @@ export default function ExpandableCard({
         }
         action={
           <div className="flex flex-row items-center ">
-            <img
-              src={
-                ind == 2
-                  ? require('../assets/images/south.png')
-                  : require('../assets/images/logos.png')
-              }
-              alt="some here"
-              className=" w-20 "
-            />
+            <img src={ind.logo} alt="some here" className=" w-20 " />
             <ExpandMore
               expand={expanded}
               onClick={handleExpandClick}
@@ -107,108 +97,94 @@ export default function ExpandableCard({
         }
         title={
           <MediumPoppin22 color={selected ? 'white' : '#2541b2'}>
-            {ind == 2
-              ? 'South University Online'
-              : 'Colorado Technical University'}
+            {ind.school}
           </MediumPoppin22>
         }
         subheader={
           <MediumPoppin16 color={selected ? 'white' : '#2541b2'}>
-            {ind == 2 ? 'Online' : 'Colorado Springs, CO'}
+            {ind.brand_name}
           </MediumPoppin16>
         }
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <div className="w-[518px] bg-lightGray p-4 mx-auto mb-4 font-Poppin text-base rounded-[8px]">
-          <p className="w-[450px] font-Poppin text-base rounded-[8px]">
-            The University of Colorado Colorado Springs is a public institution
-            that was founded in 1965. It has a total undergraduate enrollment of
-            10,119 (fall 2020), its setting is urban, and the campus size is 550
-            acres. It utilizes a semester-based academic calendar. University of
-            Colorado Colorado Springs’ ranking in the 2022 edition of Best
-            Colleges is National Universities, #299-391. Its in-state tuition
-            and fees are $10,480; out-of-state tuition and fees are $25,600.
-          </p>
+          <p
+            className="w-[450px] font-Poppin text-base rounded-[8px]"
+            dangerouslySetInnerHTML={{ __html: ind.consent }}
+          ></p>
         </div>
       </Collapse>
-      {ind == 3 ? (
-        [1, 2, 3, 4].map((item, key) => {
-          return (
-            <div
-              className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]"
-              key={key}
-            >
-              <SearchDropDown
-                Icon={
-                  item < 2 ? (
-                    <SchoolRoundedIcon className="text-gray mr-3" />
-                  ) : (
-                    <QuizRoundedIcon className="text-gray mr-3" />
-                  )
-                }
-                placeholder={
-                  item > 1 ? 'Additional Question one' : 'Select a program'
-                }
-              />
-            </div>
-          );
-        })
-      ) : (
-        <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
-          <SearchDropDown
-            Icon={
-              <SchoolRoundedIcon
-                className={classNames(
-                  ' mr-3',
-                  program == true ? 'text-red' : 'text-gray  '
-                )}
-              />
-            }
-            program={program}
-            programSelected={selectCard}
-            placeholder="Select a program"
-          />
-        </div>
-      )}
+
+      <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
+        <SearchDropDown
+          Icon={
+            <SchoolRoundedIcon
+              className={classNames(
+                ' mr-3',
+                program == true ? 'text-red' : 'text-gray  '
+              )}
+            />
+          }
+          program={program}
+          programSelected={selectCard}
+          placeholder="Select a program"
+          options={[]}
+        />
+      </div>
+
+      {ind.questions?.map((item, key) => {
+        return (
+          <div
+            className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]"
+            key={key}
+          >
+            <SearchDropDown
+              Icon={<QuizRoundedIcon className="text-gray mr-3" />}
+              placeholder={item.QuestionLabel}
+              options={item.QuestionOptions}
+              programSelected={selectCard}
+            />
+          </div>
+        );
+      })}
       <CardContent>
         <div className="flex flex-row items-center text-blue">
-          {ind == 2 ? (
+          {ind.online && (
             <div className="flex flex-row text-small items-center mr-7">
               <LaptopRoundedIcon
                 className={classNames(selected ? 'text-white' : 'text-blue')}
               />
+              {' Online'}
             </div>
-          ) : (
-            <>
-              <div
-                className={classNames(
-                  'flex flex-row text-small items-center mr-7',
-                  selected ? 'text-white' : 'text-blue'
-                )}
-              >
-                <NavigationRoundedIcon className="rotate-45" />
-                1,789 miles
-              </div>
-              <div
-                className={classNames(
-                  'flex flex-row text-small items-center ml-5 mr-7',
-                  selected ? 'text-white' : 'text-blue'
-                )}
-              >
-                <DirectionsCarRoundedIcon className="mr-2" />
-                27 hr
-              </div>
-              <div
-                className={classNames(
-                  'flex flex-row text-small items-center ml-5 mr-7 ml-5',
-                  selected ? 'text-white' : 'text-blue'
-                )}
-              >
-                <LocationOnRoundedIcon className="mr-2" />
-                view in maps
-              </div>
-            </>
           )}
+
+          <div
+            className={classNames(
+              'flex flex-row text-small items-center mr-7',
+              selected ? 'text-white' : 'text-blue'
+            )}
+          >
+            <NavigationRoundedIcon className="rotate-45" />
+            {ind.distance_miles} miles
+          </div>
+          <div
+            className={classNames(
+              'flex flex-row text-small items-center ml-5 mr-7',
+              selected ? 'text-white' : 'text-blue'
+            )}
+          >
+            <DirectionsCarRoundedIcon className="mr-2" />
+            27 hr
+          </div>
+          <div
+            className={classNames(
+              'flex flex-row text-small items-center ml-5 mr-7 ml-5',
+              selected ? 'text-white' : 'text-blue'
+            )}
+          >
+            <LocationOnRoundedIcon className="mr-2" />
+            view in maps
+          </div>
         </div>
       </CardContent>
     </Card>
