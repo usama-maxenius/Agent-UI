@@ -41,6 +41,7 @@ export default function ExpandableCard({
   ind,
   selected,
   program,
+  transferResult,
 }) {
   const [expanded, setExpanded] = React.useState(false);
 
@@ -147,14 +148,26 @@ export default function ExpandableCard({
           </div>
         );
       })}
+      {transferResult && (
+        <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
+          <SearchDropDown
+            Icon={<QuizRoundedIcon className="text-gray mr-3" />}
+            placeholder="Advisors"
+            options={transferResult.Advisors}
+            programSelected={selectCard}
+          />
+        </div>
+      )}
       <CardContent>
         <div className="flex flex-row items-center text-blue">
           {ind.online && (
-            <div className="flex flex-row text-small items-center mr-7">
-              <LaptopRoundedIcon
-                className={classNames(selected ? 'text-white' : 'text-blue')}
-              />
-              {' Online'}
+            <div
+              className={classNames(
+                'flex flex-row text-small items-center mr-7',
+                selected ? 'text-white' : 'text-blue'
+              )}
+            >
+              <LaptopRoundedIcon className="mr-1" /> Online
             </div>
           )}
 

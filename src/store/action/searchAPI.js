@@ -235,7 +235,6 @@ export let searchSchools = (data, navigate) => {
     }
   };
 };
-
 export let ResultSchools = (searchIdentifier, navigate) => {
   return async (dispatch) => {
     let body = {
@@ -256,46 +255,48 @@ export let ResultSchools = (searchIdentifier, navigate) => {
     }
   };
 };
-export let TransferAPI = (searchIdentifier, search_result_identifier) => {
+export let TransferAPI = ({ result_identifier }, searchIdentifier) => {
+  console.log(searchIdentifier, result_identifier);
   return async (dispatch) => {
     let body = {
       accesskey: process.env.REACT_APP_ACCESS_KEY,
       search_identifier: searchIdentifier,
-      search_result_identifier: search_result_identifier,
+      search_result_identifier: result_identifier,
       answers: [],
     };
 
-    let url = 'https://api.cmicon.com/v3/results';
+    let url = 'https://api.cmicon.com/v3/transfers';
 
     let response = await post(url, JSON.stringify(body));
     console.log(response);
-    if (Array.isArray(response)) {
-      // if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
-      dispatch({
-        type: 'SEARCH_TRANSFER_API',
-        // payload: response[0],
-      });
-    }
+
+    dispatch({
+      type: 'SEARCH_TRANSFER_API',
+      payload: response,
+    });
   };
 };
-export let PingAPI = (search_result_identifier, navigate) => {
+export let PingAPI = ({ result_identifier }) => {
   return async (dispatch) => {
     let body = {
       accesskey: process.env.REACT_APP_ACCESS_KEY,
-      search_result_identifier: search_result_identifier,
+      search_result_identifier: result_identifier,
       answers: null,
     };
 
-    let url = 'https://api.cmicon.com/v3/results';
+    let url = 'https://api.cmicon.com/v3/ping';
 
     let response = await post(url, JSON.stringify(body));
-    console.log(response);
-    if (Array.isArray(response)) {
-      // if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
-      dispatch({
-        type: 'SEARCH_PING_API',
-        // payload: response[0],
-      });
-    }
+    dispatch({
+      type: 'SEARCH_PING_API',
+      payload: response,
+    });
+  };
+};
+export let clearPingTransfer = () => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'CLEAR_PING_TRANSFER_RESULTS',
+    });
   };
 };

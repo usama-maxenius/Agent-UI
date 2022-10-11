@@ -25,16 +25,30 @@ export function InitReducer(state = init, action) {
         cities: payload,
       };
     case 'SEARCH_RESULTS':
-      // console.log(payload);
       return {
         ...state,
         search_identifier: payload,
       };
     case 'SEARCH_SCHOOLS':
-      // console.log(payload);
       return {
         ...state,
         schoolsList: payload,
+      };
+    case 'SEARCH_PING_API':
+      return {
+        ...state,
+        pingResult: payload,
+      };
+    case 'SEARCH_TRANSFER_API':
+      return {
+        ...state,
+        transferResult: payload,
+      };
+    case 'CLEAR_PING_TRANSFER_RESULTS':
+      return {
+        ...state,
+        transferResult: null,
+        pingResult: null,
       };
 
     default:

@@ -4,6 +4,12 @@ import { Tab } from '@headlessui/react';
 import ExpandableCard from './expandableCard';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import {
+  clearPingTransfer,
+  PingAPI,
+  TransferAPI,
+} from '../store/action/searchAPI';
+import { useSearchParams } from 'react-router-dom';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -64,18 +70,21 @@ export default function SchoolCards({ setPopUp }) {
   });
 
   let dispatch = useDispatch();
-
+  let { transferResult } = useSelector((store) => store.InitReducer);
+  let [searchParams] = useSearchParams();
   // Methods for Tab 1
   const [selected, setSelected] = useState([]);
   const selectCard = (ind) => {
-    // dispatch()
-    console.log(ind);
     let ele = ind;
     if (selected.includes(ind)) {
       setSelected([]);
+      console.log('works ');
+      dispatch(clearPingTransfer());
     }
     if (!selected.includes(ind)) {
       if (selected.length < 1) {
+        dispatch(TransferAPI(ind, searchParams.get('search')));
+        dispatch(PingAPI(ind, searchParams.get('search')));
         setSelected([...selected, ele]);
       } else {
         setPopUp(true);
@@ -128,6 +137,7 @@ export default function SchoolCards({ setPopUp }) {
                     ind={item}
                     selectCard={selectCard}
                     selected={selected.includes(item)}
+                    transferResult={transferResult}
                   />
                 </div>
               ))}

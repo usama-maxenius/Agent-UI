@@ -97,6 +97,12 @@ export default function Example({
               )}
 
               {people.map((person, personIdx) => {
+                if (placeholder == 'Advisors') {
+                  person = {
+                    OptionLabel: person.AdvisorName,
+                    OptionValue: person.AdvisorId,
+                  };
+                }
                 if (personIdx !== 0) {
                   return (
                     <Listbox.Option
