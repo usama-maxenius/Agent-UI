@@ -146,6 +146,7 @@ function App() {
                                   <DropDownWithIcon
                                     placeholder={placeholder}
                                     callerID={true}
+                                    options={[]}
                                   />
                                 </div>
                               </div>

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export default function Modal({ popup, setPopUp }) {
   let navigate = useNavigate();
+  let [searchParams] = useSearchParams();
   return (
     <>
       {popup ? (
@@ -26,7 +27,11 @@ export default function Modal({ popup, setPopUp }) {
                     onClick={(e) => {
                       e.preventDefault();
                       setPopUp(!popup);
-                      navigate('/school/matches/transfer');
+                      navigate(
+                        `/school/matches/transfer/?search=${searchParams.get(
+                          'search'
+                        )}`
+                      );
                     }}
                   >
                     Continue

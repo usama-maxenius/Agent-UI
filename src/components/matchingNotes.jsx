@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   IconButton,
   IconWrapper,
@@ -13,7 +15,10 @@ import { RecordingDisclosed } from './styled/wecomeNote.style';
 import SearchDropdown from './dropdownWithSearch';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
+import { SubmitAPI } from '../store/action/searchAPI';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -25,6 +30,31 @@ const Wrapper = styled('div')(() => ({
 const WelcomeNotes = () => {
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
+  let [sParams] = useSearchParams();
+  let { transferResult, selectedProgram, selectedSchool } = useSelector(
+    (store) => store.InitReducer
+  );
+  let [question, setQuestion] = useState();
+  console.log(transferResult);
+  let dispatchRedux = useDispatch();
+
+  const submit = () => {
+    let body = {
+      accesskey: process.env.REACT_APP_ACCESS_KEY,
+      search_identifier: sParams.get('search'),
+      search_result_identifier: selectedSchool?.result_identifier,
+      search_result_set_identifier: selectedSchool?.result_set_identifier,
+      answers: [
+        {
+          question_key: transferResult.AdvisorFieldName,
+          question_value: question?.QuestionValue,
+        },
+        selectedProgram,
+      ],
+    };
+    console.log(body);
+    dispatchRedux(SubmitAPI(body, navigate));
+  };
 
   return (
     <MainWrapper>
@@ -79,23 +109,27 @@ const WelcomeNotes = () => {
               always happy to hear this.
             </p>
             <p className="text-blue text-[22px] font-Poppin font-semibold text-base mt-11">
-              +1 719-598-0200
+              {transferResult
+                ? transferResult.TransferPhone
+                : '+1 719-598-0200'}
             </p>
           </div>
-          <div className="mb-11 mt-7">
-            <SearchDropdown
-              item={{
-                options: [
-                  { name: 'Additional area of study', value: '1' },
-                  { name: '2022', value: '2' },
-                ],
-              }}
-            />
-          </div>
+
+          {transferResult && (
+            <div className="mb-11 mt-7">
+              <SearchDropdown
+                Icon={<SupportAgentRoundedIcon className="text-gray mr-3" />}
+                placeholder="Advisors"
+                options={transferResult.Advisors}
+                programSelected={setQuestion}
+              />
+            </div>
+          )}
           <RecordingDisclosed
-            onClick={() => {
-              navigate('/school/matches/submittingLoading');
-            }}
+            // onClick={() => {
+            //   navigate('/school/matches/submittingLoading');
+            // }}
+            onClick={submit}
           >
             Submit Match
           </RecordingDisclosed>

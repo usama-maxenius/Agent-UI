@@ -18,6 +18,7 @@ import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import SearchDropDown from './dropdownWithSearch';
 import { MediumPoppin16, MediumPoppin22 } from './styled/commonDesign';
+import { useDispatch } from 'react-redux';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -41,12 +42,20 @@ export default function ExpandableCard({
   ind,
   selected,
   program,
-  transferResult,
+  pingResult,
 }) {
   const [expanded, setExpanded] = React.useState(false);
+  let dispatch = useDispatch();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+  };
+
+  const selectProgramHandler = (obj) => {
+    dispatch({
+      type: 'PROGRAM_SELECTED',
+      payload: obj,
+    });
   };
 
   return (
@@ -127,9 +136,14 @@ export default function ExpandableCard({
             />
           }
           program={program}
-          programSelected={selectCard}
           placeholder="Select a program"
-          options={[]}
+          options={[
+            {
+              OptionLabel: 'Program',
+              OptionValue: '1',
+            },
+          ]}
+          selectProgramHandler={selectProgramHandler}
         />
       </div>
 
@@ -148,16 +162,17 @@ export default function ExpandableCard({
           </div>
         );
       })}
-      {transferResult && (
-        <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
-          <SearchDropDown
-            Icon={<QuizRoundedIcon className="text-gray mr-3" />}
-            placeholder="Advisors"
-            options={transferResult.Advisors}
-            programSelected={selectCard}
-          />
+      {pingResult && (
+        <div
+          className={classNames(
+            'mx-auto w-[calc(95% - 32px)]  mx-[16px]',
+            selected ? 'text-white' : 'text-blue'
+          )}
+        >
+          {pingResult.ping_messages}
         </div>
       )}
+
       <CardContent>
         <div className="flex flex-row items-center text-blue">
           {ind.online && (

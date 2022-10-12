@@ -3,6 +3,8 @@ let init = {
   states: false,
   search_identifier: false,
   schoolsList: undefined,
+  selectedSchool: false,
+  selectedProgram: false,
 };
 
 export function InitReducer(state = init, action) {
@@ -49,6 +51,16 @@ export function InitReducer(state = init, action) {
         ...state,
         transferResult: null,
         pingResult: null,
+      };
+    case 'SELECTED_SCHOOL':
+      return {
+        ...state,
+        selectedSchool: payload,
+      };
+    case 'PROGRAM_SELECTED':
+      return {
+        ...state,
+        selectedProgram: payload,
       };
 
     default:

@@ -8,13 +8,13 @@ import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
-export default function Example({
+export default function DropdownWithSearch({
   Icon,
   placeholder,
   program,
-  // programSelected,
   callerID,
   options,
+  selectProgramHandler,
 }) {
   const people = [
     {
@@ -27,8 +27,11 @@ export default function Example({
 
   const onChangeHandler = (prop) => {
     setSelected(prop);
-    // console.log(prop.OptionValue);
-    // programSelected(prop.OptionLabel);
+    let obj = {
+      question_key: placeholder,
+      question_value: prop.QuestionValue,
+    };
+    if (selectProgramHandler) selectProgramHandler(obj);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   MainWrapper,
   IconWrapper,
@@ -11,7 +11,6 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { styled } from '@mui/material/styles';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
-import { useNavigate } from 'react-router-dom';
 const Wrapper = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
@@ -22,13 +21,7 @@ const Wrapper = styled('div')(() => ({
 
 const SubmittingMatchesLoader = () => {
   const { dispatch } = useContextCustom();
-  let navigate = useNavigate();
 
-  useEffect(() => {
-    setTimeout(() => {
-      navigate('/school/matches/submitMatchError');
-    }, 2000);
-  }, []);
   return (
     <MainWrapper>
       <Grid container>

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import ExpandableCard from './expandableCard';
 import { useSelector } from 'react-redux';
@@ -70,7 +69,7 @@ export default function SchoolCards({ setPopUp }) {
   });
 
   let dispatch = useDispatch();
-  let { transferResult } = useSelector((store) => store.InitReducer);
+  let { pingResult } = useSelector((store) => store.InitReducer);
   let [searchParams] = useSearchParams();
   // Methods for Tab 1
   const [selected, setSelected] = useState([]);
@@ -85,12 +84,20 @@ export default function SchoolCards({ setPopUp }) {
       if (selected.length < 1) {
         dispatch(TransferAPI(ind, searchParams.get('search')));
         dispatch(PingAPI(ind, searchParams.get('search')));
+
         setSelected([...selected, ele]);
       } else {
         setPopUp(true);
       }
     }
   };
+
+  useEffect(() => {
+    dispatch({
+      type: 'SELECTED_SCHOOL',
+      payload: selected[0],
+    });
+  }, [selected]);
   // Methods for Tab2
   // const [program, setProgram] = useState(null);
 
@@ -103,6 +110,7 @@ export default function SchoolCards({ setPopUp }) {
   //     setProgram(true);
   //   }
   // };
+  console.log(pingResult);
 
   return (
     <div className="w-full px-2 py-4 sm:px-0">
@@ -137,7 +145,7 @@ export default function SchoolCards({ setPopUp }) {
                     ind={item}
                     selectCard={selectCard}
                     selected={selected.includes(item)}
-                    transferResult={transferResult}
+                    pingResult={pingResult}
                   />
                 </div>
               ))}

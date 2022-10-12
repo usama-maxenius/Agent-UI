@@ -276,6 +276,7 @@ export let TransferAPI = ({ result_identifier }, searchIdentifier) => {
     });
   };
 };
+
 export let PingAPI = ({ result_identifier }) => {
   return async (dispatch) => {
     let body = {
@@ -293,10 +294,35 @@ export let PingAPI = ({ result_identifier }) => {
     });
   };
 };
+
 export let clearPingTransfer = () => {
   return async (dispatch) => {
     dispatch({
       type: 'CLEAR_PING_TRANSFER_RESULTS',
+    });
+  };
+};
+
+export let SubmitAPI = (body, navigate) => {
+  return async (dispatch) => {
+    navigate('/school/matches/submittingLoading');
+    let url = 'https://api.cmicon.com/v3/submit';
+
+    let response = await post(url, JSON.stringify(body));
+    response = response[0];
+
+    if (!response.success) {
+      navigate(
+        '/school/matches/submitMatchError/?search=' + body.search_identifier
+      );
+    }
+    if (response.success) {
+      navigate('/school/matches/submitMatch/?search=' + body.search_identifier);
+    }
+
+    dispatch({
+      type: 'SUBMIT_API_RESULT',
+      payload: response,
     });
   };
 };
