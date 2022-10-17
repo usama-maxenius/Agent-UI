@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   CallEndRounded,
   ExpandMoreRounded,
@@ -15,6 +16,8 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useContextCustom } from '../../store/context';
 
 const HeaderWrapper = styled(Paper)(({ expand }) => ({
@@ -226,6 +229,8 @@ const data2 = [
 ];
 const Header = () => {
   let [switchChecked, setSwitchChecked] = useState(false);
+  let { mode } = useSelector((store) => store.InitReducer);
+  let dispatch = useDispatch();
   let expand = useContextCustom().state.expand;
 
   return (
@@ -267,7 +272,7 @@ const Header = () => {
         </Grid>
         <Grid item xs={2.5}>
           <SwitchWrapper>
-            <SwitchLabel left checked={!switchChecked ? true : false}>
+            <SwitchLabel left checked={!mode ? true : false}>
               Beginner
             </SwitchLabel>
             <FormControlLabel
@@ -276,14 +281,16 @@ const Header = () => {
                   sx={{ my: 1 }}
                   onChange={(e) => {
                     setSwitchChecked(e.target.checked);
+                    dispatch({
+                      type: 'CHANGE_MODE',
+                    });
                   }}
+                  defaultChecked={mode}
                 />
               }
               sx={{ ml: 0, marginRight: '6px' }}
             />
-            <SwitchLabel checked={switchChecked ? true : false}>
-              Pro
-            </SwitchLabel>
+            <SwitchLabel checked={mode ? true : false}>Pro</SwitchLabel>
           </SwitchWrapper>
         </Grid>
         <Grid item xs={4}>

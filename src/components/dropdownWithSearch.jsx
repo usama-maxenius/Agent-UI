@@ -4,6 +4,8 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
+import { getAllCities } from '../store/action';
+import { useDispatch } from 'react-redux';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -15,6 +17,10 @@ export default function DropdownWithSearch({
   callerID,
   options,
   selectProgramHandler,
+  recommendedIcon,
+  callerState,
+  setCallerState,
+  name,
 }) {
   const people = [
     {
@@ -24,14 +30,21 @@ export default function DropdownWithSearch({
     ...options,
   ];
   const [selected, setSelected] = useState(people[0]);
-
+  const dispatch = useDispatch();
   const onChangeHandler = (prop) => {
     setSelected(prop);
     let obj = {
       question_key: placeholder,
-      question_value: prop.QuestionValue,
+      question_value: prop.OptionValue,
     };
     if (selectProgramHandler) selectProgramHandler(obj);
+    if (setCallerState) {
+      setCallerState({ ...callerState, [name]: prop.OptionValue });
+    }
+
+    if (name == 'state') {
+      dispatch(getAllCities(prop.OptionValue));
+    }
   };
 
   return (
@@ -106,6 +119,12 @@ export default function DropdownWithSearch({
                     OptionValue: person.AdvisorId,
                   };
                 }
+                if (placeholder == 'Select Your State') {
+                  person = {
+                    OptionLabel: person.name,
+                    OptionValue: person.name,
+                  };
+                }
                 if (personIdx !== 0) {
                   return (
                     <Listbox.Option
@@ -124,9 +143,9 @@ export default function DropdownWithSearch({
                               selected ? 'font-medium' : 'font-normal'
                             }`}
                           >
-                            {personIdx < 3 && (
+                            {recommendedIcon && personIdx < 3 && (
                               <RecommendRoundedIcon className="text-blue" />
-                            )}{' '}
+                            )}
                             {person.OptionLabel}
                           </span>
                           {/* {selected ? (

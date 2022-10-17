@@ -8,6 +8,9 @@ import RightDrawer from '../components/rightDrawer';
 import DisclosureHelp from '../components/disclosureHelp';
 import DisclosureSecurity from '../components/disclosureSecurity';
 import { useContextCustom } from '../store/context';
+import { useSelector } from 'react-redux';
+
+import CallerDetails from '../components/CallerDetails';
 
 const LeftContentWrapper = styled('div')(({ expand }) => ({
   paddingLeft: expand ? 160 : 87,
@@ -23,6 +26,7 @@ const RightContentWrapper = styled('div')(() => ({
 }));
 const Education = () => {
   const { state } = useContextCustom();
+  let { mode } = useSelector((store) => store.InitReducer);
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -34,7 +38,7 @@ const Education = () => {
           </Grid>
           <Grid item xs={6}>
             <RightContentWrapper>
-              <EducationForm />
+              {mode ? <CallerDetails /> : <EducationForm />}
             </RightContentWrapper>
             <RightDrawer>
               {state.isSecurityDrawer && <DisclosureSecurity />}

@@ -5,16 +5,17 @@ let init = {
   schoolsList: undefined,
   selectedSchool: false,
   selectedProgram: false,
+  mode: false,
 };
 
 export function InitReducer(state = init, action) {
   let { type, payload } = action;
 
   switch (type) {
-    case 'Navigate':
+    case 'CHANGE_MODE':
       return {
         ...state,
-        count: state.count + payload,
+        mode: !state.mode,
       };
     case 'allStates':
       return {

@@ -69,7 +69,7 @@ const CallerDetail = () => {
       </Grid>
       <Wrapper>
         <div className="bg-white w-[570px] mt-[26px] rounded-box">
-          <div className="flex flex-col overflow-x-hidden pb-[26px]">
+          <div className="flex flex-col pb-[26px]">
             <DragnDropForm />
           </div>
         </div>
