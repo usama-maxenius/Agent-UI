@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
@@ -442,25 +441,11 @@ let data = [
   },
 ];
 
-let item = {
-  options: [
-    { name: 'Gender', value: '1' },
-    { name: 'Male', value: 'm' },
-    { name: 'Female', value: 'f' },
-  ],
-  isDouble: true,
-  noPad: true,
-  name: 'city',
-  name1: 'city',
-  name2: 'first_name',
-  iconHidden: true,
-};
-
-function App() {
+function App({ setValue, value }) {
   const [dndItems, setDND] = useState(data);
-  const [value, setValue] = useState();
+
   const { state } = useContextCustom();
-  const { states, cities } = useSelector((state) => state.InitReducer);
+  const { states } = useSelector((state) => state.InitReducer);
 
   function handleOnDragEnd(result) {
     if (!result.destination) return;
@@ -469,11 +454,6 @@ function App() {
     items.splice(result.destination.index, 0, reorderedItem);
     setDND(items);
   }
-  console.log(value);
-
-  const onChangeHandler = (prop) => {
-    console.log(prop);
-  };
 
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MainWrapper,
   IconWrapper,
@@ -16,6 +16,8 @@ import DragnDropForm from './callerDetailFormDnD';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { searchSchools } from '../store/action/searchAPI';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -26,7 +28,13 @@ const Wrapper = styled('div')(() => ({
 const CallerDetail = () => {
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
+  const dispatchRedux = useDispatch();
 
+  const [value, setValue] = useState();
+  const searchHandler = (e) => {
+    e.preventDefault();
+    dispatchRedux(searchSchools(value, navigate));
+  };
   return (
     <MainWrapper>
       <Grid container>
@@ -70,7 +78,7 @@ const CallerDetail = () => {
       <Wrapper>
         <div className="bg-white w-[570px] mt-[26px] rounded-box">
           <div className="flex flex-col pb-[26px]">
-            <DragnDropForm />
+            <DragnDropForm setValue={setValue} value={value} />
           </div>
         </div>
         <div className="w-[519px] h-full flex flex-col justify-center mx-auto mt-[42px]">
@@ -91,7 +99,7 @@ const CallerDetail = () => {
               essentially unchanged.
             </p>
           </div>
-          <RecordingDisclosed onClick={() => navigate('/connector/layout')}>
+          <RecordingDisclosed onClick={searchHandler}>
             Display matched schools
           </RecordingDisclosed>
         </div>
