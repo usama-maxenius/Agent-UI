@@ -1,18 +1,19 @@
 /* eslint-disable no-unused-vars */
-import * as React from 'react';
-import styled from 'styled-components';
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { getAllCities } from '../store/action';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
+import PropTypes from 'prop-types';
+import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { getAllCities } from '../store/action';
 
 const Select = styled.select`
-  width: ${(props) => (props.width ? '135px' : '83%')};
+  width: ${(props) =>
+    props.width ? '130px' : props.specificWidth ? '99%' : '83%'};
+  margin-right: 10px;
   height: 52px;
   background: white;
   color: ${(props) => (props.selected ? '#2541B2' : 'gray')};
@@ -20,8 +21,8 @@ const Select = styled.select`
   font-size: 14px;
   background: #fafafa 0% 0% no-repeat padding-box;
   outline: none;
-  margin-top: 26px;
-  margin-left: -25px;
+  margin-top: 2px;
+  margin-left: 0px;
   border: ${(props) =>
     props.width ? '1px solid #2541B2' : '1px solid #16161640'};
   border-radius: 8px;
@@ -43,7 +44,7 @@ const DropdownWrapper = styled.div`
 let icon = {
   color: '#16161680',
   position: 'relative',
-  left: '4px',
+  left: '30px',
   width: '25px',
 };
 let display = {
@@ -65,6 +66,7 @@ export default function Dropdown({
   name,
   options,
   noIcon,
+  removeClockIcon,
 }) {
   let [selected, setSelected] = React.useState(false);
   let { states, search_identifier } = useSelector((store) => store.InitReducer);
@@ -87,7 +89,9 @@ export default function Dropdown({
       ) : item.iconClock ? (
         <QueryBuilderRoundedIcon sx={!selected ? icon : [display, icon]} />
       ) : noIcon ? (
-        <QueryBuilderRoundedIcon sx={[display, icon]} />
+        <QueryBuilderRoundedIcon sx={[icon]} />
+      ) : removeClockIcon ? (
+        <></>
       ) : (
         <SchoolOutlinedIcon sx={!selected ? icon : [display, icon]} />
       )}

@@ -1,10 +1,10 @@
+import { HomeRounded } from '@mui/icons-material';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
-import { HomeRounded } from '@mui/icons-material';
 
 const Input = styled.input`
-  width: 83%;
+  width: 99% !important;
   height: 50px;
   background: white;
   color: #16161640;
@@ -12,7 +12,7 @@ const Input = styled.input`
   font-size: 20px;
   background: #fafafa 0% 0% no-repeat padding-box;
   outline: none;
-  margin-top: 26px;
+
   border: 1px solid #16161640;
   border-radius: 8px;
   padding-right: 0px;

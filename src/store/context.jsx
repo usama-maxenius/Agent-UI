@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
 import constant from './constant';
 let Context = React.createContext();
@@ -22,6 +23,7 @@ function countReducer(state, action) {
         isHelperDrawer: true,
         isCallerDrawer: false,
         isDraggable: false,
+
       };
     }
     case constant.SECURITY_DRAWER: {
@@ -80,3 +82,4 @@ function useContextCustom() {
 }
 
 export { ContextProvider, Context, useContextCustom };
+

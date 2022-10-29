@@ -16,9 +16,9 @@ import * as React from 'react';
 import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import QuizRoundedIcon from '@mui/icons-material/QuizRounded';
 import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import { useDispatch } from 'react-redux';
 import SearchDropDown from './dropdownWithSearch';
 import { MediumPoppin16, MediumPoppin22 } from './styled/commonDesign';
-import { useDispatch } from 'react-redux';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -178,7 +178,7 @@ export default function ExpandableCard({
           {ind.online && (
             <div
               className={classNames(
-                'flex flex-row text-small items-center mr-7',
+                'flex flex-row text-small items-center mr-7 font-Poppin',
                 selected ? 'text-white' : 'text-blue'
               )}
             >
@@ -188,7 +188,7 @@ export default function ExpandableCard({
 
           <div
             className={classNames(
-              'flex flex-row text-small items-center mr-7',
+              'flex flex-row text-small items-center mr-7 font-Poppin',
               selected ? 'text-white' : 'text-blue'
             )}
           >
@@ -197,7 +197,7 @@ export default function ExpandableCard({
           </div>
           <div
             className={classNames(
-              'flex flex-row text-small items-center ml-5 mr-7',
+              'flex flex-row text-small items-center ml-5 mr-7 font-Poppin',
               selected ? 'text-white' : 'text-blue'
             )}
           >
@@ -206,7 +206,7 @@ export default function ExpandableCard({
           </div>
           <div
             className={classNames(
-              'flex flex-row text-small items-center ml-5 mr-7 ml-5',
+              'flex flex-row text-small items-center ml-5 mr-7 ml-5 font-Poppin',
               selected ? 'text-white' : 'text-blue'
             )}
           >

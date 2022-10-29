@@ -1,13 +1,13 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Dropdown from './dropdown';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import DoubleHalfWidth from './doubleInput';
+import Dropdown from './dropdown';
 import InputLeftIcon from './inputWithLeftIcon';
 import InputRightIcon from './inputWithRightIcon';
-import { RegularPoppin, MediumPoppin } from './styled/userDetails.style';
-import DoubleHalfWidth from './doubleInput';
+import { MediumPoppin, RegularPoppin } from './styled/userDetails.style';
 
 const DoubleInput = styled.div`
   width: 100%;
@@ -22,7 +22,7 @@ const BottomLine = styled.div`
 `;
 
 let cardStyle = {
-  maxWidth: 570,
+  width: 570,
   marginTop: '16px',
   overflow: 'unset',
   boxShadow: 'none',
@@ -42,6 +42,7 @@ function FormCard({ item, key, setState, state }) {
       sx={[
         cardStyle,
         item.noPad && { padding: 0, paddingBottom: '0 !important' },
+        item.noBackground && { backgroundColor: 'transparent' },
       ]}
       key={key}
     >
@@ -49,57 +50,60 @@ function FormCard({ item, key, setState, state }) {
         sx={item.noPad ? { padding: 0, paddingBottom: '0 !important' } : {}}
       >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
-        {item.ticked && (
-          <InputRightIcon
-            setState={setState}
-            state={state}
-            name={item.name}
-            placeholder={item.placeholder}
-          />
-        )}
-        {item.HomeIcon && (
-          <InputLeftIcon
-            item={item}
-            setState={setState}
-            state={state}
-            name={item.HomeIconName}
-          />
-        )}
-        {item.dropdown && (
-          <Dropdown
-            item={item}
-            setState={setState}
-            state={state}
-            name={item.name}
-          />
-        )}
-        {item.isDouble && (
-          <DoubleInput>
-            <Dropdown
-              item={item}
-              width={50}
-              setState={setState}
-              state={state}
-              name={item.name1}
-              noIcon={item.iconHidden}
-            />
+        <div className={item.styleClasses}>
+          {item.ticked && (
             <InputRightIcon
-              isDouble={item.isDouble}
               setState={setState}
               state={state}
-              name={item.name2}
+              name={item.name}
               placeholder={item.placeholder}
             />
-          </DoubleInput>
-        )}
-        {item.doubleHalf && (
-          <DoubleHalfWidth
-            setState={setState}
-            state={state}
-            item={item}
-            placeholder={item.placeholder}
-          />
-        )}
+          )}
+          {item.HomeIcon && (
+            <InputLeftIcon
+              item={item}
+              setState={setState}
+              state={state}
+              name={item.HomeIconName}
+            />
+          )}
+          {item.dropdown && (
+            <Dropdown
+              item={item}
+              setState={setState}
+              state={state}
+              name={item.name}
+            />
+          )}
+          {item.isDouble && (
+            <DoubleInput>
+              <Dropdown
+                item={item}
+                width={50}
+                setState={setState}
+                state={state}
+                name={item.name1}
+                noIcon={item.noIcon}
+                removeClockIcon={item.iconHidden}
+              />
+              <InputRightIcon
+                isDouble={item.isDouble}
+                setState={setState}
+                state={state}
+                name={item.name2}
+                placeholder={item.placeholder}
+              />
+            </DoubleInput>
+          )}
+          {item.doubleHalf && (
+            <DoubleHalfWidth
+              setState={setState}
+              state={state}
+              item={item}
+              placeholder={item.placeholder}
+            />
+          )}
+        </div>
         {item.bottomLine && (
           <BottomLine>
             <RegularPoppin title blue>

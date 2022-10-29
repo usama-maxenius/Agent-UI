@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
-import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
-import InputWithRightIcon from './inputWithRightIcon';
-import DropDownWithIcon from './dropdownWithSearch';
-import { useContextCustom } from '../store/context';
-import DropdownAndInput from './doubleInput';
-import { classNames } from '../helper/classNames';
-import FormCard from './Card';
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
-import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
+/* eslint-disable prettier/prettier */
+import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import InputIcon from './inputWithLeftIcon';
+import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
+import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import WifiOutlinedIcon from '@mui/icons-material/WifiOutlined';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { classNames } from '../helper/classNames';
+import { useContextCustom } from '../store/context';
+import FormCard from './Card';
+import DropdownAndInput from './doubleInput';
+import DropDownWithIcon from './dropdownWithSearch';
+import InputIcon from './inputWithLeftIcon';
+import InputWithRightIcon from './inputWithRightIcon';
 
 function generateArrayOfYears() {
   var max = new Date().getFullYear();
@@ -224,7 +225,7 @@ let data = [
   },
   {
     id: '10',
-    placeholder: 'Area of study',
+    placeholder: 'Additional area of study',
     options: [
       { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
       { OptionLabel: 'Business', OptionValue: 'Business' },
@@ -271,7 +272,7 @@ let data = [
   },
   {
     id: '11',
-    placeholder: 'Area of study',
+    placeholder: 'Additional area of study',
     options: [
       { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
       { OptionLabel: 'Business', OptionValue: 'Business' },
@@ -335,7 +336,7 @@ let data = [
   },
   {
     id: '13',
-    placeholder: 'Enrolment timeline',
+    placeholder: 'Enrollment timeline',
     options: [
       { OptionLabel: 'Yes', OptionValue: 'yes' },
       { OptionLabel: 'No', OptionValue: 'no' },
@@ -363,7 +364,9 @@ let data = [
     name1: 'gender',
     name2: 'first_name',
     iconHidden: true,
+    noIcon: false,
     noPad: true,
+    noBackground: true,
   },
   {
     id: '15',
@@ -490,11 +493,18 @@ function App({ setValue, value }) {
                           {...provided.dragHandleProps}
                         >
                           {dropdown ? (
-                            <div className="w-[477px] mt-4 flex flex-row justify-between items-center ml-[26px]">
-                              {state.isDraggable && (
-                                <ReorderRoundedIcon className="hover:text-blue text-base  mr-[13px]" />
+                            <div
+                              className={classNames(
+                                'w-[477px] mt-4 flex flex-row justify-between p-[5px] items-center ml-[26px]',
+                                state.isDraggable
+                                  ? 'group hover:bg-blue hover:rounded-box'
+                                  : null
                               )}
-                              <div className="w-[443px]">
+                            >
+                              {state.isDraggable && (
+                                <ReorderRoundedIcon className="group-hover:text-white text-base  mr-[13px]" />
+                              )}
+                              <div className="w-[443px] ">
                                 <DropDownWithIcon
                                   placeholder={placeholder}
                                   callerID={true}
@@ -510,12 +520,14 @@ function App({ setValue, value }) {
                           ) : doubleHalf ? (
                             <div
                               className={classNames(
-                                'flex flex-row justify-between items-center ml-[26px]',
-                                state.isDraggable ? 'w-[520px]' : 'w-[487px] '
+                                'flex mt-4 flex-row justify-between items-center ml-[26px]',
+                                state.isDraggable
+                                  ? 'w-[477px] group hover:bg-blue p-[5px] hover:rounded-box'
+                                  : 'w-[447px] '
                               )}
                             >
                               {state.isDraggable && (
-                                <ReorderRoundedIcon className="hover:text-blue text-base  mr-[13px] mt-[26px]" />
+                                <ReorderRoundedIcon className="hover:text-blue text-base group-hover:text-white  mr-[13px] mt-[6px]" />
                               )}
                               <DropdownAndInput
                                 width={true}
@@ -528,18 +540,20 @@ function App({ setValue, value }) {
                           ) : homeIcon ? (
                             <div
                               className={classNames(
-                                'flex flex-row justify-between items-center ml-[26px]',
-                                state.isDraggable ? 'w-[520px]' : 'w-[487px] '
+                                'flex mt-4 flex-row justify-between items-center ml-[26px] mt-[26px]',
+                                state.isDraggable
+                                  ? 'w-[477px] group hover:bg-blue p-[5px] hover:rounded-box'
+                                  : 'w-[487px] '
                               )}
                             >
                               {state.isDraggable && (
-                                <ReorderRoundedIcon className="hover:text-blue text-base  mr-[13px] mt-[26px]" />
+                                <ReorderRoundedIcon className="hover:text-blue group-hover:text-white text-base  mr-[13px] " />
                               )}
                               <div
                                 className={classNames(
                                   state.isDraggable
-                                    ? '[&>input]:w-11/12 w-[482px]'
-                                    : '[&>input]:w-11/12 w-[482px] '
+                                    ? '[&>input]:w-11/12 w-[447px]'
+                                    : '[&>input]:w-11/12 w-[447px] '
                                 )}
                               >
                                 <InputIcon
@@ -553,12 +567,14 @@ function App({ setValue, value }) {
                           ) : isDouble ? (
                             <div
                               className={classNames(
-                                'flex flex-row justify-between items-center ml-[26px]',
-                                state.isDraggable ? 'w-[508px]' : 'w-[487px] '
+                                'flex mt-4 flex-row justify-between items-center ml-[26px]',
+                                state.isDraggable
+                                  ? 'w-[477px] pb-[5px] group hover:bg-blue p-[5px] hover:rounded-box'
+                                  : 'w-[447px] '
                               )}
                             >
                               {state.isDraggable && (
-                                <ReorderRoundedIcon className="hover:text-blue text-base  mr-[13px] mt-[26px]" />
+                                <ReorderRoundedIcon className="hover:text-blue group-hover:text-white text-base  mr-[13px]" />
                               )}
                               <FormCard
                                 item={element}
@@ -568,11 +584,18 @@ function App({ setValue, value }) {
                               />
                             </div>
                           ) : (
-                            <div className="w-[560px] -mt-2.5 flex flex-row justify-between items-center ml-[26px]">
-                              {state.isDraggable && (
-                                <ReorderRoundedIcon className="hover:text-blue text-base mt-[26px] mr-[13px]" />
+                            <div
+                              className={classNames(
+                                'w-[477px] mt-4 flex flex-row justify-between items-center ml-[26px]',
+                                state.isDraggable
+                                  ? 'group p-[5px] hover:bg-blue hover:rounded-box'
+                                  : null
                               )}
-                              <div className="w-[527px]">
+                            >
+                              {state.isDraggable && (
+                                <ReorderRoundedIcon className="hover:text-blue group-hover:text-white text-base mr-[13px]" />
+                              )}
+                              <div className="w-[447px] mt-2">
                                 <InputWithRightIcon
                                   callerID={true}
                                   placeholder={placeholder}

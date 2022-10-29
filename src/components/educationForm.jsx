@@ -1,9 +1,9 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import Grid from '@mui/material/Grid';
 import React, { Fragment, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,7 +18,8 @@ import {
   IconButton,
   IconWrapper,
   MainWrapper,
-  MediumPoppin,
+  // eslint-disable-next-line prettier/prettier
+  MediumPoppin
 } from './styled/educationForm.style';
 
 let BottomNoteWrapper = styled.div`
@@ -41,7 +42,8 @@ let data = [
     title: 'Firstly, what year did you graduate from high school?',
     options: generateArrayOfYears('High School Graduation year'),
     dropdown: true,
-    name: 'hsyear',
+    name: 'hsyear', 
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title: 'And that was in the US?',
@@ -52,6 +54,7 @@ let data = [
     ],
     dropdown: true,
     name: 'graduated_in_us',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title: 'And just to check, you are a US Citizen?',
@@ -62,6 +65,7 @@ let data = [
     ],
     dropdown: true,
     name: 'us_citizen',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
@@ -90,6 +94,7 @@ let data = [
     ],
     dropdown: true,
     name: 'current_education_level',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title: 'Do you have unrestricted access to a computer and internet?',
@@ -101,6 +106,7 @@ let data = [
     dropdown: true,
     name: 'computer_internet_access',
     iconWifi: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
 ];
 let personalDetails = [
@@ -110,6 +116,7 @@ let personalDetails = [
     dropdown: true,
     name: 'age',
     iconCalendar: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title: 'Are you associated with the military at all?',
@@ -121,6 +128,7 @@ let personalDetails = [
     dropdown: true,
     name: 'military_status',
     iconMilitary: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
@@ -132,6 +140,7 @@ let personalDetails = [
     ],
     name: 'is_contacted_by_school',
     dropdown: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
 ];
 let enrolment = [
@@ -163,12 +172,13 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'areas_of_interest',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
       'Aside from <interest> is there another area of study you’re interested in?',
     options: [
-      { name: 'Area of study', value: 'Area of study' },
+      { name: 'Additional area of study', value: 'Area of study' },
       { name: 'Art & Design', value: 'Art & Design' },
       { name: 'Business', value: 'Business' },
       { name: 'Computers & Technology', value: 'Computers & Technology' },
@@ -193,11 +203,12 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'another_areas_of_interest',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title: 'Any other area of study?',
     options: [
-      { name: 'Area of study', value: 'Area of study' },
+      { name: 'Additional area of study', value: 'Area of study' },
       { name: 'Art & Design', value: 'Art & Design' },
       { name: 'Business', value: 'Business' },
       { name: 'Computers & Technology', value: 'Computers & Technology' },
@@ -222,6 +233,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'any_other_areas_of_interest',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
@@ -234,18 +246,20 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'online_or_campus',
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
       'If you found the right school and program, would you be ready within 3 months?',
     options: [
-      { name: 'Enrolment timeline', value: '0' },
+      { name: 'Enrollment timeline', value: '0' },
       { name: 'Yes', value: 'yes' },
       { name: 'No', value: 'no' },
     ],
     dropdown: true,
     name: 'can_complete_enrollment',
     iconCalendar: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
 ];
 let contact = [
@@ -259,6 +273,7 @@ let contact = [
     name1: 'gender',
     name2: 'first_name',
     iconHidden: true,
+    styleClasses: "mt-[26px] w-[86%]",
   },
   {
     title: 'Just to check how your last name is spelled',
@@ -266,6 +281,7 @@ let contact = [
     bottomLine: true,
     name: 'last_name',
     placeholder: 'Your last name',
+    styleClasses: " mt-[26px] w-[86%]",
   },
   {
     title:
@@ -273,6 +289,7 @@ let contact = [
     ticked: true,
     name: 'phone',
     placeholder: 'Your phone number',
+    styleClasses: " mt-[26px] w-[86%]",
   },
   {
     title:
@@ -287,6 +304,7 @@ let contact = [
     dropdown: true,
     name: 'time_to_call',
     iconClock: true,
+    styleClasses: "-ml-[26px] mt-[26px]",
   },
   {
     title:
@@ -294,6 +312,7 @@ let contact = [
     ticked: true,
     name: 'email',
     placeholder: 'Your email',
+    styleClasses: "mt-[26px] w-[86%]",
   },
   {
     title: 'Great, and lastly is what is your address?',
@@ -309,6 +328,7 @@ let contact = [
     iconHidden: true,
     placeholderZip: 'Zip code',
     typeZip: 'number',
+    styleClasses: "mt-[26px] w-[86%]",
   },
 ];
 
@@ -359,7 +379,11 @@ const EducationForm = () => {
             <MediumPoppin>Education</MediumPoppin>
           </FormHeader>
         </Grid>
-        <Grid item xs={6}>
+        <Grid
+          item
+          xs={6}
+          sx={{ display: 'flex', justifyContent: 'right', alignItems: 'right' }}
+        >
           <IconWrapper>
             <IconButton
               onClick={() => {
@@ -406,7 +430,7 @@ const EducationForm = () => {
       <Grid container>
         <Grid item xs={12}>
           <FormHeader>
-            <MediumPoppin>Enrolment & interests</MediumPoppin>
+            <MediumPoppin>Enrollment & interests</MediumPoppin>
           </FormHeader>
         </Grid>
       </Grid>

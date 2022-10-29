@@ -4,14 +4,22 @@ import { classNames } from '../helper/classNames';
 import Dropdown from './dropdown';
 import InputIcon from './inputWithRightIcon';
 
-function DropdownAndInput({ width, item, setState, state }) {
+function DropdownAndInput({
+  specificWidth,
+  width,
+  item,
+  setState,
+  state,
+  fromDND,
+}) {
   let { cities } = useSelector((store) => store.InitReducer);
 
   return (
     <div
       className={classNames(
-        'flex flex-row justify-between',
-        width ? 'w-[118%]' : 'w-[91%]'
+        'flex flex-row justify-between mt-2',
+        width ? 'w-[100%]' : 'w-[91%]',
+        specificWidth
       )}
     >
       <div className="border-blue w-7/12">
@@ -21,10 +29,11 @@ function DropdownAndInput({ width, item, setState, state }) {
           state={state}
           name={item ? item.name1 : ''}
           options={cities}
-          noIcon={true}
+          // noIcon={true}
+          removeClockIcon={true}
         />
       </div>
-      <div className="border-blue w-7/12 -ml-7">
+      <div className="border-blue w-7/12 -ml-7 mt-0.5">
         <InputIcon
           item={item}
           setState={setState}
@@ -32,6 +41,7 @@ function DropdownAndInput({ width, item, setState, state }) {
           name={item ? item.name2 : ''}
           placeholder={item ? item.placeholderZip : ''}
           inputType={item ? item.typeZip : ''}
+          fromDND={fromDND}
         />
       </div>
     </div>

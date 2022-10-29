@@ -1,6 +1,6 @@
 import React from 'react';
-import InputWithRightIcon from './inputWithRightIcon';
 import DropDownWithIcon from './dropdownWithSearch';
+import InputWithRightIcon from './inputWithRightIcon';
 
 function DisclosureCallerDetails() {
   return (
@@ -140,7 +140,7 @@ function DisclosureCallerDetails() {
       </div>
       <div className="w-[443px]">
         <div className="mt-4">
-          <DropDownWithIcon placeholder="Enrolment timeline" callerID={true} />
+          <DropDownWithIcon placeholder="Enrollment timeline" callerID={true} />
         </div>
       </div>
       <div className="w-[443px] mt-4 flex flex-row justify-center">

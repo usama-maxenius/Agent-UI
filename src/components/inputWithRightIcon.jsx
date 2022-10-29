@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import PropTypes from 'prop-types';
 import * as React from 'react';
 import styled from 'styled-components';
-import DoneIcon from '@mui/icons-material/Done';
-import PropTypes from 'prop-types';
 
 const Input = styled.input`
   width: ${(props) =>
@@ -11,7 +12,7 @@ const Input = styled.input`
   color: #2541b2;
   background: #fafafa 0% 0% no-repeat padding-box;
   outline: none;
-  margin-top: 26px;
+  margin-top: ${(props) => (props.fromDND ? '0px' : '26px')};
   border: 1px solid #2541b2;
   border-radius: 8px;
   padding-right: 30px;
@@ -28,6 +29,7 @@ const Input = styled.input`
 const Wrapper = styled.div`
   margin-left: ${(props) => props.isDouble && '20px'};
   width: ${(props) => props.isDouble && '316px'};
+  width: ${(props) => props.fromDND && '316px'};
 `;
 InputIcon.propTypes = {
   isDouble: PropTypes.bool,
@@ -42,22 +44,22 @@ export default function InputIcon({
   state,
   name,
   inputType,
+  fromDND,
 }) {
   let icon = {
     color: '#2541B2',
-    position: 'relative',
+    // position: 'relative',
     fontSize: callerID ? '24px' : '28px',
-    top: '-5px',
-    left: callerID ? '-30px' : '-40px',
+    // top: '-5px',
+    // left: callerID ? '-30px' : '-40px',
+    width: '10%',
   };
 
   return (
-    <Wrapper isDouble={isDouble}>
-      <Input
-        isDouble={isDouble}
+    <div className="flex flex-row w-full border rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
+      <input
+        className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
-        callerID={callerID}
-        width={width}
         name={name}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
@@ -67,7 +69,25 @@ export default function InputIcon({
           });
         }}
       />
-      {Icon ? Icon : <DoneIcon sx={icon} />}
-    </Wrapper>
+      {Icon ? Icon : <DoneRoundedIcon sx={icon} />}
+    </div>
+    // <Wrapper isDouble={isDouble} fromDND={fromDND}>
+    //   <Input
+    //     isDouble={isDouble}
+    //     placeholder={placeholder ? placeholder : 'Your First Name'}
+    //     callerID={callerID}
+    //     fromDND={fromDND}
+    //     width={width}
+    // name={name}
+    // type={inputType ? inputType : 'text'}
+    // onChange={(e) => {
+    //   setState({
+    //     ...state,
+    //     [e.target.name]: e.target.value,
+    //   });
+    // }}
+    //   />
+    //   {Icon ? Icon : <DoneIcon sx={icon} />}
+    // </Wrapper>
   );
 }

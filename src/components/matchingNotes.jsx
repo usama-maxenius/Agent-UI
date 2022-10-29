@@ -3,22 +3,23 @@
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
+import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { SubmitAPI } from '../store/action/searchAPI';
+import constant from '../store/constant';
+import { useContextCustom } from '../store/context';
+import SearchDropdown from './dropdownWithSearch';
 import {
   IconButton,
   IconWrapper,
-  MainWrapper,
+  // eslint-disable-next-line prettier/prettier
+  MainWrapper
 } from './styled/educationForm.style';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
-import SearchDropdown from './dropdownWithSearch';
-import { useContextCustom } from '../store/context';
-import constant from '../store/constant';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import { SubmitAPI } from '../store/action/searchAPI';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -46,13 +47,13 @@ const WelcomeNotes = () => {
       search_result_set_identifier: selectedSchool?.result_set_identifier,
       answers: [
         {
-          question_key: transferResult.AdvisorFieldName,
+          question_key: transferResult?.AdvisorFieldName,
           question_value: question?.QuestionValue,
         },
         selectedProgram,
       ],
     };
-    console.log(body);
+    console.log('Body Here Console----->', body);
     dispatchRedux(SubmitAPI(body, navigate));
   };
 

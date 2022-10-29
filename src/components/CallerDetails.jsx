@@ -1,23 +1,20 @@
-import React, { useState } from 'react';
-import {
-  MainWrapper,
-  IconWrapper,
-  IconButton,
-  MediumPoppin,
-  FormHeader,
-} from './styled/educationForm.style';
-import Grid from '@mui/material/Grid';
+/* eslint-disable prettier/prettier */
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
-import { styled } from '@mui/material/styles';
-import { useContextCustom } from '../store/context';
-import constant from '../store/constant';
-import DragnDropForm from './callerDetailFormDnD';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
-import { RecordingDisclosed } from './styled/wecomeNote.style';
-import { useNavigate } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { searchSchools } from '../store/action/searchAPI';
+import constant from '../store/constant';
+import { useContextCustom } from '../store/context';
+import DragnDropForm from './callerDetailFormDnD';
+import {
+  FormHeader, IconButton, IconWrapper, MainWrapper, MediumPoppin
+} from './styled/educationForm.style';
+import { RecordingDisclosed } from './styled/wecomeNote.style';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -43,7 +40,7 @@ const CallerDetail = () => {
             <MediumPoppin>CALLER DETAIL</MediumPoppin>
           </FormHeader>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={6} sx={{display:"flex",justifyContent:"right",alignItems:"right"}}>
           <IconWrapper>
             <IconButton
               onClick={() => {
