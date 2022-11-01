@@ -43,7 +43,7 @@ let data = [
     options: generateArrayOfYears('High School Graduation year'),
     dropdown: true,
     name: 'hsyear', 
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title: 'And that was in the US?',
@@ -54,7 +54,7 @@ let data = [
     ],
     dropdown: true,
     name: 'graduated_in_us',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title: 'And just to check, you are a US Citizen?',
@@ -65,7 +65,7 @@ let data = [
     ],
     dropdown: true,
     name: 'us_citizen',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title:
@@ -94,7 +94,7 @@ let data = [
     ],
     dropdown: true,
     name: 'current_education_level',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title: 'Do you have unrestricted access to a computer and internet?',
@@ -106,7 +106,7 @@ let data = [
     dropdown: true,
     name: 'computer_internet_access',
     iconWifi: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
 ];
 let personalDetails = [
@@ -116,7 +116,7 @@ let personalDetails = [
     dropdown: true,
     name: 'age',
     iconCalendar: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title: 'Are you associated with the military at all?',
@@ -128,7 +128,7 @@ let personalDetails = [
     dropdown: true,
     name: 'military_status',
     iconMilitary: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title:
@@ -140,7 +140,7 @@ let personalDetails = [
     ],
     name: 'is_contacted_by_school',
     dropdown: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
 ];
 let enrolment = [
@@ -172,7 +172,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'areas_of_interest',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title:
@@ -203,7 +203,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'another_areas_of_interest',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title: 'Any other area of study?',
@@ -233,7 +233,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'any_other_areas_of_interest',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title:
@@ -246,7 +246,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'online_or_campus',
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
   {
     title:
@@ -259,7 +259,7 @@ let enrolment = [
     dropdown: true,
     name: 'can_complete_enrollment',
     iconCalendar: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: "ml-[6px] mt-[26px]",
   },
 ];
 let contact = [
@@ -304,7 +304,7 @@ let contact = [
     dropdown: true,
     name: 'time_to_call',
     iconClock: true,
-    styleClasses: "-ml-[26px] mt-[26px]",
+    styleClasses: " mt-[26px]",
   },
   {
     title:

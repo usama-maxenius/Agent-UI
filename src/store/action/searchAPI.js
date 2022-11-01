@@ -9,7 +9,6 @@ let myIP = async () => {
 
 export let searchSchools = (data, navigate) => {
   return async (dispatch) => {
-    console.log(data);
     let IP = await myIP();
     console.log(IP);
     let {
@@ -221,6 +220,8 @@ export let searchSchools = (data, navigate) => {
         traffic_source_type: 'grant',
       },
     };
+
+    console.log(body);
 
     let url = 'https://api.cmicon.com/v3/search';
 

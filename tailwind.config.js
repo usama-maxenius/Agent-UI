@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        Poppin: ['Poppin', 'sans-serif'],
+        Poppin: ['Poppins'],
         IBM_sans: ['IBM Plex', 'sans'],
         IBM_serif: ['IBM Plex', 'sans-serif'],
         serif: ['Merriweather', 'serif'],
