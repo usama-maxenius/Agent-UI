@@ -30,8 +30,10 @@ export default function DropdownWithSearch({
     ...options,
   ];
   const [selected, setSelected] = useState(people[0]);
+  const [changeColor, setChangeColor] = useState(false);
   const dispatch = useDispatch();
   const onChangeHandler = (prop) => {
+    setChangeColor(true);
     setSelected(prop);
     let obj = {
       question_key: placeholder,
@@ -63,18 +65,14 @@ export default function DropdownWithSearch({
             <span
               className={classNames(
                 'block truncate  font-Poppin',
-                program == true
-                  ? 'text-red'
-                  : callerID == true
-                  ? 'text-blue'
-                  : 'text-gray'
+                changeColor ? 'text-blue' : 'text-gray'
               )}
             >
-              {Icon
-                ? Icon
-                : !callerID && (
-                    <SupportAgentRoundedIcon className="text-gray mr-3" />
-                  )}
+              <span
+                className={classNames(`text-gray`, changeColor && `text-blue`)}
+              >
+                {Icon ? Icon : !callerID && <SupportAgentRoundedIcon />}
+              </span>
               {selected.OptionLabel}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

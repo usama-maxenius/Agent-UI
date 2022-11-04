@@ -50,7 +50,7 @@ function FormCard({ item, key, setState, state }) {
         sx={item.noPad ? { padding: 0, paddingBottom: '0 !important' } : {}}
       >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
-        <div className={item.styleClasses}>
+        <div className={item.styleClasses + ' ' + item?.styleHeight}>
           {item.ticked && (
             <InputRightIcon
               setState={setState}
@@ -64,6 +64,7 @@ function FormCard({ item, key, setState, state }) {
               item={item}
               setState={setState}
               state={state}
+              widthControl={true}
               name={item.HomeIconName}
             />
           )}
@@ -73,6 +74,8 @@ function FormCard({ item, key, setState, state }) {
               setState={setState}
               state={state}
               name={item.name}
+              options={false}
+              Icon={item.Icon}
             />
           )}
           {item.isDouble && (
