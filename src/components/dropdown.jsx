@@ -69,13 +69,14 @@ export default function DropdownWithSearch({
           <Listbox.Button
             style={{ padding: '14px' }}
             className={classNames(
-              'relative w-full cursor-default rounded-lg border rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue bg-lightGray py-2 pl-3 pr-10 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 '
+              'relative w-full cursor-default rounded-lg border rounded-box items-center bg-lightGray  px-1.5 text-blue bg-lightGray py-2 pl-3 pr-10 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
+              changeColor ? `border border-blue` : `border border-[#16161640]`
             )}
           >
             <span
               className={classNames(
-                'block truncate  font-Poppin text-gray',
-                changeColor && `text-blue`
+                'block truncate  font-Poppin font-medium ',
+                changeColor ? `text-blue` : `text-gray`
               )}
             >
               <span className="p-[1px] pr-[7px]">{item.Icon}</span>
@@ -97,20 +98,30 @@ export default function DropdownWithSearch({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute z-30 no-scrollbar mt-1 max-h-80 w-full overflow-auto rounded-md bg-lightGray py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              <div
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                    active ? '  ' : 'text-gray-900'
-                  }`
-                }
-              >
-                <input
-                  type="text"
-                  className="w-10/12 rounded border border-blue ml-5 mt-5 rounded-3xl px-2 py-1"
-                  placeholder="Search"
-                />
-                <SearchRoundedIcon className="relative -left-8 text-sm text-blue -top-0.5" />
-              </div>
+              {![
+                'gender',
+                'graduated_in_us',
+                'us_citizen',
+                'computer_internet_access',
+                'military_status',
+                'is_contacted_by_school',
+                'can_complete_enrollment',
+              ].includes(item.name1) && (
+                <div
+                  className={({ active }) =>
+                    `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                      active ? '  ' : 'text-gray-900'
+                    }`
+                  }
+                >
+                  <input
+                    type="text"
+                    className="w-10/12 rounded border border-blue ml-5 mt-5 rounded-3xl px-2 py-1"
+                    placeholder="Search"
+                  />
+                  <SearchRoundedIcon className="relative -left-8 text-sm text-blue -top-0.5" />
+                </div>
+              )}
 
               {people.map((person, personIdx) => {
                 if (person.name) {

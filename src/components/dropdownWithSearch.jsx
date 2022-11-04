@@ -55,11 +55,12 @@ export default function DropdownWithSearch({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              'relative w-full cursor-default rounded-lg bg-lightGray py-2 pl-3 pr-10 text-left rounded border  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
-              program == true ? 'border-red' : 'border-gray',
+              'relative w-full cursor-default rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
+              // program == true ? 'border-red' : 'border-gray',
               callerID == true
                 ? 'border-blue  h-[52px] font-Poppin text-base rounded-[8px]'
-                : 'sm:text-sm'
+                : 'sm:text-sm',
+              changeColor ? `border border-blue` : `border border-[#16161640]`
             )}
           >
             <span
@@ -69,7 +70,7 @@ export default function DropdownWithSearch({
               )}
             >
               <span
-                className={classNames(`text-gray`, changeColor && `text-blue`)}
+                className={classNames(changeColor ? `text-blue` : `text-gray`)}
               >
                 {Icon ? Icon : !callerID && <SupportAgentRoundedIcon />}
               </span>

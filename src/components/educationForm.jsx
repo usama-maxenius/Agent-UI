@@ -24,7 +24,7 @@ import {
   IconWrapper,
   MainWrapper,
   // eslint-disable-next-line prettier/prettier
-  MediumPoppin
+  MediumPoppin,
 } from './styled/educationForm.style';
 
 let BottomNoteWrapper = styled.div`
@@ -61,6 +61,7 @@ let data = [
     ],
     dropdown: true,
     name: 'graduated_in_us',
+    name1: 'graduated_in_us',
     styleClasses: ' mt-[26px]',
     Icon: <SchoolRoundedIcon />,
   },
@@ -73,6 +74,7 @@ let data = [
     ],
     dropdown: true,
     name: 'us_citizen',
+    name1: 'us_citizen',
     styleClasses: ' mt-[26px]',
     Icon: <SchoolRoundedIcon />,
   },
@@ -121,6 +123,7 @@ let data = [
     ],
     dropdown: true,
     name: 'computer_internet_access',
+    name1: 'computer_internet_access',
     iconWifi: true,
     styleClasses: ' mt-[26px]',
     Icon: <WifiRoundedIcon />,
@@ -145,6 +148,7 @@ let personalDetails = [
     ],
     dropdown: true,
     name: 'military_status',
+    name1: 'military_status',
     iconMilitary: true,
     styleClasses: ' mt-[26px]',
     Icon: <MilitaryTechRoundedIcon />,
@@ -158,6 +162,7 @@ let personalDetails = [
       { OptionLabel: 'No', OptionValue: '1' },
     ],
     name: 'is_contacted_by_school',
+    name1: 'is_contacted_by_school',
     dropdown: true,
     styleClasses: ' mt-[26px]',
     Icon: <SchoolRoundedIcon />,
@@ -318,6 +323,7 @@ let enrolment = [
     ],
     dropdown: true,
     name: 'can_complete_enrollment',
+    name1: 'can_complete_enrollment',
     iconCalendar: true,
     styleClasses: ' mt-[26px]',
     Icon: <CalendarMonthRoundedIcon />,
