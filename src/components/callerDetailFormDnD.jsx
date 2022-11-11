@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
@@ -34,12 +35,7 @@ let data = [
     options: generateArrayOfYears(),
     dropdown: true,
     name: 'hsyear',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '2',
@@ -50,12 +46,7 @@ let data = [
     ],
     dropdown: true,
     name: 'graduated_in_us',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '3',
@@ -66,12 +57,7 @@ let data = [
     ],
     dropdown: true,
     name: 'us_citizen',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '4',
@@ -105,12 +91,7 @@ let data = [
     ],
     dropdown: true,
     name: 'current_education_level',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '5',
@@ -121,12 +102,7 @@ let data = [
     ],
     dropdown: true,
     name: 'computer_internet_access',
-    Icon: (
-      <WifiOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <WifiOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
 
   {
@@ -137,10 +113,7 @@ let data = [
     name: 'age',
     iconCalendar: true,
     Icon: (
-      <CalendarMonthRoundedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
+      <CalendarMonthRoundedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />
     ),
   },
   {
@@ -153,10 +126,7 @@ let data = [
     dropdown: true,
     name: 'military_status',
     Icon: (
-      <MilitaryTechOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
+      <MilitaryTechOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />
     ),
   },
   {
@@ -168,12 +138,7 @@ let data = [
     ],
     name: 'is_contacted_by_school',
     dropdown: true,
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
 
   {
@@ -216,12 +181,7 @@ let data = [
     ],
     dropdown: true,
     name: 'areas_of_interest',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '10',
@@ -263,12 +223,7 @@ let data = [
     ],
     dropdown: true,
     name: 'another_areas_of_interest',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '11',
@@ -310,12 +265,7 @@ let data = [
     ],
     dropdown: true,
     name: 'any_other_areas_of_interest',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon sx={{ fontSize: '1.6rem' }} className="mr-3" />,
   },
   {
     id: '12',
@@ -327,12 +277,7 @@ let data = [
     ],
     dropdown: true,
     name: 'online_or_campus',
-    Icon: (
-      <SchoolOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
-    ),
+    Icon: <SchoolOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />,
   },
   {
     id: '13',
@@ -345,10 +290,7 @@ let data = [
     name: 'can_complete_enrollment',
     iconCalendar: true,
     Icon: (
-      <CalendarMonthRoundedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
+      <CalendarMonthRoundedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />
     ),
   },
 
@@ -397,10 +339,7 @@ let data = [
     name: 'time_to_call',
     iconClock: true,
     Icon: (
-      <AccessTimeOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
+      <AccessTimeOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />
     ),
   },
   {
@@ -417,10 +356,7 @@ let data = [
     name: 'address_line1',
     homeIcon: true,
     Icon: (
-      <AccessTimeOutlinedIcon
-        className="text-gray mr-3"
-        sx={{ fontSize: '1.6rem' }}
-      />
+      <AccessTimeOutlinedIcon className="mr-3" sx={{ fontSize: '1.6rem' }} />
     ),
   },
   {
@@ -441,6 +377,7 @@ let data = [
     iconHidden: true,
     placeholderZip: 'Zip code',
     typeZip: 'number',
+    options: [],
   },
 ];
 
@@ -552,8 +489,8 @@ function App({ setValue, value }) {
                               <div
                                 className={classNames(
                                   state.isDraggable
-                                    ? '[&>input]:w-11/12 w-[447px]'
-                                    : '[&>input]:w-11/12 w-[447px] '
+                                    ? '[&>input]:w-12/12 w-[447px]'
+                                    : '[&>input]:w-12/12 w-[447px] '
                                 )}
                               >
                                 <InputIcon

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { classNames } from '../helper/classNames';
@@ -17,8 +18,8 @@ function DropdownAndInput({
   return (
     <div
       className={classNames(
-        'flex flex-row justify-between mt-2',
-        width ? 'w-[100%]' : 'w-[91%]',
+        'flex flex-row justify-between',
+        width ? 'w-[100%]' : 'w-[82%]',
         specificWidth
       )}
     >
@@ -28,12 +29,12 @@ function DropdownAndInput({
           setState={setState}
           state={state}
           name={item ? item.name1 : ''}
-          options={cities}
+          options={[]}
           // noIcon={true}
           removeClockIcon={true}
         />
       </div>
-      <div className="border-blue w-7/12 -ml-7 mt-0.5">
+      <div className="border-blue w-7/12 -ml-7 mt-1">
         <InputIcon
           item={item}
           setState={setState}

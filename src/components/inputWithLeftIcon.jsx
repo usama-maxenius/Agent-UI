@@ -4,11 +4,12 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const Input = styled.input`
-  width: 99% !important;
+  width: ${(props) => (props.widthControl ? '82%' : `99%`)};
   height: 50px;
   background: white;
   color: #16161640;
   padding-left: 42px;
+  margin-top: 10px;
   font-size: 20px;
   background: #fafafa 0% 0% no-repeat padding-box;
   outline: none;
@@ -37,20 +38,29 @@ let leftIconStyle = {
 InputIcon.propTypes = {
   item: PropTypes.object,
 };
-export default function InputIcon({ item, setState, state, name }) {
+export default function InputIcon({
+  item,
+  setState,
+  state,
+  name,
+  widthControl,
+}) {
   return (
     <React.Fragment>
-      <HomeRounded sx={leftIconStyle} />
-      <Input
-        placeholder={item.placeholder}
-        name={name}
-        onChange={(e) => {
-          setState({
-            ...state,
-            [e.target.name]: e.target.value,
-          });
-        }}
-      />
+      <span>
+        <HomeRounded sx={leftIconStyle} />
+        <Input
+          widthControl={widthControl}
+          placeholder={item.placeholder}
+          name={name}
+          onChange={(e) => {
+            setState({
+              ...state,
+              [e.target.name]: e.target.value,
+            });
+          }}
+        />
+      </span>
     </React.Fragment>
   );
 }

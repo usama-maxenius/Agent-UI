@@ -30,8 +30,10 @@ export default function DropdownWithSearch({
     ...options,
   ];
   const [selected, setSelected] = useState(people[0]);
+  const [changeColor, setChangeColor] = useState(false);
   const dispatch = useDispatch();
   const onChangeHandler = (prop) => {
+    setChangeColor(true);
     setSelected(prop);
     let obj = {
       question_key: placeholder,
@@ -53,28 +55,25 @@ export default function DropdownWithSearch({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              'relative w-full cursor-default rounded-lg bg-lightGray py-2 pl-3 pr-10 text-left rounded border  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
-              program == true ? 'border-red' : 'border-gray',
+              'relative w-full cursor-default rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
+              // program == true ? 'border-red' : 'border-gray',
               callerID == true
                 ? 'border-blue  h-[52px] font-Poppin text-base rounded-[8px]'
-                : 'sm:text-sm'
+                : 'sm:text-sm',
+              changeColor ? `border border-blue` : `border border-[#16161640]`
             )}
           >
             <span
               className={classNames(
                 'block truncate  font-Poppin',
-                program == true
-                  ? 'text-red'
-                  : callerID == true
-                  ? 'text-blue'
-                  : 'text-gray'
+                changeColor ? 'text-blue' : 'text-gray'
               )}
             >
-              {Icon
-                ? Icon
-                : !callerID && (
-                    <SupportAgentRoundedIcon className="text-gray mr-3" />
-                  )}
+              <span
+                className={classNames(changeColor ? `text-blue` : `text-gray`)}
+              >
+                {Icon ? Icon : !callerID && <SupportAgentRoundedIcon />}
+              </span>
               {selected.OptionLabel}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

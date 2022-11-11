@@ -1,7 +1,12 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
+import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
+import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
+import MilitaryTechRoundedIcon from '@mui/icons-material/MilitaryTechRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
+import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
+import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
 import Grid from '@mui/material/Grid';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -19,7 +24,7 @@ import {
   IconWrapper,
   MainWrapper,
   // eslint-disable-next-line prettier/prettier
-  MediumPoppin
+  MediumPoppin,
 } from './styled/educationForm.style';
 
 let BottomNoteWrapper = styled.div`
@@ -29,10 +34,10 @@ let BottomNoteWrapper = styled.div`
 function generateArrayOfYears(firstString) {
   var max = new Date().getFullYear();
   var min = max - 47;
-  var years = [{ name: firstString, value: '0' }];
+  var years = [{ OptionLabel: firstString, OptionValue: '0' }];
 
   for (var i = max; i >= min; i--) {
-    years.push({ name: i, value: i });
+    years.push({ OptionLabel: i, OptionValue: i });
   }
   return years;
 }
@@ -42,71 +47,86 @@ let data = [
     title: 'Firstly, what year did you graduate from high school?',
     options: generateArrayOfYears('High School Graduation year'),
     dropdown: true,
-    name: 'hsyear', 
-    styleClasses: "ml-[6px] mt-[26px]",
+    name: 'hsyear',
+    styleClasses: 'mt-[26px]',
+    // Icon: <Icon />
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title: 'And that was in the US?',
     options: [
-      { name: 'Graduated in the US?', value: '0' },
-      { name: 'Yes', value: 'yes' },
-      { name: 'No', value: 'no' },
+      { OptionLabel: 'Graduated in the US?', OptionValue: '0' },
+      { OptionLabel: 'Yes', OptionValue: 'yes' },
+      { OptionLabel: 'No', OptionValue: 'no' },
     ],
     dropdown: true,
     name: 'graduated_in_us',
-    styleClasses: "ml-[6px] mt-[26px]",
+    name1: 'graduated_in_us',
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title: 'And just to check, you are a US Citizen?',
     options: [
-      { name: 'US Citizen?', value: '0' },
-      { name: 'Yes', value: 'yes' },
-      { name: 'No', value: 'no' },
+      { OptionLabel: 'US Citizen?', OptionValue: '0' },
+      { OptionLabel: 'Yes', OptionValue: 'yes' },
+      { OptionLabel: 'No', OptionValue: 'no' },
     ],
     dropdown: true,
     name: 'us_citizen',
-    styleClasses: "ml-[6px] mt-[26px]",
+    name1: 'us_citizen',
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title:
       'Great, can I ask is high school the highest level of education you’ve completed?',
     options: [
-      { name: 'Highest level of education', value: '0' },
-      { name: 'Doctoral', value: 'Doctoral' },
-      { name: 'Masters', value: 'Masters' },
-      { name: 'Bachelors', value: 'Bachelors' },
-      { name: 'Associates', value: 'Associates' },
+      { OptionLabel: 'Highest level of education', OptionValue: '0' },
+      { OptionLabel: 'Doctoral', OptionValue: 'Doctoral' },
+      { OptionLabel: 'Masters', OptionValue: 'Masters' },
+      { OptionLabel: 'Bachelors', OptionValue: 'Bachelors' },
+      { OptionLabel: 'Associates', OptionValue: 'Associates' },
       {
         name: 'Some College 31-60 Credits',
-        value: 'Some College 31-60 Credits',
+        OptionValue: 'Some College 31-60 Credits',
       },
       {
         name: 'Some College 11-30 Credits',
-        value: 'Some College 11-30 Credits',
+        OptionValue: 'Some College 11-30 Credits',
       },
-      { name: 'Some College 1-10 Credits', value: 'Some College 1-10 Credits' },
-      { name: 'High School Diploma', value: 'High School Diploma' },
-      { name: 'GED', value: 'GED' },
+      {
+        OptionLabel: 'Some College 1-10 Credits',
+        OptionValue: 'Some College 1-10 Credits',
+      },
+      {
+        OptionLabel: 'High School Diploma',
+        OptionValue: 'High School Diploma',
+      },
+      { OptionLabel: 'GED', OptionValue: 'GED' },
       {
         name: 'No High School Diploma or GED',
-        value: 'No High School Diploma or GED',
+        OptionValue: 'No High School Diploma or GED',
       },
     ],
     dropdown: true,
     name: 'current_education_level',
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title: 'Do you have unrestricted access to a computer and internet?',
     options: [
-      { name: 'Internet access?', value: '0' },
-      { name: 'Yes', value: 'yes' },
-      { name: 'No', value: 'no' },
+      { OptionLabel: 'Internet access?', OptionValue: '0' },
+      { OptionLabel: 'Yes', OptionValue: 'yes' },
+      { OptionLabel: 'No', OptionValue: 'no' },
     ],
     dropdown: true,
     name: 'computer_internet_access',
+    name1: 'computer_internet_access',
     iconWifi: true,
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <WifiRoundedIcon />,
   },
 ];
 let personalDetails = [
@@ -116,164 +136,213 @@ let personalDetails = [
     dropdown: true,
     name: 'age',
     iconCalendar: true,
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <CalendarMonthRoundedIcon />,
   },
   {
     title: 'Are you associated with the military at all?',
     options: [
-      { name: 'Military association', value: '0' },
-      { name: 'Yes', value: 'yes' },
-      { name: 'No', value: 'no' },
+      { OptionLabel: 'Military association', OptionValue: '0' },
+      { OptionLabel: 'Yes', OptionValue: 'yes' },
+      { OptionLabel: 'No', OptionValue: 'no' },
     ],
     dropdown: true,
     name: 'military_status',
+    name1: 'military_status',
     iconMilitary: true,
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <MilitaryTechRoundedIcon />,
   },
   {
     title:
       'Okay, and have you been in contact with any Schools in the past 6 months?',
     options: [
-      { name: 'In contact with schools?', value: '2' },
-      { name: 'Yes', value: '0' },
-      { name: 'No', value: '1' },
+      { OptionLabel: 'In contact with schools?', OptionValue: '2' },
+      { OptionLabel: 'Yes', OptionValue: '0' },
+      { OptionLabel: 'No', OptionValue: '1' },
     ],
     name: 'is_contacted_by_school',
+    name1: 'is_contacted_by_school',
     dropdown: true,
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
 ];
 let enrolment = [
   {
     title: 'Please tell me the area of study you’re interested in:',
     options: [
-      { name: 'Area of study', value: 'Area of study' },
-      { name: 'Art & Design', value: 'Art & Design' },
-      { name: 'Business', value: 'Business' },
-      { name: 'Computers & Technology', value: 'Computers & Technology' },
-      { name: 'Criminal Justice', value: 'Criminal Justice' },
-      { name: 'Culinary', value: 'Culinary' },
-      { name: 'Education & Teaching', value: 'Education & Teaching' },
-      { name: 'Entertainment', value: 'Entertainment' },
-      { name: 'Health & Wellness', value: 'Health & Wellness' },
-      { name: 'Hospitality', value: 'Hospitality' },
-      { name: 'Language', value: 'Language' },
-      { name: 'Legal & Paralegal', value: 'Legal & Paralegal' },
-      { name: 'Liberal Arts', value: 'Liberal Arts' },
+      { OptionLabel: 'Area of study', OptionValue: 'Area of study' },
+      { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
+      { OptionLabel: 'Business', OptionValue: 'Business' },
+      {
+        OptionLabel: 'Computers & Technology',
+        OptionValue: 'Computers & Technology',
+      },
+      { OptionLabel: 'Criminal Justice', OptionValue: 'Criminal Justice' },
+      { OptionLabel: 'Culinary', OptionValue: 'Culinary' },
+      {
+        OptionLabel: 'Education & Teaching',
+        OptionValue: 'Education & Teaching',
+      },
+      { OptionLabel: 'Entertainment', OptionValue: 'Entertainment' },
+      { OptionLabel: 'Health & Wellness', OptionValue: 'Health & Wellness' },
+      { OptionLabel: 'Hospitality', OptionValue: 'Hospitality' },
+      { OptionLabel: 'Language', OptionValue: 'Language' },
+      { OptionLabel: 'Legal & Paralegal', OptionValue: 'Legal & Paralegal' },
+      { OptionLabel: 'Liberal Arts', OptionValue: 'Liberal Arts' },
       {
         name: 'Massage And Physical Therapy',
-        value: 'Massage And Physical Therapy',
+        OptionValue: 'Massage And Physical Therapy',
       },
-      { name: 'Nursing', value: 'Nursing' },
-      { name: 'Psychology And Counseling', value: 'Psychology And Counseling' },
-      { name: 'Religious Studies', value: 'Religious Studies' },
-      { name: 'Science & Engineering', value: 'Science & Engineering' },
-      { name: 'Trade & Vo-Tech', value: 'Trade & Vo-Tech' },
+      { OptionLabel: 'Nursing', OptionValue: 'Nursing' },
+      {
+        OptionLabel: 'Psychology And Counseling',
+        OptionValue: 'Psychology And Counseling',
+      },
+      { OptionLabel: 'Religious Studies', OptionValue: 'Religious Studies' },
+      {
+        OptionLabel: 'Science & Engineering',
+        OptionValue: 'Science & Engineering',
+      },
+      { OptionLabel: 'Trade & Vo-Tech', OptionValue: 'Trade & Vo-Tech' },
     ],
     dropdown: true,
     name: 'areas_of_interest',
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title:
       'Aside from <interest> is there another area of study you’re interested in?',
     options: [
-      { name: 'Additional area of study', value: 'Area of study' },
-      { name: 'Art & Design', value: 'Art & Design' },
-      { name: 'Business', value: 'Business' },
-      { name: 'Computers & Technology', value: 'Computers & Technology' },
-      { name: 'Criminal Justice', value: 'Criminal Justice' },
-      { name: 'Culinary', value: 'Culinary' },
-      { name: 'Education & Teaching', value: 'Education & Teaching' },
-      { name: 'Entertainment', value: 'Entertainment' },
-      { name: 'Health & Wellness', value: 'Health & Wellness' },
-      { name: 'Hospitality', value: 'Hospitality' },
-      { name: 'Language', value: 'Language' },
-      { name: 'Legal & Paralegal', value: 'Legal & Paralegal' },
-      { name: 'Liberal Arts', value: 'Liberal Arts' },
+      { OptionLabel: 'Additional area of study', OptionValue: 'Area of study' },
+      { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
+      { OptionLabel: 'Business', OptionValue: 'Business' },
+      {
+        OptionLabel: 'Computers & Technology',
+        OptionValue: 'Computers & Technology',
+      },
+      { OptionLabel: 'Criminal Justice', OptionValue: 'Criminal Justice' },
+      { OptionLabel: 'Culinary', OptionValue: 'Culinary' },
+      {
+        OptionLabel: 'Education & Teaching',
+        OptionValue: 'Education & Teaching',
+      },
+      { OptionLabel: 'Entertainment', OptionValue: 'Entertainment' },
+      { OptionLabel: 'Health & Wellness', OptionValue: 'Health & Wellness' },
+      { OptionLabel: 'Hospitality', OptionValue: 'Hospitality' },
+      { OptionLabel: 'Language', OptionValue: 'Language' },
+      { OptionLabel: 'Legal & Paralegal', OptionValue: 'Legal & Paralegal' },
+      { OptionLabel: 'Liberal Arts', OptionValue: 'Liberal Arts' },
       {
         name: 'Massage And Physical Therapy',
-        value: 'Massage And Physical Therapy',
+        OptionValue: 'Massage And Physical Therapy',
       },
-      { name: 'Nursing', value: 'Nursing' },
-      { name: 'Psychology And Counseling', value: 'Psychology And Counseling' },
-      { name: 'Religious Studies', value: 'Religious Studies' },
-      { name: 'Science & Engineering', value: 'Science & Engineering' },
-      { name: 'Trade & Vo-Tech', value: 'Trade & Vo-Tech' },
+      { OptionLabel: 'Nursing', OptionValue: 'Nursing' },
+      {
+        OptionLabel: 'Psychology And Counseling',
+        OptionValue: 'Psychology And Counseling',
+      },
+      { OptionLabel: 'Religious Studies', OptionValue: 'Religious Studies' },
+      {
+        OptionLabel: 'Science & Engineering',
+        OptionValue: 'Science & Engineering',
+      },
+      { OptionLabel: 'Trade & Vo-Tech', OptionValue: 'Trade & Vo-Tech' },
     ],
     dropdown: true,
     name: 'another_areas_of_interest',
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title: 'Any other area of study?',
     options: [
-      { name: 'Additional area of study', value: 'Area of study' },
-      { name: 'Art & Design', value: 'Art & Design' },
-      { name: 'Business', value: 'Business' },
-      { name: 'Computers & Technology', value: 'Computers & Technology' },
-      { name: 'Criminal Justice', value: 'Criminal Justice' },
-      { name: 'Culinary', value: 'Culinary' },
-      { name: 'Education & Teaching', value: 'Education & Teaching' },
-      { name: 'Entertainment', value: 'Entertainment' },
-      { name: 'Health & Wellness', value: 'Health & Wellness' },
-      { name: 'Hospitality', value: 'Hospitality' },
-      { name: 'Language', value: 'Language' },
-      { name: 'Legal & Paralegal', value: 'Legal & Paralegal' },
-      { name: 'Liberal Arts', value: 'Liberal Arts' },
+      { OptionLabel: 'Additional area of study', OptionValue: 'Area of study' },
+      { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
+      { OptionLabel: 'Business', OptionValue: 'Business' },
+      {
+        OptionLabel: 'Computers & Technology',
+        OptionValue: 'Computers & Technology',
+      },
+      { OptionLabel: 'Criminal Justice', OptionValue: 'Criminal Justice' },
+      { OptionLabel: 'Culinary', OptionValue: 'Culinary' },
+      {
+        OptionLabel: 'Education & Teaching',
+        OptionValue: 'Education & Teaching',
+      },
+      { OptionLabel: 'Entertainment', OptionValue: 'Entertainment' },
+      { OptionLabel: 'Health & Wellness', OptionValue: 'Health & Wellness' },
+      { OptionLabel: 'Hospitality', OptionValue: 'Hospitality' },
+      { OptionLabel: 'Language', OptionValue: 'Language' },
+      { OptionLabel: 'Legal & Paralegal', OptionValue: 'Legal & Paralegal' },
+      { OptionLabel: 'Liberal Arts', OptionValue: 'Liberal Arts' },
       {
         name: 'Massage And Physical Therapy',
-        value: 'Massage And Physical Therapy',
+        OptionValue: 'Massage And Physical Therapy',
       },
-      { name: 'Nursing', value: 'Nursing' },
-      { name: 'Psychology And Counseling', value: 'Psychology And Counseling' },
-      { name: 'Religious Studies', value: 'Religious Studies' },
-      { name: 'Science & Engineering', value: 'Science & Engineering' },
-      { name: 'Trade & Vo-Tech', value: 'Trade & Vo-Tech' },
+      { OptionLabel: 'Nursing', OptionValue: 'Nursing' },
+      {
+        OptionLabel: 'Psychology And Counseling',
+        OptionValue: 'Psychology And Counseling',
+      },
+      { OptionLabel: 'Religious Studies', OptionValue: 'Religious Studies' },
+      {
+        OptionLabel: 'Science & Engineering',
+        OptionValue: 'Science & Engineering',
+      },
+      { OptionLabel: 'Trade & Vo-Tech', OptionValue: 'Trade & Vo-Tech' },
     ],
     dropdown: true,
     name: 'any_other_areas_of_interest',
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title:
       'Wow, great! And when you go back to school, are you looking for campus, online, or would you consider both options?',
     options: [
-      { name: 'Location preference', value: '0' },
-      { name: 'Either', value: 'either' },
-      { name: 'Online', value: 'Online' },
-      { name: 'Campus', value: 'Campus' },
+      { OptionLabel: 'Location preference', OptionValue: '0' },
+      { OptionLabel: 'Either', OptionValue: 'either' },
+      { OptionLabel: 'Online', OptionValue: 'Online' },
+      { OptionLabel: 'Campus', OptionValue: 'Campus' },
     ],
     dropdown: true,
     name: 'online_or_campus',
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <SchoolRoundedIcon />,
   },
   {
     title:
       'If you found the right school and program, would you be ready within 3 months?',
     options: [
-      { name: 'Enrollment timeline', value: '0' },
-      { name: 'Yes', value: 'yes' },
-      { name: 'No', value: 'no' },
+      { OptionLabel: 'Enrollment timeline', OptionValue: '0' },
+      { OptionLabel: 'Yes', OptionValue: 'yes' },
+      { OptionLabel: 'No', OptionValue: 'no' },
     ],
     dropdown: true,
     name: 'can_complete_enrollment',
+    name1: 'can_complete_enrollment',
     iconCalendar: true,
-    styleClasses: "ml-[6px] mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <CalendarMonthRoundedIcon />,
   },
 ];
 let contact = [
   {
     options: [
-      { name: 'Gender', value: '1' },
-      { name: 'Male', value: 'm' },
-      { name: 'Female', value: 'f' },
+      { OptionLabel: 'Gender', OptionValue: '1' },
+      { OptionLabel: 'Male', OptionValue: 'm' },
+      { OptionLabel: 'Female', OptionValue: 'f' },
     ],
     isDouble: true,
     name1: 'gender',
     name2: 'first_name',
     iconHidden: true,
-    styleClasses: "mt-[26px] w-[86%]",
+    styleClasses: 'w-[83%]',
+    styleHeight: 'mt-[26px]',
+    genderWidth: true,
   },
   {
     title: 'Just to check how your last name is spelled',
@@ -281,7 +350,7 @@ let contact = [
     bottomLine: true,
     name: 'last_name',
     placeholder: 'Your last name',
-    styleClasses: " mt-[26px] w-[86%]",
+    styleClasses: ' mt-[26px] w-[83%]',
   },
   {
     title:
@@ -289,22 +358,23 @@ let contact = [
     ticked: true,
     name: 'phone',
     placeholder: 'Your phone number',
-    styleClasses: " mt-[26px] w-[86%]",
+    styleClasses: ' mt-[26px] w-[83%]',
   },
   {
     title:
       'Perfect, and when would be the best time for you to receive a call?',
     options: [
-      { name: 'Time to contact', value: '1' },
-      { name: 'Morning', value: 'morning' },
-      { name: 'Noon', value: 'noon' },
-      { name: 'Afternoon', value: 'afternoon' },
-      { name: 'Evening', value: 'evening' },
+      { OptionLabel: 'Time to contact', OptionValue: '1' },
+      { OptionLabel: 'Morning', OptionValue: 'morning' },
+      { OptionLabel: 'Noon', OptionValue: 'noon' },
+      { OptionLabel: 'Afternoon', OptionValue: 'afternoon' },
+      { OptionLabel: 'Evening', OptionValue: 'evening' },
     ],
     dropdown: true,
     name: 'time_to_call',
     iconClock: true,
-    styleClasses: " mt-[26px]",
+    styleClasses: ' mt-[26px]',
+    Icon: <AccessTimeRoundedIcon />,
   },
   {
     title:
@@ -312,7 +382,7 @@ let contact = [
     ticked: true,
     name: 'email',
     placeholder: 'Your email',
-    styleClasses: "mt-[26px] w-[86%]",
+    styleClasses: 'mt-[26px] w-[83%]',
   },
   {
     title: 'Great, and lastly is what is your address?',
@@ -328,7 +398,11 @@ let contact = [
     iconHidden: true,
     placeholderZip: 'Zip code',
     typeZip: 'number',
-    styleClasses: "mt-[26px] w-[86%]",
+    styleClasses: 'flex flex-col justify-between',
+    styleHeight: 'h-[200px]',
+    options: [],
+    agentWidth: true,
+    zipWidth: true,
   },
 ];
 
