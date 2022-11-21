@@ -419,7 +419,8 @@ function App({ setValue, value }) {
                     homeIcon,
                   } = element;
                   if (name == 'state') {
-                    options = states.states;
+                    if (states) options = states.states;
+                    else options = [];
                   }
                   return (
                     <Draggable key={id} draggableId={id} index={index}>
