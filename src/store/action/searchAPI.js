@@ -2,15 +2,15 @@
 /* eslint-disable no-undef */
 import { get, post } from '../../helper/api_handler';
 
-let myIP = async () => {
-  let result = await get('https://geolocation-db.com/json/');
-  return result.IPv4;
-};
+// let myIP = async () => {
+//   let result = await get('https://geolocation-db.com/json/');
+//   return result.IPv4;
+// };
 
 export let searchSchools = (data, navigate) => {
   return async (dispatch) => {
-    let IP = await myIP();
-    console.log(IP);
+    // let IP = await myIP();
+    // console.log(IP);
     let {
       gender,
       first_name,
