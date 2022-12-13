@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
@@ -9,10 +11,12 @@ import {
   IconWrapper,
   MainWrapper,
 } from './styled/educationForm.style';
+import { SubmitAPI } from '../store/action/searchAPI';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -24,6 +28,29 @@ const Wrapper = styled('div')(() => ({
 const submitMatch = () => {
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
+  let dispatchRedux = useDispatch();
+  let [sParams] = useSearchParams();
+  let { transferResult, selectedProgram, selectedSchool } = useSelector(
+    (store) => store.InitReducer
+  );
+
+  const submit = () => {
+    let body = {
+      accesskey: process.env.REACT_APP_ACCESS_KEY,
+      search_identifier: sParams.get('search'),
+      search_result_identifier: selectedSchool?.result_identifier,
+      search_result_set_identifier: selectedSchool?.result_set_identifier,
+      answers: [
+        {
+          question_key: transferResult?.AdvisorFieldName,
+          question_value: question?.QuestionValue,
+        },
+        selectedProgram,
+      ],
+    };
+    console.log('Body Here Console----->', body);
+    dispatchRedux(SubmitAPI(body, navigate));
+  };
 
   return (
     <MainWrapper>
@@ -84,9 +111,10 @@ const submitMatch = () => {
           </div>
 
           <RecordingDisclosed
-            onClick={() => {
-              navigate('/school/matches/submittingLoading');
-            }}
+            // onClick={() => {
+            //   navigate('/school/matches/submittingLoading');
+            // }}
+            onClick={submit}
           >
             Submit Match
           </RecordingDisclosed>

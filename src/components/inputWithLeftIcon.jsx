@@ -1,6 +1,7 @@
 import { HomeRounded } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -45,6 +46,8 @@ export default function InputIcon({
   name,
   widthControl,
 }) {
+  const dispatch = useDispatch();
+
   return (
     <React.Fragment>
       <span>
@@ -54,6 +57,13 @@ export default function InputIcon({
           placeholder={item.placeholder}
           name={name}
           onChange={(e) => {
+            dispatch({
+              type: 'USER_DETAILS',
+              payload: {
+                ...state,
+                [e.target.name]: e.target.value,
+              },
+            });
             setState({
               ...state,
               [e.target.name]: e.target.value,

@@ -6,6 +6,7 @@ let init = {
   selectedSchool: false,
   selectedProgram: false,
   mode: false,
+  searchDetails: undefined,
 };
 
 export function InitReducer(state = init, action) {
@@ -62,6 +63,11 @@ export function InitReducer(state = init, action) {
       return {
         ...state,
         selectedProgram: payload,
+      };
+    case 'USER_DETAILS':
+      return {
+        ...state,
+        searchDetails: payload,
       };
 
     default:

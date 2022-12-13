@@ -15,10 +15,11 @@ import {
   Typography,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useContextCustom } from '../../store/context';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const HeaderWrapper = styled(Paper)(({ expand }) => ({
   backgroundColor: '#FFFFFF',
@@ -232,6 +233,34 @@ const Header = () => {
   let { mode } = useSelector((store) => store.InitReducer);
   let dispatch = useDispatch();
   let expand = useContextCustom().state.expand;
+  const { isAuthenticated, logout, user } = useAuth0();
+
+  let [callerTime, setCallerTime] = useState(0);
+  let [isTimer, setIsTimer] = useState(false);
+
+  useEffect(() => {
+    const interval =
+      isTimer &&
+      setInterval(() => {
+        setCallerTime((seconds) => seconds + 1);
+      }, 1000);
+    return () => clearInterval(interval);
+  }, [isTimer]);
+
+  const startTimer = (e) => {
+    setCallerTime(0);
+    setIsTimer(true);
+  };
+
+  const stopTimer = (e) => {
+    setIsTimer(false);
+  };
+
+  const getCallTime = (time) => {
+    var minutes = Math.floor(time / 60);
+    var seconds = time - minutes * 60;
+    return minutes + ':' + seconds;
+  };
 
   return (
     <HeaderWrapper expand={expand}>
@@ -245,7 +274,13 @@ const Header = () => {
                     {item.title}
                   </Typography>
                   <Typography component="p" style={style.subTitle}>
-                    {item.subTitle}
+                    {item.title === 'Current Call'
+                      ? getCallTime(callerTime)
+                      : item.title === 'Caller Name'
+                      ? isAuthenticated
+                        ? user.name
+                        : 'None'
+                      : item.subTitle}
                   </Typography>
                   {item.active ? (
                     <Divider sx={style.divider} />
@@ -263,10 +298,10 @@ const Header = () => {
               <MicOffRounded sx={style.iconStyle} />
             </IconButton>
             <IconButton>
-              <PhonePausedRounded sx={style.iconStyle} />
+              <PhonePausedRounded sx={style.iconStyle} onClick={startTimer} />
             </IconButton>
             <IconButton>
-              <CallEndRounded sx={style.micIcon} />
+              <CallEndRounded sx={style.micIcon} onClick={stopTimer} />
             </IconButton>
           </IconWrapper>
         </Grid>
@@ -313,6 +348,20 @@ const Header = () => {
             <Typography component="p" style={style.headerDropDown}>
               Today <ExpandMoreRounded />
             </Typography>
+            {isAuthenticated && (
+              <Typography
+                component="p"
+                sx={{ fontWeight: 'bold', cursor: 'pointer' }}
+                style={style.headerDropDown}
+                onClick={() => {
+                  if (isAuthenticated) {
+                    logout({ returnTo: window.location.origin });
+                  }
+                }}
+              >
+                Logout
+              </Typography>
+            )}
           </TitleWrapper>
         </Grid>
       </Grid>
