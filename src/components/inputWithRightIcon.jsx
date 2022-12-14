@@ -2,6 +2,7 @@
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import PropTypes from 'prop-types';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -54,15 +55,23 @@ export default function InputIcon({
     // left: callerID ? '-30px' : '-40px',
     width: '10%',
   };
+  const dispatch = useDispatch();
 
   return (
-    <div className="flex flex-row w-full border rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
+    <div className="flex flex-row w-full rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
       <input
         className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
+          dispatch({
+            type: 'USER_DETAILS',
+            payload: {
+              ...state,
+              [e.target.name]: e.target.value,
+            },
+          });
           setState({
             ...state,
             [e.target.name]: e.target.value,

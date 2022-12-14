@@ -100,6 +100,10 @@ export default function Dropdown({
         name={name}
         onChange={(e) => {
           setSelected(e.target.value);
+          dispatch({
+            type: 'USER_DETAILS',
+            payload: { ...state, [e.target.name]: e.target.value },
+          });
           setState({
             ...state,
             [e.target.name]: e.target.value,

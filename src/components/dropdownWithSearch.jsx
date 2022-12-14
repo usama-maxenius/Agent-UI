@@ -14,6 +14,8 @@ export default function DropdownWithSearch({
   Icon,
   placeholder,
   program,
+  state,
+  setState,
   callerID,
   options,
   selectProgramHandler,
@@ -22,12 +24,13 @@ export default function DropdownWithSearch({
   setCallerState,
   name,
 }) {
+  const options1 = options !== undefined ? options : [];
   const people = [
     {
       OptionLabel: placeholder ? placeholder : 'Select an agent to transfer to',
       OptionValue: placeholder ? placeholder : 'Select an agent to transfer to',
     },
-    ...options,
+    ...options1,
   ];
   const [selected, setSelected] = useState(people[0]);
   const [changeColor, setChangeColor] = useState(false);
@@ -35,6 +38,11 @@ export default function DropdownWithSearch({
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
+    dispatch({
+      type: 'USER_DETAILS',
+      payload: { ...state, [name]: prop.OptionValue },
+    });
+    setState({ ...state, [name]: prop.OptionValue });
     let obj = {
       question_key: placeholder,
       question_value: prop.OptionValue,
@@ -94,7 +102,7 @@ export default function DropdownWithSearch({
             leaveTo="opacity-0"
           >
             <Listbox.Options className="absolute z-30 no-scrollbar mt-1 max-h-80 w-full overflow-auto rounded-md bg-lightGray py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {options?.length == 0 && (
+              {options1?.length == 0 && (
                 <div
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${

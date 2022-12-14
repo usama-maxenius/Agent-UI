@@ -15,6 +15,8 @@ export default function DropdownWithSearch({
   placeholder,
   item,
   options,
+  state,
+  setState,
   selectProgramHandler,
   recommendedIcon,
   callerState,
@@ -39,6 +41,11 @@ export default function DropdownWithSearch({
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
+    dispatch({
+      type: 'USER_DETAILS',
+      payload: { ...state, [name]: prop.OptionValue },
+    });
+    setState({ ...state, [name]: prop.OptionValue });
     let obj = {
       question_key: placeholder,
       question_value: prop.OptionValue,

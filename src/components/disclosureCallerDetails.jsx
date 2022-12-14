@@ -10,8 +10,8 @@ function DisclosureCallerDetails() {
           <DropDownWithIcon placeholder="Male" callerID={true} />
         </div>
       </div>
-      <div className="w-[527px]">
-        <div className="-mt-2.5">
+      <div className="w-[443px]">
+        <div className="mt-4">
           <InputWithRightIcon
             callerID={true}
             placeholder="Angel"
@@ -19,8 +19,8 @@ function DisclosureCallerDetails() {
           />
         </div>
       </div>
-      <div className="w-[527px]">
-        <div className="-mt-2.5">
+      <div className="w-[443px]">
+        <div className="mt-4">
           <InputWithRightIcon
             width={'84%'}
             callerID={true}
@@ -46,8 +46,8 @@ function DisclosureCallerDetails() {
           />
         </div>
       </div>
-      <div className="w-[527px]">
-        <div className="-mt-2.5">
+      <div className="w-[443px]">
+        <div className="mt-4">
           <InputWithRightIcon
             width={'84%'}
             callerID={true}
@@ -60,8 +60,8 @@ function DisclosureCallerDetails() {
           <DropDownWithIcon placeholder="Time to contact" callerID={true} />
         </div>
       </div>
-      <div className="w-[527px]">
-        <div className="-mt-2.5">
+      <div className="w-[443px]">
+        <div className="mt-4">
           <InputWithRightIcon
             width={'84%'}
             callerID={true}
@@ -69,8 +69,8 @@ function DisclosureCallerDetails() {
           />
         </div>
       </div>
-      <div className="w-[527px]">
-        <div className="-mt-2.5">
+      <div className="w-[443px]">
+        <div className="mt-4">
           <InputWithRightIcon
             width={'84%'}
             callerID={true}

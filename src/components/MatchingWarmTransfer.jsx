@@ -34,7 +34,7 @@ export default function SchoolCards({ setPopUp }) {
         shareCount: 2,
       },
     ],
-    '4 Direct offers': [
+    ' Direct offers': [
       {
         id: 1,
         title: 'Is tech making coffee better or worse?',
@@ -50,7 +50,7 @@ export default function SchoolCards({ setPopUp }) {
         shareCount: 12,
       },
     ],
-    '0 External transfers': [
+    ' External transfers': [
       {
         id: 1,
         title: 'Ask Me Anything: 10 answers to your questions about coffee',
@@ -98,6 +98,7 @@ export default function SchoolCards({ setPopUp }) {
       payload: selected[0],
     });
   }, [selected]);
+
   // Methods for Tab2
   // const [program, setProgram] = useState(null);
 
@@ -111,6 +112,17 @@ export default function SchoolCards({ setPopUp }) {
   //   }
   // };
   console.log(pingResult);
+
+  const warmTransferOffers = schoolsList?.filter(
+    (item) => item.result_type === 'transfer' && item
+  );
+  const directOffers = schoolsList?.filter(
+    (item) => item.result_type === 'lead' && item
+  );
+  const externalOffers = schoolsList?.filter(
+    (item) =>
+      item.result_type !== 'lead' && item.result_type !== 'transfer' && item
+  );
 
   return (
     <div className="w-full px-2 py-4 sm:px-0">
@@ -130,15 +142,16 @@ export default function SchoolCards({ setPopUp }) {
                 )
               }
             >
-              {key == 0 && schoolsList?.length}
-              {category}
+              {key === 0 && `${warmTransferOffers?.length} ${category}`}
+              {key === 1 && `${directOffers?.length} ${category}`}
+              {key === 2 && `${externalOffers?.length} ${category}`}
             </Tab>
           ))}
         </Tab.List>
         <Tab.Panels className="mt-4">
           <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
-              {schoolsList?.map((item, key) => (
+              {warmTransferOffers?.map((item, key) => (
                 <div className="mt-5" key={key}>
                   <ExpandableCard
                     setPopUp={setPopUp}
@@ -153,7 +166,7 @@ export default function SchoolCards({ setPopUp }) {
           </Tab.Panel>
           <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
-              {schoolsList?.map((item, key) => (
+              {directOffers?.map((item, key) => (
                 <div className="mt-5" key={key}>
                   <ExpandableCard
                     setPopUp={setPopUp}
