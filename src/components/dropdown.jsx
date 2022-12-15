@@ -65,9 +65,9 @@ export default function DropdownWithSearch({
     } else if (name === 'city') {
       dispatch({
         type: 'USER_DETAILS',
-        payload: { ...state, [name]: prop },
+        payload: { ...state, [name]: prop.OptionLabel },
       });
-      setState({ ...state, [name]: prop });
+      setState({ ...state, [name]: prop.OptionLabel });
     } else {
       dispatch({
         type: 'USER_DETAILS',
