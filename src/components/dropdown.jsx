@@ -1,12 +1,14 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getAllCities } from '../store/action';
+import { string } from 'prop-types';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCities, getAllStates } from '../store/action';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -25,27 +27,57 @@ export default function DropdownWithSearch({
   Icon,
 }) {
   // debugger;
+  const dispatch = useDispatch();
+  const { states } = useSelector((state) => state.InitReducer);
+  let { cities } = useSelector((store) => store.InitReducer);
+
+  useEffect(() => {
+    if (name === 'state') {
+      dispatch(getAllStates());
+    }
+  }, []);
+
   const people =
     item.options.length > 0
       ? [...item.options]
+      : name === 'state'
+      ? [...states?.states]
+      : name === 'city'
+      ? cities && [...cities]
       : [
           {
             OptionLabel: 'Select an agent to transfer to',
             OptionValue: 'Select an agent to transfer to',
           },
         ];
-  console.log(item);
+  console.log('dropdown field name --', item, name, cities);
+
   const [selected, setSelected] = useState(people[0]);
   const [changeColor, setChangeColor] = useState(false);
-  const dispatch = useDispatch();
+
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
-    dispatch({
-      type: 'USER_DETAILS',
-      payload: { ...state, [name]: prop.OptionValue },
-    });
-    setState({ ...state, [name]: prop.OptionValue });
+    console.log('dropdown selectors --', name, prop);
+    if (name === 'state') {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop.name },
+      });
+      setState({ ...state, [name]: prop.name });
+    } else if (name === 'city') {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop },
+      });
+      setState({ ...state, [name]: prop });
+    } else {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop.OptionValue },
+      });
+      setState({ ...state, [name]: prop.OptionValue });
+    }
     let obj = {
       question_key: placeholder,
       question_value: prop.OptionValue,
@@ -56,7 +88,7 @@ export default function DropdownWithSearch({
     }
 
     if (name == 'state') {
-      dispatch(getAllCities(prop.OptionValue));
+      dispatch(getAllCities(prop.name));
     }
   };
 
@@ -131,11 +163,15 @@ export default function DropdownWithSearch({
               )}
 
               {people.map((person, personIdx) => {
+                console.log('person --> ', person);
                 if (person.name) {
                   person.OptionLabel = person.name;
                 }
                 if (person.value) {
                   person.OptionValue - person.value;
+                }
+                if (typeof person === string) {
+                  person.OptionValue = person;
                 }
                 if (personIdx !== 0) {
                   return (

@@ -328,9 +328,13 @@ const Header = () => {
             <SwitchLabel checked={mode ? true : false}>Pro</SwitchLabel>
           </SwitchWrapper>
         </Grid>
-        <Grid item xs={4}>
+        <Grid
+          item
+          xs={4}
+          style={{ display: 'flex', justifyContent: 'flex-end' }}
+        >
           <TitleWrapper row spaceBetween marginTop>
-            {data2.map((item, idx) => (
+            {/* {data2.map((item, idx) => (
               <>
                 <TitleWrapper flexStart key={idx}>
                   <Typography component="p" style={style.title}>
@@ -347,7 +351,7 @@ const Header = () => {
             ))}
             <Typography component="p" style={style.headerDropDown}>
               Today <ExpandMoreRounded />
-            </Typography>
+            </Typography> */}
             {isAuthenticated && (
               <Typography
                 component="p"

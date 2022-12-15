@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
@@ -18,6 +19,8 @@ import constant from '../store/constant';
 import { useContextCustom } from '../store/context';
 import FormCard from './Card';
 import FinishedNotes from './finishedNotes';
+import { Dialog, Transition } from '@headlessui/react';
+
 import {
   FormHeader,
   IconButton,
@@ -406,6 +409,20 @@ let contact = [
   },
 ];
 
+const Button = styled('div')(() => ({
+  width: '388px',
+  color: '#f5f5f5',
+  borderRadius: '25px',
+  backgroundColor: ' #2541b2',
+  font: 'normal normal 600 22px/30px IBM Plex Sans',
+  textAlign: 'center',
+  padding: '11px',
+  marginTop: '42px',
+  border: '0px',
+  outline: '0px',
+  cursor: 'pointer',
+}));
+
 const EducationForm = () => {
   const { dispatch } = useContextCustom();
   const navigation = useNavigate();
@@ -434,6 +451,8 @@ const EducationForm = () => {
     another_areas_of_interest: '',
     any_other_areas_of_interest: '',
   });
+  const [showPopup, setShowPopup] = useState(false);
+
   let dispatchRedux = useDispatch();
   useEffect(() => {
     dispatchRedux(getAllStates());
@@ -442,97 +461,199 @@ const EducationForm = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatchRedux(searchSchools(state, navigation));
+    console.log('search handler -->', state);
+    var checkString = /^[A-Za-z\s]+$/;
+    var phoneNo = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    var zipRegex = /^\d{5}(-\d{4})?$/;
+    if (
+      state.gender.length > 0 &&
+      state.first_name.length > 0 &&
+      state.first_name.match(checkString) &&
+      state.last_name.length > 0 &&
+      state.last_name.match(checkString) &&
+      state.email.length > 0 &&
+      state.email.match(emailRegex) &&
+      state.phone.length > 0 &&
+      state.phone.match(phoneNo) &&
+      state.address_line1.length > 0 &&
+      state.city.length > 0 &&
+      state.state.length > 0 &&
+      state.zip_code.length > 0 &&
+      state.zip_code.match(zipRegex) > 0 &&
+      state.computer_internet_access.length > 0 &&
+      (state?.age?.length > 0 || state?.age > 0) &&
+      (state?.hsyear?.length > 0 || state?.hsyear > 0) &&
+      state.current_education_level.length > 0 &&
+      state.us_citizen.length > 0 &&
+      state.military_status.length > 0 &&
+      state.online_or_campus.length > 0 &&
+      state.is_contacted_by_school.length > 0 &&
+      state.graduated_in_us.length > 0 &&
+      state.time_to_call.length > 0 &&
+      state.areas_of_interest.length > 0 &&
+      state.another_areas_of_interest.length > 0 &&
+      state.any_other_areas_of_interest.length > 0
+    ) {
+      dispatchRedux(searchSchools(state, navigation));
+    } else {
+      setShowPopup(true);
+    }
   };
 
   return (
-    <MainWrapper>
-      <Grid container>
-        <Grid item xs={6}>
-          <FormHeader>
-            <MediumPoppin>Education</MediumPoppin>
-          </FormHeader>
+    <>
+      <MainWrapper>
+        <Grid container>
+          <Grid item xs={6}>
+            <FormHeader>
+              <MediumPoppin>Education</MediumPoppin>
+            </FormHeader>
+          </Grid>
+          <Grid
+            item
+            xs={6}
+            sx={{
+              display: 'flex',
+              justifyContent: 'right',
+              alignItems: 'right',
+            }}
+          >
+            <IconWrapper>
+              <IconButton
+                onClick={() => {
+                  dispatch({
+                    type: constant.HELP_DRAWER,
+                  });
+                }}
+              >
+                <LiveHelpRoundedIcon />
+              </IconButton>
+              <IconButton
+                onClick={() => {
+                  dispatch({
+                    type: constant.SECURITY_DRAWER,
+                  });
+                }}
+              >
+                <PolicyRoundedIcon />
+              </IconButton>
+            </IconWrapper>
+          </Grid>
         </Grid>
-        <Grid
-          item
-          xs={6}
-          sx={{ display: 'flex', justifyContent: 'right', alignItems: 'right' }}
-        >
-          <IconWrapper>
-            <IconButton
-              onClick={() => {
-                dispatch({
-                  type: constant.HELP_DRAWER,
-                });
-              }}
+        {data.map((item, key) => {
+          return (
+            <Fragment key={key}>
+              <FormCard item={item} setState={setState} state={state} />
+            </Fragment>
+          );
+        })}
+        <Grid container>
+          <Grid item xs={12}>
+            <FormHeader>
+              <MediumPoppin>Personal information</MediumPoppin>
+            </FormHeader>
+          </Grid>
+        </Grid>
+        {personalDetails.map((item, key) => {
+          return (
+            <Fragment key={key}>
+              <FormCard item={item} setState={setState} state={state} />
+            </Fragment>
+          );
+        })}
+        <Grid container>
+          <Grid item xs={12}>
+            <FormHeader>
+              <MediumPoppin>Enrollment & interests</MediumPoppin>
+            </FormHeader>
+          </Grid>
+        </Grid>
+        {enrolment.map((item, key) => {
+          return (
+            <Fragment key={key}>
+              <FormCard item={item} setState={setState} state={state} />
+            </Fragment>
+          );
+        })}
+        <Grid container>
+          <Grid item xs={12}>
+            <FormHeader>
+              <MediumPoppin>Contact information</MediumPoppin>
+            </FormHeader>
+          </Grid>
+        </Grid>
+        {contact.map((item, key) => {
+          return (
+            <Fragment key={key}>
+              <FormCard item={item} setState={setState} state={state} />
+            </Fragment>
+          );
+        })}
+        <BottomNoteWrapper>
+          <FinishedNotes searchHandler={searchHandler} />
+        </BottomNoteWrapper>
+      </MainWrapper>
+      {showPopup && (
+        <Transition appear show={showPopup} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-10"
+            onClose={() => setShowPopup(false)}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
             >
-              <LiveHelpRoundedIcon />
-            </IconButton>
-            <IconButton
-              onClick={() => {
-                dispatch({
-                  type: constant.SECURITY_DRAWER,
-                });
-              }}
-            >
-              <PolicyRoundedIcon />
-            </IconButton>
-          </IconWrapper>
-        </Grid>
-      </Grid>
-      {data.map((item, key) => {
-        return (
-          <Fragment key={key}>
-            <FormCard item={item} setState={setState} state={state} />
-          </Fragment>
-        );
-      })}
-      <Grid container>
-        <Grid item xs={12}>
-          <FormHeader>
-            <MediumPoppin>Personal information</MediumPoppin>
-          </FormHeader>
-        </Grid>
-      </Grid>
-      {personalDetails.map((item, key) => {
-        return (
-          <Fragment key={key}>
-            <FormCard item={item} setState={setState} state={state} />
-          </Fragment>
-        );
-      })}
-      <Grid container>
-        <Grid item xs={12}>
-          <FormHeader>
-            <MediumPoppin>Enrollment & interests</MediumPoppin>
-          </FormHeader>
-        </Grid>
-      </Grid>
-      {enrolment.map((item, key) => {
-        return (
-          <Fragment key={key}>
-            <FormCard item={item} setState={setState} state={state} />
-          </Fragment>
-        );
-      })}
-      <Grid container>
-        <Grid item xs={12}>
-          <FormHeader>
-            <MediumPoppin>Contact information</MediumPoppin>
-          </FormHeader>
-        </Grid>
-      </Grid>
-      {contact.map((item, key) => {
-        return (
-          <Fragment key={key}>
-            <FormCard item={item} setState={setState} state={state} />
-          </Fragment>
-        );
-      })}
-      <BottomNoteWrapper>
-        <FinishedNotes searchHandler={searchHandler} />
-      </BottomNoteWrapper>
-    </MainWrapper>
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4 text-center">
+                <Transition.Child
+                  as={Fragment}
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 scale-95"
+                  enterTo="opacity-100 scale-100"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 scale-100"
+                  leaveTo="opacity-0 scale-95"
+                >
+                  <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                    <Dialog.Title
+                      as="h3"
+                      className="text-lg font-bold leading-6 text-gray-900"
+                    >
+                      Warning
+                    </Dialog.Title>
+                    <div className="mt-2">
+                      <p className="text-lg text-gray-500">
+                        You need to fill out all the fields.
+                      </p>
+                    </div>
+
+                    <div className="mt-4">
+                      <Button
+                        onClick={() => {
+                          setShowPopup(false);
+                        }}
+                      >
+                        Close
+                      </Button>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      )}
+    </>
   );
 };
 

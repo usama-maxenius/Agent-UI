@@ -1,7 +1,8 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable no-unused-vars */
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import PropTypes from 'prop-types';
-import * as React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -56,6 +57,7 @@ export default function InputIcon({
     width: '10%',
   };
   const dispatch = useDispatch();
+  const [showIcon, setShowIcon] = useState(false);
 
   return (
     <div className="flex flex-row w-full rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
@@ -65,6 +67,50 @@ export default function InputIcon({
         name={name}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
+          console.log('input field name -->', e.target.name);
+          var checkString = /^[A-Za-z\s]+$/;
+          var phoneNo =
+            /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+          var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+          var zipRegex = /^\d{5}(-\d{4})?$/;
+
+          switch (e.target.name) {
+            case 'first_name':
+              if (e.target.value.match(checkString)) {
+                setShowIcon(true);
+              } else {
+                setShowIcon(false);
+              }
+              break;
+            case 'last_name':
+              if (e.target.value.match(checkString)) {
+                setShowIcon(true);
+              } else {
+                setShowIcon(false);
+              }
+              break;
+            case 'phone':
+              if (e.target.value.match(phoneNo)) {
+                setShowIcon(true);
+              } else {
+                setShowIcon(false);
+              }
+              break;
+            case 'email':
+              if (e.target.value.match(emailRegex)) {
+                setShowIcon(true);
+              } else {
+                setShowIcon(false);
+              }
+              break;
+            case 'zip_code':
+              if (e.target.value.match(zipRegex)) {
+                setShowIcon(true);
+              } else {
+                setShowIcon(false);
+              }
+              break;
+          }
           dispatch({
             type: 'USER_DETAILS',
             payload: {
@@ -78,7 +124,7 @@ export default function InputIcon({
           });
         }}
       />
-      {Icon ? Icon : <DoneRoundedIcon sx={icon} />}
+      {Icon ? Icon : showIcon ? <DoneRoundedIcon sx={icon} /> : ''}
     </div>
     // <Wrapper isDouble={isDouble} fromDND={fromDND}>
     //   <Input
