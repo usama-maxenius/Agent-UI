@@ -1,12 +1,13 @@
+/* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getAllCities } from '../store/action';
+import { Fragment, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllCities, getAllStates } from '../store/action';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -25,27 +26,55 @@ export default function DropdownWithSearch({
   Icon,
 }) {
   // debugger;
+  const dispatch = useDispatch();
+  const { states } = useSelector((state) => state.InitReducer);
+  let { cities } = useSelector((store) => store.InitReducer);
+
+  useEffect(() => {
+    if (name === 'state') {
+      dispatch(getAllStates());
+    }
+  }, []);
+
   const people =
     item.options.length > 0
       ? [...item.options]
+      : name === 'state' && states
+      ? [...states?.states]
+      : name === 'city' && cities
+      ? [...cities]
       : [
           {
-            OptionLabel: 'Select an agent to transfer to',
-            OptionValue: 'Select an agent to transfer to',
+            OptionLabel: `Select ${name}`,
+            OptionValue: `Select ${name}`,
           },
         ];
-  console.log(item);
+
   const [selected, setSelected] = useState(people[0]);
   const [changeColor, setChangeColor] = useState(false);
-  const dispatch = useDispatch();
+
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
-    dispatch({
-      type: 'USER_DETAILS',
-      payload: { ...state, [name]: prop.OptionValue },
-    });
-    setState({ ...state, [name]: prop.OptionValue });
+    if (name === 'state') {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop.name },
+      });
+      setState({ ...state, [name]: prop.name });
+    } else if (name === 'city') {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop.OptionLabel },
+      });
+      setState({ ...state, [name]: prop.OptionLabel });
+    } else {
+      dispatch({
+        type: 'USER_DETAILS',
+        payload: { ...state, [name]: prop.OptionValue },
+      });
+      setState({ ...state, [name]: prop.OptionValue });
+    }
     let obj = {
       question_key: placeholder,
       question_value: prop.OptionValue,
@@ -56,11 +85,9 @@ export default function DropdownWithSearch({
     }
 
     if (name == 'state') {
-      dispatch(getAllCities(prop.OptionValue));
+      dispatch(getAllCities(prop.name));
     }
   };
-
-  console.log('---> Item Icon', item.styleClasses);
 
   return (
     <div
@@ -131,12 +158,26 @@ export default function DropdownWithSearch({
               )}
 
               {people.map((person, personIdx) => {
+                let personOBj = {};
                 if (person.name) {
-                  person.OptionLabel = person.name;
+                  personOBj = { ...person };
+                  personOBj.OptionLabel = person.name;
                 }
                 if (person.value) {
-                  person.OptionValue - person.value;
+                  personOBj.OptionValue - person.value;
                 }
+                if (
+                  !person.name &&
+                  !person.value &&
+                  typeof person !== 'string'
+                ) {
+                  personOBj = person;
+                }
+                if (typeof person === 'string') {
+                  personOBj.OptionLabel = person;
+                }
+                console.log('person --> ', person, personOBj);
+
                 if (personIdx !== 0) {
                   return (
                     <Listbox.Option
@@ -146,8 +187,8 @@ export default function DropdownWithSearch({
                           active ? 'text-blue ' : 'text-darkBlack'
                         }`
                       }
-                      value={person}
-                      onClick={(e) => onChangeHandler(person)}
+                      value={personOBj}
+                      onClick={(e) => onChangeHandler(personOBj)}
                     >
                       {({ selected }) => (
                         <>
@@ -159,7 +200,7 @@ export default function DropdownWithSearch({
                             {recommendedIcon && personIdx < 3 && (
                               <RecommendRoundedIcon className="text-blue" />
                             )}
-                            {person.OptionLabel}
+                            {personOBj.OptionLabel}
                           </span>
                         </>
                       )}

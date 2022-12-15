@@ -39,9 +39,15 @@ const Education = () => {
   let { schoolsList } = useSelector((store) => store.InitReducer);
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!schoolsList) {
+    const interval = setInterval(() => {
       dispatch(ResultSchools(searchParams.get('search')));
-    }
+    }, 5000);
+
+    return () => clearInterval(interval);
+
+    // if (!schoolsList) {
+    //   dispatch(ResultSchools(searchParams.get('search')));
+    // }
   }, [schoolsList]);
   console.log(schoolsList);
 
