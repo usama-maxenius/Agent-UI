@@ -461,11 +461,26 @@ const EducationForm = () => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    console.log('search handler -->', state);
-    var checkString = /^[A-Za-z\s]+$/;
-    var phoneNo = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-    var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    var zipRegex = /^\d{5}(-\d{4})?$/;
+    const checkString = /^[A-Za-z\s]+$/;
+    const phoneNo =
+      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const zipRegex = /^\d{5}(-\d{4})?$/;
+
+    console.log(
+      'search handler --> test ',
+      state,
+
+      state.first_name.length > 0 &&
+        state.first_name.match(checkString) &&
+        state.last_name.length > 0 &&
+        state.last_name.match(checkString) &&
+        state.email.length > 0 &&
+        state.email.match(emailRegex) &&
+        state.phone.length > 0 &&
+        state.phone.match(phoneNo) &&
+        state.zip_code.match(zipRegex)
+    );
     if (
       state.gender.length > 0 &&
       state.first_name.length > 0 &&
@@ -480,7 +495,7 @@ const EducationForm = () => {
       state.city.length > 0 &&
       state.state.length > 0 &&
       state.zip_code.length > 0 &&
-      state.zip_code.match(zipRegex) > 0 &&
+      state.zip_code.match(zipRegex) &&
       state.computer_internet_access.length > 0 &&
       (state?.age?.length > 0 || state?.age > 0) &&
       (state?.hsyear?.length > 0 || state?.hsyear > 0) &&

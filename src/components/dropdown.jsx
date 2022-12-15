@@ -158,18 +158,26 @@ export default function DropdownWithSearch({
               )}
 
               {people.map((person, personIdx) => {
-                // console.log('person --> ', person);
                 let personOBj = {};
                 if (person.name) {
-                  personOBj = person;
+                  personOBj = { ...person };
                   personOBj.OptionLabel = person.name;
                 }
                 if (person.value) {
-                  person.OptionValue - person.value;
+                  personOBj.OptionValue - person.value;
                 }
-                if (!person.name && !person.value) {
+                if (
+                  !person.name &&
+                  !person.value &&
+                  typeof person !== 'string'
+                ) {
+                  personOBj = person;
+                }
+                if (typeof person === 'string') {
                   personOBj.OptionLabel = person;
                 }
+                console.log('person --> ', person, personOBj);
+
                 if (personIdx !== 0) {
                   return (
                     <Listbox.Option
