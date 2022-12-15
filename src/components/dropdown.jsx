@@ -5,7 +5,6 @@ import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { string } from 'prop-types';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCities, getAllStates } from '../store/action';
@@ -40,17 +39,16 @@ export default function DropdownWithSearch({
   const people =
     item.options.length > 0
       ? [...item.options]
-      : name === 'state'
+      : name === 'state' && states
       ? [...states?.states]
-      : name === 'city'
-      ? cities && [...cities]
+      : name === 'city' && cities
+      ? [...cities]
       : [
           {
-            OptionLabel: 'Select an agent to transfer to',
-            OptionValue: 'Select an agent to transfer to',
+            OptionLabel: `Select ${name}`,
+            OptionValue: `Select ${name}`,
           },
         ];
-  console.log('dropdown field name --', item, name, cities);
 
   const [selected, setSelected] = useState(people[0]);
   const [changeColor, setChangeColor] = useState(false);
@@ -58,7 +56,6 @@ export default function DropdownWithSearch({
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
-    console.log('dropdown selectors --', name, prop);
     if (name === 'state') {
       dispatch({
         type: 'USER_DETAILS',
@@ -91,8 +88,6 @@ export default function DropdownWithSearch({
       dispatch(getAllCities(prop.name));
     }
   };
-
-  console.log('---> Item Icon', item.styleClasses);
 
   return (
     <div
@@ -163,15 +158,17 @@ export default function DropdownWithSearch({
               )}
 
               {people.map((person, personIdx) => {
-                console.log('person --> ', person);
+                // console.log('person --> ', person);
+                let personOBj = {};
                 if (person.name) {
-                  person.OptionLabel = person.name;
+                  personOBj = person;
+                  personOBj.OptionLabel = person.name;
                 }
                 if (person.value) {
                   person.OptionValue - person.value;
                 }
-                if (typeof person === string) {
-                  person.OptionValue = person;
+                if (!person.name && !person.value) {
+                  personOBj.OptionLabel = person;
                 }
                 if (personIdx !== 0) {
                   return (
@@ -182,8 +179,8 @@ export default function DropdownWithSearch({
                           active ? 'text-blue ' : 'text-darkBlack'
                         }`
                       }
-                      value={person}
-                      onClick={(e) => onChangeHandler(person)}
+                      value={personOBj}
+                      onClick={(e) => onChangeHandler(personOBj)}
                     >
                       {({ selected }) => (
                         <>
@@ -195,7 +192,7 @@ export default function DropdownWithSearch({
                             {recommendedIcon && personIdx < 3 && (
                               <RecommendRoundedIcon className="text-blue" />
                             )}
-                            {person.OptionLabel}
+                            {personOBj.OptionLabel}
                           </span>
                         </>
                       )}
