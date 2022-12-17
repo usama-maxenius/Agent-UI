@@ -22,6 +22,8 @@ const Layout = () => {
 
   useEffect(() => {
     console.log('is Authenticated -->', isAuthenticated);
+    let element = document.getElementById('main-wrapper');
+    element.style.position = 'absolute';
     if (isAuthenticated === false) {
       openModal();
     } else if (isAuthenticated) {
@@ -39,6 +41,8 @@ const Layout = () => {
 
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',
+    height: '100%',
+    // position: 'absolute',
   }));
 
   const RecordingDisclosed = styled('div')(() => ({
@@ -113,7 +117,7 @@ const Layout = () => {
           </div>
         </Dialog>
       </Transition>
-      <MainWrapper>
+      <MainWrapper id="main-wrapper">
         <SideBar />
         <Header />
         <Outlet />

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -20,7 +21,7 @@ const LeftContentWrapper = styled('div')((props) => ({
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '768px',
+  height: '100%',
   overflowY: 'hidden',
   filter: props.popup && 'blur(5px)',
 }));
@@ -29,7 +30,7 @@ const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '768px',
+  height: '100%',
 }));
 
 const Education = () => {
@@ -49,6 +50,13 @@ const Education = () => {
     //   dispatch(ResultSchools(searchParams.get('search')));
     // }
   }, [schoolsList]);
+
+  useEffect(() => {
+    let element = document.getElementById('main-wrapper');
+    element.style.position = 'relative !important';
+    console.log('test 1-->', element);
+  }, []);
+
   console.log(schoolsList);
 
   return (
