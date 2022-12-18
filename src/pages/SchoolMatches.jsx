@@ -21,7 +21,7 @@ const LeftContentWrapper = styled('div')((props) => ({
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '100%',
+  height: '105vh',
   overflowY: 'hidden',
   filter: props.popup && 'blur(5px)',
 }));
@@ -39,6 +39,7 @@ const Education = () => {
   let [searchParams] = useSearchParams();
   let { schoolsList } = useSelector((store) => store.InitReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(ResultSchools(searchParams.get('search')));
@@ -51,11 +52,13 @@ const Education = () => {
     // }
   }, [schoolsList]);
 
-  useEffect(() => {
-    let element = document.getElementById('main-wrapper');
-    element.style.position = 'relative !important';
-    console.log('test 1-->', element);
-  }, []);
+  let element = document.getElementById('main-wrapper');
+
+  if (element?.classList?.contains('main-page')) {
+    element?.classList?.remove('main-page');
+  }
+
+  element?.classList?.add('school-page');
 
   console.log(schoolsList);
 

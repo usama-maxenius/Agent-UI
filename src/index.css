@@ -67,6 +67,14 @@ input[type='number'] {
   margin-left: 20px;
 }
 
+.main-page {
+  position: absolute;
+}
+
+.school-page{
+  position: "relative";
+}
+
 @keyframes matching-screen-animation {
   0% {
     box-shadow: 9920px 0 0 0 #2541b2, 9965px 0 0 0 #2541b2,

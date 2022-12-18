@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Fragment, useState } from 'react';
 import SideBar from './sidebar';
 import Header from './header';
@@ -22,8 +23,7 @@ const Layout = () => {
 
   useEffect(() => {
     console.log('is Authenticated -->', isAuthenticated);
-    let element = document.getElementById('main-wrapper');
-    element.style.position = 'absolute';
+    // element.style.position = 'absolute !important';
     if (isAuthenticated === false) {
       openModal();
     } else if (isAuthenticated) {
@@ -58,6 +58,14 @@ const Layout = () => {
     outline: '0px',
     cursor: 'pointer',
   }));
+
+  let element = document?.getElementById('main-wrapper');
+
+  if (element?.classList?.contains('school-page')) {
+    element?.classList?.remove('school-page');
+  }
+
+  element?.classList?.add('main-page');
 
   return (
     <React.Fragment>
