@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import { Dialog, Transition } from '@headlessui/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
+import '../../index.css';
 
 const Layout = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -59,13 +60,19 @@ const Layout = () => {
     cursor: 'pointer',
   }));
 
-  let element = document?.getElementById('main-wrapper');
+  useEffect(() => {
+    let element = document?.getElementById('main-wrapper');
+    if (element?.classList?.contains('school-page')) {
+      element?.classList?.remove('school-page');
+    }
+    document?.getElementById('main-wrapper')?.classList?.add('main-page');
+  }, []);
 
+  let element = document?.getElementById('main-wrapper');
   if (element?.classList?.contains('school-page')) {
     element?.classList?.remove('school-page');
   }
-
-  element?.classList?.add('main-page');
+  document?.getElementById('main-wrapper')?.classList?.add('main-page');
 
   return (
     <React.Fragment>
@@ -125,7 +132,7 @@ const Layout = () => {
           </div>
         </Dialog>
       </Transition>
-      <MainWrapper id="main-wrapper">
+      <MainWrapper id="main-wrapper" className={'main-page'}>
         <SideBar />
         <Header />
         <Outlet />

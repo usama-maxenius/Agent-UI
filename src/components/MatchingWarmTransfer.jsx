@@ -157,7 +157,11 @@ export default function SchoolCards({ setPopUp }) {
                     setPopUp={setPopUp}
                     ind={item}
                     selectCard={selectCard}
-                    selected={selected.includes(item)}
+                    selected={selected?.find(
+                      (item1) =>
+                        item1?.result_identifier === item?.result_identifier &&
+                        item
+                    )}
                     pingResult={pingResult}
                   />
                 </div>
@@ -172,7 +176,11 @@ export default function SchoolCards({ setPopUp }) {
                     setPopUp={setPopUp}
                     ind={item}
                     selectCard={selectCard}
-                    selected={selected.includes(item)}
+                    selected={selected.find(
+                      (item1) =>
+                        item1?.result_identifier === item?.result_identifier &&
+                        item
+                    )}
                   />
                 </div>
               ))}
