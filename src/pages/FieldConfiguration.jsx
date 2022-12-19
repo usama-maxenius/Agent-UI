@@ -336,7 +336,6 @@ let SelectButton = ({ key, item }) => {
         options={extensions}
         selectedOption={currentExtension}
         handelChange={(event) => {
-          console.log('parent', event);
           setCurrentExtension(event);
         }}
         className="h-[52px] border-blue text-blue font-Poppin font-medium"
@@ -397,7 +396,6 @@ const FieldConfiguration = () => {
                       options={extensions}
                       selectedOption={currentExtension}
                       handelChange={(event) => {
-                        console.log('parent', event);
                         setCurrentExtension(event);
                       }}
                       className="h-[52px] border-blue text-blue font-Poppin font-medium"

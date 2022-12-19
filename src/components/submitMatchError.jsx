@@ -13,6 +13,7 @@ import {
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -24,6 +25,7 @@ const Wrapper = styled('div')(() => ({
 const submitMatch = () => {
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
+  let { selectedSchool } = useSelector((store) => store.InitReducer);
 
   return (
     <MainWrapper>
@@ -68,7 +70,8 @@ const submitMatch = () => {
           </p>
           <div>
             <p className="font-Poppin font-normal my-4 text-base w-11/12">
-              Colorado Technical University didn’t accept the match because{' '}
+              {selectedSchool?.school ? selectedSchool?.school : '...'} didn’t
+              accept the match because{' '}
               <strong>The Reason it wasn’t accepted.</strong>
             </p>
             <p className="font-Poppin font-normal my-4 text-base">

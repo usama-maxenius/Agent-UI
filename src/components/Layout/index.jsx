@@ -23,22 +23,12 @@ const Layout = () => {
   }
 
   useEffect(() => {
-    console.log('is Authenticated -->', isAuthenticated);
-    // element.style.position = 'absolute !important';
     if (isAuthenticated === false) {
       openModal();
     } else if (isAuthenticated) {
       closeModal();
     }
   }, [isAuthenticated]);
-
-  // useEffect(() => {
-  //   if (isAuthenticated === false) {
-  //     openModal();
-  //   } else if (isAuthenticated) {
-  //     closeModal();
-  //   }
-  // }, [isAuthenticated]);
 
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',

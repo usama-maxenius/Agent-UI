@@ -77,7 +77,6 @@ export default function SchoolCards({ setPopUp }) {
     let ele = ind;
     if (selected.includes(ind)) {
       setSelected([]);
-      console.log('works ');
       dispatch(clearPingTransfer());
     }
     if (!selected.includes(ind)) {
@@ -111,7 +110,6 @@ export default function SchoolCards({ setPopUp }) {
   //     setProgram(true);
   //   }
   // };
-  console.log(pingResult);
 
   const warmTransferOffers = schoolsList?.filter(
     (item) => item.result_type === 'transfer' && item

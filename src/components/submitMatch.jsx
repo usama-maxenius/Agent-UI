@@ -48,7 +48,6 @@ const submitMatch = () => {
         selectedProgram,
       ],
     };
-    console.log('Body Here Console----->', body);
     dispatchRedux(SubmitAPI(body, navigate));
   };
 

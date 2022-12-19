@@ -467,20 +467,6 @@ const EducationForm = () => {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
 
-    console.log(
-      'search handler --> test ',
-      state,
-
-      state.first_name.length > 0 &&
-        state.first_name.match(checkString) &&
-        state.last_name.length > 0 &&
-        state.last_name.match(checkString) &&
-        state.email.length > 0 &&
-        state.email.match(emailRegex) &&
-        state.phone.length > 0 &&
-        state.phone.match(phoneNo) &&
-        state.zip_code.match(zipRegex)
-    );
     if (
       // state.gender.length > 0 &&
       state.first_name.length > 0 &&

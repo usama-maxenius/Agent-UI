@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import React from 'react';
 // const data = [
 //   {
@@ -32,6 +33,8 @@ import React from 'react';
 //   },
 // ];
 function DisclosureHelp() {
+  const { isAuthenticated, user } = useAuth0();
+
   return (
     <div className="mt-[34px] flex flex-col">
       {[
@@ -46,8 +49,9 @@ function DisclosureHelp() {
             </p>
             <div>
               <p className="font-Poppin font-normal my-4 text-base">
-                Hello this is Anna from Degree Transfers on a{' '}
-                <strong>recorded line</strong>, am I speaking with Angel?
+                Hello this is {isAuthenticated ? user.name : '..'} from Degree
+                Transfers on a <strong>recorded line</strong>, am I speaking
+                with Angel?
               </p>
               <p className="font-Poppin font-normal my-4">
                 Hello Angel, it looks like you have been online recently looking

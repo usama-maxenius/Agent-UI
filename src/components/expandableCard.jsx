@@ -49,7 +49,6 @@ export default function ExpandableCard({
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let [searchParams] = useSearchParams();
-  if (selected) console.log('selected card -->', selected, ind);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -144,11 +143,11 @@ export default function ExpandableCard({
               )}
             />
           }
-          program={program}
+          program={ind.program}
           placeholder="Select a program"
           options={[
             {
-              OptionLabel: 'Program',
+              OptionLabel: ind.program,
               OptionValue: '1',
             },
           ]}
