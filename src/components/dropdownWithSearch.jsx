@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 import { Listbox, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
@@ -38,11 +40,11 @@ export default function DropdownWithSearch({
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
-    dispatch({
-      type: 'USER_DETAILS',
-      payload: { ...state, [name]: prop.OptionValue },
-    });
-    setState({ ...state, [name]: prop.OptionValue });
+    // dispatch({
+    //   type: 'USER_DETAILS',
+    //   payload: { ...state, [name]: prop.OptionValue },
+    // });
+    // setState({ ...state, [name]: prop.OptionValue });
     let obj = {
       question_key: placeholder,
       question_value: prop.OptionValue,
@@ -59,7 +61,7 @@ export default function DropdownWithSearch({
 
   return (
     <div className="w-full">
-      <Listbox value={selected} onChange={onChangeHandler}>
+      <Listbox>
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
@@ -142,6 +144,7 @@ export default function DropdownWithSearch({
                         }`
                       }
                       value={person}
+                      onClick={(e) => onChangeHandler(person)}
                     >
                       {({ selected }) => (
                         <>

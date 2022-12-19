@@ -16,13 +16,13 @@ const LeftContentWrapper = styled('div')(({ expand }) => ({
   paddingLeft: expand ? 160 : 87,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '768px',
+  height: '100%',
 }));
 const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '768px',
+  height: '100vh',
 }));
 const Education = () => {
   const { state } = useContextCustom();

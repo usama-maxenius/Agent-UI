@@ -49,6 +49,7 @@ export default function ExpandableCard({
   let dispatch = useDispatch();
   let navigate = useNavigate();
   let [searchParams] = useSearchParams();
+  if (selected) console.log('selected card -->', selected, ind);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -82,7 +83,9 @@ export default function ExpandableCard({
               'cursor-pointer  ',
               selected ? 'hover:border-white' : 'hover:border-blue  '
             )}
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               selectCard(ind);
               navigate(
                 `/school/matches/transfer?search=${searchParams.get('search')}`

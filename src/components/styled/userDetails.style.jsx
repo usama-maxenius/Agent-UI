@@ -24,7 +24,8 @@ const MediumPoppin = styled.span`
 const ItemWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 64px;
+  ${'' /* height: 64px; */}
+  padding: 15px 0 0;
 `;
 
 export { MainWrapper, RegularPoppin, ItemWrapper, MediumPoppin };

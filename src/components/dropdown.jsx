@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unsafe-optional-chaining */
 /* eslint-disable no-debugger */
 /* eslint-disable no-unused-vars */
@@ -29,6 +30,7 @@ export default function DropdownWithSearch({
   const dispatch = useDispatch();
   const { states } = useSelector((state) => state.InitReducer);
   let { cities } = useSelector((store) => store.InitReducer);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     if (name === 'state') {
@@ -152,6 +154,12 @@ export default function DropdownWithSearch({
                     type="text"
                     className="w-10/12 rounded border border-blue ml-5 mt-5 rounded-3xl px-2 py-1"
                     placeholder="Search"
+                    onChange={(e) => setSearchText(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.code === 'Space') {
+                        e.stopPropagation();
+                      }
+                    }}
                   />
                   <SearchRoundedIcon className="relative -left-8 text-sm text-blue -top-0.5" />
                 </div>
@@ -179,33 +187,68 @@ export default function DropdownWithSearch({
                 console.log('person --> ', person, personOBj);
 
                 if (personIdx !== 0) {
-                  return (
-                    <Listbox.Option
-                      key={personIdx}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-5 pr-4 ${
-                          active ? 'text-blue ' : 'text-darkBlack'
-                        }`
-                      }
-                      value={personOBj}
-                      onClick={(e) => onChangeHandler(personOBj)}
-                    >
-                      {({ selected }) => (
-                        <>
-                          <span
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
-                            {recommendedIcon && personIdx < 3 && (
-                              <RecommendRoundedIcon className="text-blue" />
-                            )}
-                            {personOBj.OptionLabel}
-                          </span>
-                        </>
-                      )}
-                    </Listbox.Option>
-                  );
+                  if (searchText?.length === 0) {
+                    return (
+                      <Listbox.Option
+                        key={personIdx}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-5 pr-4 ${
+                            active ? 'text-blue ' : 'text-darkBlack'
+                          }`
+                        }
+                        value={personOBj}
+                        onClick={(e) => onChangeHandler(personOBj)}
+                      >
+                        {({ selected }) => (
+                          <>
+                            <span
+                              className={`block truncate ${
+                                selected ? 'font-medium' : 'font-normal'
+                              }`}
+                            >
+                              {recommendedIcon && personIdx < 3 && (
+                                <RecommendRoundedIcon className="text-blue" />
+                              )}
+                              {personOBj.OptionLabel}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    );
+                  } else if (
+                    searchText.length > 0 &&
+                    personOBj?.OptionLabel?.toString()
+                      ?.toLowerCase()
+                      ?.includes(searchText?.toLocaleLowerCase())
+                  ) {
+                    return (
+                      <Listbox.Option
+                        key={personIdx}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-5 pr-4 ${
+                            active ? 'text-blue ' : 'text-darkBlack'
+                          }`
+                        }
+                        value={personOBj}
+                        onClick={(e) => onChangeHandler(personOBj)}
+                      >
+                        {({ selected }) => (
+                          <>
+                            <span
+                              className={`block truncate ${
+                                selected ? 'font-medium' : 'font-normal'
+                              }`}
+                            >
+                              {recommendedIcon && personIdx < 3 && (
+                                <RecommendRoundedIcon className="text-blue" />
+                              )}
+                              {personOBj.OptionLabel}
+                            </span>
+                          </>
+                        )}
+                      </Listbox.Option>
+                    );
+                  }
                 }
               })}
             </Listbox.Options>

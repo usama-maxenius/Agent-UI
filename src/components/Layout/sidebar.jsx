@@ -17,7 +17,7 @@ const SideBarWrapper = styled(Paper)((props) => ({
   textAlign: props.expand ? 'left' : 'center',
   color: 'white',
   width: props.expand ? 130 : 60,
-  height: '768px',
+  height: '100%',
   position: 'fixed',
   left: 0,
   top: 0,

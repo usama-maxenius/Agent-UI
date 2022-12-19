@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -20,7 +21,7 @@ const LeftContentWrapper = styled('div')((props) => ({
   paddingRight: 40,
   paddingTop: '65px',
   backgroundColor: '#F5F5F5',
-  height: '768px',
+  height: '105vh',
   overflowY: 'hidden',
   filter: props.popup && 'blur(5px)',
 }));
@@ -29,7 +30,7 @@ const RightContentWrapper = styled('div')(() => ({
   paddingRight: '5%',
   paddingTop: '65px',
   backgroundColor: '#FAFAFA',
-  height: '768px',
+  height: '100%',
 }));
 
 const Education = () => {
@@ -38,6 +39,7 @@ const Education = () => {
   let [searchParams] = useSearchParams();
   let { schoolsList } = useSelector((store) => store.InitReducer);
   const dispatch = useDispatch();
+
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(ResultSchools(searchParams.get('search')));
@@ -49,6 +51,15 @@ const Education = () => {
     //   dispatch(ResultSchools(searchParams.get('search')));
     // }
   }, [schoolsList]);
+
+  let element = document.getElementById('main-wrapper');
+
+  if (element?.classList?.contains('main-page')) {
+    element?.classList?.remove('main-page');
+  }
+
+  element?.classList?.add('school-page');
+
   console.log(schoolsList);
 
   return (

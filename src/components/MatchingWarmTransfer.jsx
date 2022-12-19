@@ -157,7 +157,11 @@ export default function SchoolCards({ setPopUp }) {
                     setPopUp={setPopUp}
                     ind={item}
                     selectCard={selectCard}
-                    selected={selected.includes(item)}
+                    selected={selected?.find(
+                      (item1) =>
+                        item1?.result_identifier === item?.result_identifier &&
+                        item
+                    )}
                     pingResult={pingResult}
                   />
                 </div>
@@ -172,14 +176,18 @@ export default function SchoolCards({ setPopUp }) {
                     setPopUp={setPopUp}
                     ind={item}
                     selectCard={selectCard}
-                    selected={selected.includes(item)}
+                    selected={selected.find(
+                      (item1) =>
+                        item1?.result_identifier === item?.result_identifier &&
+                        item
+                    )}
                   />
                 </div>
               ))}
             </div>
           </Tab.Panel>
           <Tab.Panel className="outline-none">
-            <div className="mt-[244px] w-[437px] flex flex-row justify-center items-center text-gray100 font-Poppin text-[22px] mx-auto text-center">
+            <div className="mt-[244px] w-[100%] flex flex-row justify-center items-center text-gray100 font-Poppin text-[22px] mx-auto text-center">
               The caller hasn’t matched with any Schools for external transfer
             </div>
           </Tab.Panel>

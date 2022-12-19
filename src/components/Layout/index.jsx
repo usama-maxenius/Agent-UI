@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Fragment, useState } from 'react';
 import SideBar from './sidebar';
 import Header from './header';
@@ -6,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import { Dialog, Transition } from '@headlessui/react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect } from 'react';
+import '../../index.css';
 
 const Layout = () => {
   let [isOpen, setIsOpen] = useState(false);
@@ -22,6 +24,7 @@ const Layout = () => {
 
   useEffect(() => {
     console.log('is Authenticated -->', isAuthenticated);
+    // element.style.position = 'absolute !important';
     if (isAuthenticated === false) {
       openModal();
     } else if (isAuthenticated) {
@@ -39,6 +42,8 @@ const Layout = () => {
 
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',
+    height: '100%',
+    // position: 'absolute',
   }));
 
   const RecordingDisclosed = styled('div')(() => ({
@@ -54,6 +59,20 @@ const Layout = () => {
     outline: '0px',
     cursor: 'pointer',
   }));
+
+  useEffect(() => {
+    let element = document?.getElementById('main-wrapper');
+    if (element?.classList?.contains('school-page')) {
+      element?.classList?.remove('school-page');
+    }
+    document?.getElementById('main-wrapper')?.classList?.add('main-page');
+  }, []);
+
+  let element = document?.getElementById('main-wrapper');
+  if (element?.classList?.contains('school-page')) {
+    element?.classList?.remove('school-page');
+  }
+  document?.getElementById('main-wrapper')?.classList?.add('main-page');
 
   return (
     <React.Fragment>
@@ -113,7 +132,7 @@ const Layout = () => {
           </div>
         </Dialog>
       </Transition>
-      <MainWrapper>
+      <MainWrapper id="main-wrapper" className={'main-page'}>
         <SideBar />
         <Header />
         <Outlet />

@@ -17,6 +17,7 @@ import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -30,14 +31,13 @@ const submitMatch = () => {
   const navigate = useNavigate();
   let dispatchRedux = useDispatch();
   let [sParams] = useSearchParams();
-  let { transferResult, selectedProgram, selectedSchool } = useSelector(
-    (store) => store.InitReducer
-  );
+  let { transferResult, selectedProgram, selectedSchool, question } =
+    useSelector((store) => store.InitReducer);
 
   const submit = () => {
     let body = {
       accesskey: process.env.REACT_APP_ACCESS_KEY,
-      search_identifier: sParams.get('search'),
+      search_identifier: sParams?.get('search'),
       search_result_identifier: selectedSchool?.result_identifier,
       search_result_set_identifier: selectedSchool?.result_set_identifier,
       answers: [
