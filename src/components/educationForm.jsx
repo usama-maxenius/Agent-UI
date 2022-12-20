@@ -462,8 +462,7 @@ const EducationForm = () => {
   const searchHandler = (e) => {
     e.preventDefault();
     const checkString = /^[A-Za-z\s]+$/;
-    const phoneNo =
-      /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    const phoneNo = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
 
@@ -476,7 +475,7 @@ const EducationForm = () => {
       state.email.length > 0 &&
       state.email.match(emailRegex) &&
       state.phone.length > 0 &&
-      state.phone.match(phoneNo) &&
+      state.phone.replace(/\D/g, '').match(phoneNo) &&
       state.address_line1.length > 0 &&
       state.city.length > 0 &&
       state.state.length > 0
