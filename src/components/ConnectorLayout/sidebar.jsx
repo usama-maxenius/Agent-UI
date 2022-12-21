@@ -40,83 +40,61 @@ const data = [
   {
     name: 'Dashboard',
     icon: <HomeRounded sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
   },
   {
     name: 'Favourites',
     icon: <StarRounded sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
   {
     name: 'Order Management',
     icon: <ListRoundedIcon sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
   {
     name: 'Reporting',
     icon: <BarChartIcon sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
   {
     name: 'Recordings',
     icon: <MicRounded sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
   {
     name: 'Data Exports',
     icon: <DownloadRoundedIcon sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
   {
     name: 'Leads',
     icon: <GroupRoundedIcon sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [
       {
         name: 'View Lead Status',
-        method: () => {
-          console.log('works');
-        },
+        method: () => {},
       },
       {
         name: 'Lead Reports',
-        method: () => {
-          console.log('works');
-        },
+        method: () => {},
       },
       {
         name: 'Lead Management',
-        method: () => {
-          console.log('works');
-        },
+        method: () => {},
       },
     ],
   },
   {
     name: 'Admin',
     icon: <SettingsRounded sx={style.iconStyle} />,
-    method: () => {
-      console.log('works');
-    },
+    method: () => {},
     list: [],
   },
 ];

@@ -184,7 +184,6 @@ export default function DropdownWithSearch({
                 if (typeof person === 'string') {
                   personOBj.OptionLabel = person;
                 }
-                console.log('person --> ', person, personOBj);
 
                 if (personIdx !== 0) {
                   if (searchText?.length === 0) {

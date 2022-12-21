@@ -75,9 +75,12 @@ export default function SchoolCards({ setPopUp }) {
   const [selected, setSelected] = useState([]);
   const selectCard = (ind) => {
     let ele = ind;
-    if (selected.includes(ind)) {
+    if (
+      selected.find(
+        (item1) => item1?.result_identifier === ele?.result_identifier && ele
+      )
+    ) {
       setSelected([]);
-      console.log('works ');
       dispatch(clearPingTransfer());
     }
     if (!selected.includes(ind)) {
@@ -111,7 +114,6 @@ export default function SchoolCards({ setPopUp }) {
   //     setProgram(true);
   //   }
   // };
-  console.log(pingResult);
 
   const warmTransferOffers = schoolsList?.filter(
     (item) => item.result_type === 'transfer' && item
@@ -142,9 +144,22 @@ export default function SchoolCards({ setPopUp }) {
                 )
               }
             >
-              {key === 0 && `${warmTransferOffers?.length} ${category}`}
-              {key === 1 && `${directOffers?.length} ${category}`}
-              {key === 2 && `${externalOffers?.length} ${category}`}
+              {key === 0 &&
+                `${
+                  warmTransferOffers?.length !== undefined
+                    ? warmTransferOffers?.length
+                    : 0
+                } ${category}`}
+              {key === 1 &&
+                `${
+                  directOffers?.length !== undefined ? directOffers?.length : 0
+                } ${category}`}
+              {key === 2 &&
+                `${
+                  externalOffers?.length !== undefined
+                    ? externalOffers?.length
+                    : 0
+                } ${category}`}
             </Tab>
           ))}
         </Tab.List>

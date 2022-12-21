@@ -34,7 +34,6 @@ const Select = ({
       className={className}
       value={selectedOption}
       onChange={(event) => {
-        console.log('enfant', event);
         handelChange(event);
       }}
     >

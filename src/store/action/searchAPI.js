@@ -10,7 +10,6 @@ import { get, post } from '../../helper/api_handler';
 export let searchSchools = (data, navigate) => {
   return async (dispatch) => {
     // let IP = await myIP();
-    // console.log(IP);
     let {
       gender,
       first_name,
@@ -221,12 +220,9 @@ export let searchSchools = (data, navigate) => {
       },
     };
 
-    console.log(body);
-
     let url = 'https://api.cmicon.com/v3/search';
 
     let response = await post(url, JSON.stringify(body));
-    console.log(response);
     if (response.search_identifier) {
       navigate('/school/loading/?search' + response.search_identifier);
       dispatch({
@@ -246,7 +242,6 @@ export let ResultSchools = (searchIdentifier, navigate) => {
     let url = 'https://api.cmicon.com/v3/results';
 
     let response = await post(url, JSON.stringify(body));
-    console.log(response[0]);
     if (Array.isArray(response)) {
       if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
       dispatch({
@@ -262,7 +257,6 @@ export let ResultSchools = (searchIdentifier, navigate) => {
   };
 };
 export let TransferAPI = ({ result_identifier }, searchIdentifier) => {
-  console.log(searchIdentifier, result_identifier);
   return async (dispatch) => {
     let body = {
       accesskey: process.env.REACT_APP_ACCESS_KEY,
@@ -274,7 +268,6 @@ export let TransferAPI = ({ result_identifier }, searchIdentifier) => {
     let url = 'https://api.cmicon.com/v3/transfers';
 
     let response = await post(url, JSON.stringify(body));
-    console.log(response);
 
     dispatch({
       type: 'SEARCH_TRANSFER_API',
@@ -316,7 +309,6 @@ export let SubmitAPI = (body, navigate) => {
 
     let response = await post(url, JSON.stringify(body));
     response = response[0];
-    console.log(response);
     if (!response.success) {
       navigate(
         '/school/matches/submitMatchError/?search=' + body.search_identifier

@@ -243,7 +243,6 @@ const UserDetails = () => {
   ]);
 
   useEffect(() => {
-    // console.log("search details -->", searchDetails);
     if (searchDetails !== undefined)
       setUserData([
         {

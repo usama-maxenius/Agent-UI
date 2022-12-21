@@ -43,9 +43,16 @@ const Education = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(ResultSchools(searchParams.get('search')));
-    }, 5000);
+    }, 2500);
 
-    return () => clearInterval(interval);
+    const timeoutInterval = setTimeout(() => {
+      clearInterval(interval);
+    }, 180000);
+
+    return () => {
+      clearInterval(interval);
+      clearInterval(timeoutInterval);
+    };
 
     // if (!schoolsList) {
     //   dispatch(ResultSchools(searchParams.get('search')));
@@ -59,8 +66,6 @@ const Education = () => {
   }
 
   element?.classList?.add('school-page');
-
-  console.log(schoolsList);
 
   return (
     <React.Fragment>

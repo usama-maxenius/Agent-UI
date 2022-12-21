@@ -67,10 +67,10 @@ export default function InputIcon({
         name={name}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
-          console.log('input field name -->', e.target.name);
           var checkString = /^[A-Za-z\s]+$/;
-          var phoneNo =
-            /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+          // var phoneNo =
+          //   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+          var phoneNo = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
           var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
           var zipRegex = /^\d{5}(-\d{4})?$/;
 
@@ -90,7 +90,7 @@ export default function InputIcon({
               }
               break;
             case 'phone':
-              if (e.target.value.match(phoneNo)) {
+              if (e.target.value.replace(/\D/g, '').match(phoneNo)) {
                 setShowIcon(true);
               } else {
                 setShowIcon(false);

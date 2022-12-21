@@ -5,6 +5,7 @@ import {
   MicOffRounded,
   PhonePausedRounded,
 } from '@mui/icons-material';
+import TtyIcon from '@mui/icons-material/Tty';
 import {
   Box,
   Divider,
@@ -237,6 +238,7 @@ const Header = () => {
 
   let [callerTime, setCallerTime] = useState(0);
   let [isTimer, setIsTimer] = useState(false);
+  let [callStarted, setCallStarted] = useState(false);
 
   useEffect(() => {
     const interval =
@@ -250,10 +252,17 @@ const Header = () => {
   const startTimer = (e) => {
     setCallerTime(0);
     setIsTimer(true);
+    setCallStarted(true);
   };
 
   const stopTimer = (e) => {
+    setIsTimer(!isTimer);
+  };
+
+  const endTimer = () => {
+    setCallerTime(0);
     setIsTimer(false);
+    setCallStarted(false);
   };
 
   const getCallTime = (time) => {
@@ -297,12 +306,24 @@ const Header = () => {
             <IconButton>
               <MicOffRounded sx={style.iconStyle} />
             </IconButton>
-            <IconButton>
-              <PhonePausedRounded sx={style.iconStyle} onClick={startTimer} />
-            </IconButton>
-            <IconButton>
-              <CallEndRounded sx={style.micIcon} onClick={stopTimer} />
-            </IconButton>
+            {callStarted && (
+              <>
+                <IconButton>
+                  <PhonePausedRounded
+                    sx={style.iconStyle}
+                    onClick={stopTimer}
+                  />
+                </IconButton>
+                <IconButton>
+                  <CallEndRounded sx={style.micIcon} onClick={endTimer} />
+                </IconButton>
+              </>
+            )}
+            {!callStarted && (
+              <IconButton>
+                <TtyIcon sx={style.iconStyle} onClick={startTimer} />
+              </IconButton>
+            )}
           </IconWrapper>
         </Grid>
         <Grid item xs={2.5}>

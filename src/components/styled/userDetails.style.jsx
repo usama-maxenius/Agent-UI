@@ -26,6 +26,7 @@ const ItemWrapper = styled.div`
   flex-direction: column;
   ${'' /* height: 64px; */}
   padding: 15px 0 0;
+  line-break: anywhere;
 `;
 
 export { MainWrapper, RegularPoppin, ItemWrapper, MediumPoppin };

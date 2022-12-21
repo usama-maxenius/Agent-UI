@@ -17,7 +17,7 @@ import {
   IconButton,
   IconWrapper,
   // eslint-disable-next-line prettier/prettier
-  MainWrapper
+  MainWrapper,
 } from './styled/educationForm.style';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 
@@ -36,7 +36,6 @@ const WelcomeNotes = () => {
     (store) => store.InitReducer
   );
   let [question, setQuestion] = useState();
-  console.log(transferResult);
   let dispatchRedux = useDispatch();
 
   const submit = () => {
@@ -53,7 +52,6 @@ const WelcomeNotes = () => {
         selectedProgram,
       ],
     };
-    console.log('Body Here Console----->', body);
     dispatchRedux(SubmitAPI(body, navigate));
   };
 
@@ -100,14 +98,14 @@ const WelcomeNotes = () => {
           </p>
           <div>
             <p className="font-Poppin font-normal my-4 text-base">
-              Here is a specific sentence that I have to read for Colorado
-              Technical university, a school specific statement.
+              Here is a specific sentence that I have to read for{' '}
+              {selectedSchool?.school}, a school specific statement.
             </p>
             <p className="font-Poppin font-normal">
               Here is the generic statement I also have to read it includes the
-              School I have currently selected, it’s Colorado Technical
-              university, this is great fun to read on a call and the caller is
-              always happy to hear this.
+              School I have currently selected, it’s {selectedSchool?.school},
+              this is great fun to read on a call and the caller is always happy
+              to hear this.
             </p>
             <p className="text-blue text-[22px] font-Poppin font-semibold text-base mt-11">
               {transferResult

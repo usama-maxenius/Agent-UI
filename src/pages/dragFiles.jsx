@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import FileOpenOutlinedIcon from '@mui/icons-material/FileOpenOutlined';
 import { useState } from 'react';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
@@ -20,18 +21,15 @@ const DragFiles = () => {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      console.log(e.dataTransfer.files);
     }
   };
   const changeHandler = (e) => {
     e.preventDefault();
     setDragActive(false);
     if (e.target.files && e.target.files[0]) {
-      console.log(e.target.files);
     }
   };
 
-  // console.log(dragActive);
   return (
     <div className="px-[84px] pt-[85px] bg-midGray w-screen h-[768px] flex flex-row items-center justify-center">
       <div className="">

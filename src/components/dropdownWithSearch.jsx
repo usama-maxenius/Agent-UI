@@ -46,7 +46,7 @@ export default function DropdownWithSearch({
     // });
     // setState({ ...state, [name]: prop.OptionValue });
     let obj = {
-      question_key: placeholder,
+      question_key: program,
       question_value: prop.OptionValue,
     };
     if (selectProgramHandler) selectProgramHandler(obj);
