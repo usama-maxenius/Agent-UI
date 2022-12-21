@@ -11,7 +11,7 @@ import WifiRoundedIcon from '@mui/icons-material/WifiRounded';
 import Grid from '@mui/material/Grid';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllCities, getAllStates } from '../store/action';
 import { searchSchools } from '../store/action/searchAPI';
@@ -426,30 +426,68 @@ const Button = styled('div')(() => ({
 const EducationForm = () => {
   const { dispatch } = useContextCustom();
   const navigation = useNavigate();
+  const [params] = useSearchParams();
   let [state, setState] = useState({
-    gender: '',
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    address_line1: '',
-    city: '',
-    state: '',
-    zip_code: '',
-    computer_internet_access: '',
-    age: '',
-    hsyear: '',
-    current_education_level: '',
-    us_citizen: '',
-    military_status: '',
-    online_or_campus: '',
-    preferred_enrollment: '',
-    is_contacted_by_school: '',
-    graduated_in_us: '',
-    time_to_call: '',
-    areas_of_interest: '',
-    another_areas_of_interest: '',
-    any_other_areas_of_interest: '',
+    gender: params?.get('gender') === null ? '' : params?.get('gender'),
+    first_name:
+      params?.get('first_name') === null ? '' : params?.get('first_name'),
+    last_name:
+      params?.get('last_name') === null ? '' : params?.get('last_name'),
+    email: params?.get('email') === null ? '' : params?.get('email'),
+    phone:
+      params?.get('phone_number') === null ? '' : params?.get('phone_number'),
+    address_line1:
+      params?.get('address1') === null ? '' : params?.get('address1'),
+    city: params?.get('city') === null ? '' : params?.get('city'),
+    state: params?.get('state') === null ? '' : params?.get('state'),
+    zip_code: params?.get('zip') === null ? '' : params?.get('zip'),
+    computer_internet_access:
+      params?.get('computer_internet_access') === null
+        ? ''
+        : params?.get('computer_internet_access'),
+    age: params?.get('age') === null ? '' : params?.get('age'),
+    hsyear:
+      params?.get('high_school_graduation_year') === null
+        ? ''
+        : params?.get('high_school_graduation_year'),
+    current_education_level:
+      params?.get('current_education_level') === null
+        ? ''
+        : params?.get('current_education_level'),
+    us_citizen:
+      params?.get('us_citizen') === null ? '' : params?.get('us_citizen'),
+    military_status:
+      params?.get('military') === null ? '' : params?.get('military'),
+    online_or_campus:
+      params?.get('online_or_campus') === null
+        ? ''
+        : params?.get('online_or_campus'),
+    preferred_enrollment:
+      params?.get('can_complete_enrollment') === null
+        ? ''
+        : params?.get('can_complete_enrollment'),
+    is_contacted_by_school:
+      params?.get('is_contacted_by_school') === null
+        ? ''
+        : params?.get('is_contacted_by_school'),
+    graduated_in_us:
+      params?.get('graduated_in_us') === null
+        ? ''
+        : params?.get('graduated_in_us'),
+    time_to_call:
+      params?.get('time_to_call') === null ? '' : params?.get('time_to_call'),
+    areas_of_interest:
+      params?.get('areas_of_interest') === null
+        ? ''
+        : params?.get('areas_of_interest'),
+    another_areas_of_interest:
+      params?.get('another_areas_of_interest') === null
+        ? ''
+        : params?.get('another_areas_of_interest'),
+    any_other_areas_of_interest:
+      params?.get('any_other_areas_of_interest') === null
+        ? ''
+        : params?.get('any_other_areas_of_interest'),
   });
   const [showPopup, setShowPopup] = useState(false);
 

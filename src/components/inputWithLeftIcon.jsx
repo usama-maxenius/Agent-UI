@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { HomeRounded } from '@mui/icons-material';
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -47,6 +49,17 @@ export default function InputIcon({
   widthControl,
 }) {
   const dispatch = useDispatch();
+  const [params] = useSearchParams();
+
+  const getSpecificParamsValue = () => {
+    if (name === 'zip_code') {
+      return params.get('zip');
+    } else if (name === 'address_line1') {
+      return params.get('address1');
+    } else {
+      return params.get(name);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -56,6 +69,7 @@ export default function InputIcon({
           widthControl={widthControl}
           placeholder={item.placeholder}
           name={name}
+          value={state[name]}
           onChange={(e) => {
             dispatch({
               type: 'USER_DETAILS',

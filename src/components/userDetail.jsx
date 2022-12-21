@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import React, { useEffect, useState } from 'react';
@@ -8,6 +9,7 @@ import {
   // eslint-disable-next-line prettier/prettier
   RegularPoppin,
 } from './styled/userDetails.style';
+import { useSearchParams } from 'react-router-dom';
 
 // const data = [
 //   {
@@ -126,6 +128,7 @@ import {
 
 const UserDetails = () => {
   const { searchDetails } = useSelector((store) => store.InitReducer);
+  const [params] = useSearchParams();
 
   const [userData, setUserData] = useState([
     {
@@ -243,180 +246,286 @@ const UserDetails = () => {
   ]);
 
   useEffect(() => {
-    if (searchDetails !== undefined)
-      setUserData([
-        {
-          title: 'Gender',
-          subTitle:
-            searchDetails.gender.length > 0
-              ? searchDetails.gender === 'm'
-                ? 'male'
-                : 'female'
-              : 'None',
-        },
-        {
-          title: 'First name',
-          subTitle:
-            searchDetails.first_name.length > 0
-              ? searchDetails.first_name
-              : 'None',
-        },
-        {
-          title: 'Last name',
-          subTitle:
-            searchDetails.last_name.length > 0
-              ? searchDetails.last_name
-              : 'None',
-        },
-        {
-          title: 'HS graduation year',
-          subTitle: searchDetails?.hsyear >= 0 ? searchDetails?.hsyear : 'None',
-        },
-        {
-          title: 'US Degree',
-          subTitle:
-            searchDetails.graduated_in_us?.length > 0
-              ? searchDetails.graduated_in_us
-              : 'None',
-        },
-        {
-          title: 'US Citizen',
-          subTitle:
-            searchDetails?.us_citizen.length > 0
-              ? searchDetails?.us_citizen
-              : 'None',
-        },
-        {
-          title: 'Education Level',
-          subTitle:
-            searchDetails?.current_education_level.length > 0
-              ? searchDetails.current_education_level
-              : 'None',
-        },
-        {
-          title: 'Internet Access',
-          subTitle:
-            searchDetails?.computer_internet_access.length > 0
-              ? searchDetails.computer_internet_access
-              : 'None',
-        },
-        {
-          title: 'Year born',
-          subTitle: searchDetails.age >= 0 ? searchDetails.age : 'None',
-        },
-        {
-          title: 'US Military',
-          subTitle:
-            searchDetails.military_status?.length > 0
-              ? searchDetails.military_status
-              : 'None',
-        },
-        {
-          title: 'School in past 6 months',
-          subTitle:
-            searchDetails.is_contacted_by_school?.length > 0
-              ? searchDetails.is_contacted_by_school === '0'
-                ? 'yes'
-                : 'no'
-              : 'None',
-        },
-        {
-          title: '',
-          subTitle: '',
-        },
-        {
-          title: 'Primary interest',
-          subTitle:
-            searchDetails.areas_of_interest?.length > 0
-              ? searchDetails.areas_of_interest
-              : 'None',
-        },
-        {
-          title: 'Additional interest',
-          subTitle:
-            searchDetails.another_areas_of_interest?.length > 0
-              ? searchDetails.another_areas_of_interest
-              : 'None',
-        },
-        {
-          title: 'Additional interest',
-          subTitle:
-            searchDetails.any_other_areas_of_interest?.length > 0
-              ? searchDetails.any_other_areas_of_interest
-              : 'None',
-        },
-        {
-          title: 'Preference',
-          subTitle:
-            searchDetails.online_or_campus?.length > 0
-              ? searchDetails.online_or_campus
-              : 'None',
-        },
-        {
-          title: 'Enrollment timeline',
-          subTitle:
-            searchDetails?.can_complete_enrollment?.length > 0
-              ? searchDetails?.can_complete_enrollment
-              : 'None',
-        },
-        {
-          title: '',
-          subTitle: '',
-        },
-        {
-          title: 'Phone number',
-          subTitle:
-            searchDetails.phone?.length > 0 ? searchDetails.phone : 'None',
-        },
-        {
-          title: 'Time to contact',
-          subTitle:
-            searchDetails.time_to_call?.length > 0
-              ? searchDetails.time_to_call
-              : 'None',
-        },
-        {
-          title: '',
-          subTitle: '',
-        },
-        {
-          title: 'Email',
-          subTitle:
-            searchDetails.email?.length > 0 ? searchDetails.email : 'None',
-        },
-        {
-          title: '',
-          subTitle: '',
-        },
-        {
-          title: '',
-          subTitle: '',
-        },
-        {
-          title: 'Street address',
-          subTitle:
-            searchDetails.address_line1?.length > 0
-              ? searchDetails.address_line1
-              : 'None',
-        },
-        {
-          title: 'City',
-          subTitle:
-            searchDetails.city?.length > 0 ? searchDetails.city : 'None',
-        },
-        {
-          title: 'State',
-          subTitle:
-            searchDetails.state?.length > 0 ? searchDetails.state : 'None',
-        },
-        {
-          title: 'Zip Code',
-          subTitle:
-            searchDetails.zip_code?.length > 0
-              ? searchDetails.zip_code
-              : 'None',
-        },
-      ]);
+    // if (searchDetails !== undefined)
+    setUserData([
+      {
+        title: 'Gender',
+        subTitle:
+          searchDetails?.gender === undefined
+            ? params?.get('gender') !== null
+              ? params?.get('gender')
+              : 'None'
+            : searchDetails?.gender.length > 0
+            ? searchDetails?.gender === 'm'
+              ? 'male'
+              : 'female'
+            : 'None',
+      },
+      {
+        title: 'First name',
+        subTitle:
+          searchDetails?.first_name === undefined
+            ? params?.get('first_name') !== null
+              ? params?.get('first_name')
+              : 'None'
+            : searchDetails?.first_name.length > 0
+            ? searchDetails?.first_name
+            : 'None',
+      },
+      {
+        title: 'Last name',
+        subTitle:
+          searchDetails?.last_name === undefined
+            ? params?.get('last_name') !== null
+              ? params?.get('last_name')
+              : 'None'
+            : searchDetails?.last_name?.length > 0
+            ? searchDetails?.last_name
+            : 'None',
+      },
+      {
+        title: 'HS graduation year',
+        subTitle:
+          searchDetails?.hsyear === undefined
+            ? params?.get('high_school_graduation_year') !== null
+              ? params?.get('high_school_graduation_year')
+              : 'None'
+            : searchDetails?.hsyear >= 0
+            ? searchDetails?.hsyear
+            : 'None',
+      },
+      {
+        title: 'US Degree',
+        subTitle:
+          searchDetails?.graduated_in_us === undefined
+            ? params?.get('graduated_in_us') !== null
+              ? params?.get('graduated_in_us')
+              : 'None'
+            : searchDetails?.graduated_in_us?.length > 0
+            ? searchDetails?.graduated_in_us
+            : 'None',
+      },
+      {
+        title: 'US Citizen',
+        subTitle:
+          searchDetails?.us_citizen === undefined
+            ? params?.get('us_citizen') !== null
+              ? params?.get('us_citizen')
+              : 'None'
+            : searchDetails?.us_citizen.length > 0
+            ? searchDetails?.us_citizen
+            : 'None',
+      },
+      {
+        title: 'Education Level',
+        subTitle:
+          searchDetails?.current_education_level === undefined
+            ? params?.get('current_education_level') !== null
+              ? params?.get('current_education_level')
+              : 'None'
+            : searchDetails?.current_education_level.length > 0
+            ? searchDetails?.current_education_level
+            : 'None',
+      },
+      {
+        title: 'Internet Access',
+        subTitle:
+          searchDetails?.computer_internet_access === undefined
+            ? params?.get('computer_internet_access') !== null
+              ? params?.get('computer_internet_access')
+              : 'None'
+            : searchDetails?.computer_internet_access.length > 0
+            ? searchDetails?.computer_internet_access
+            : 'None',
+      },
+      {
+        title: 'Year born',
+        subTitle:
+          searchDetails?.age === undefined
+            ? params?.get('age') !== null
+              ? params?.get('age')
+              : 'None'
+            : searchDetails?.age >= 0
+            ? searchDetails?.age
+            : 'None',
+      },
+      {
+        title: 'US Military',
+        subTitle:
+          searchDetails?.military_status === undefined
+            ? params?.get('military') !== null
+              ? params?.get('military')
+              : 'None'
+            : searchDetails?.military_status?.length > 0
+            ? searchDetails?.military_status
+            : 'None',
+      },
+      {
+        title: 'School in past 6 months',
+        subTitle:
+          searchDetails?.is_contacted_by_school === undefined
+            ? params?.get('is_contacted_by_school') !== null
+              ? params?.get('is_contacted_by_school')
+              : 'None'
+            : searchDetails?.is_contacted_by_school?.length > 0
+            ? searchDetails?.is_contacted_by_school === '0'
+              ? 'yes'
+              : 'no'
+            : 'None',
+      },
+      {
+        title: '',
+        subTitle: '',
+      },
+      {
+        title: 'Primary interest',
+        subTitle:
+          searchDetails?.areas_of_interest === undefined
+            ? params?.get('areas_of_interest') !== null
+              ? params?.get('areas_of_interest')
+              : 'None'
+            : searchDetails?.areas_of_interest?.length > 0
+            ? searchDetails?.areas_of_interest
+            : 'None',
+      },
+      {
+        title: 'Additional interest',
+        subTitle:
+          searchDetails?.another_areas_of_interest === undefined
+            ? params?.get('another_areas_of_interest') !== null
+              ? params?.get('another_areas_of_interest')
+              : 'None'
+            : searchDetails?.another_areas_of_interest?.length > 0
+            ? searchDetails?.another_areas_of_interest
+            : 'None',
+      },
+      {
+        title: 'Additional interest',
+        subTitle:
+          searchDetails?.any_other_areas_of_interest === undefined
+            ? params?.get('any_other_areas_of_interest') !== null
+              ? params?.get('any_other_areas_of_interest')
+              : 'None'
+            : searchDetails?.any_other_areas_of_interest?.length > 0
+            ? searchDetails?.any_other_areas_of_interest
+            : 'None',
+      },
+      {
+        title: 'Preference',
+        subTitle:
+          searchDetails?.online_or_campus === undefined
+            ? params?.get('online_or_campus') !== null
+              ? params?.get('online_or_campus')
+              : 'None'
+            : searchDetails?.online_or_campus?.length > 0
+            ? searchDetails?.online_or_campus
+            : 'None',
+      },
+      {
+        title: 'Enrollment timeline',
+        subTitle:
+          searchDetails?.can_complete_enrollment === undefined
+            ? params?.get('can_complete_enrollment') !== null
+              ? params?.get('can_complete_enrollment')
+              : 'None'
+            : searchDetails?.can_complete_enrollment?.length > 0
+            ? searchDetails?.can_complete_enrollment
+            : 'None',
+      },
+      {
+        title: '',
+        subTitle: '',
+      },
+      {
+        title: 'Phone number',
+        subTitle:
+          searchDetails?.phone === undefined
+            ? params?.get('phone_number') !== null
+              ? params?.get('phone_number')
+              : 'None'
+            : searchDetails?.phone?.length > 0
+            ? searchDetails?.phone
+            : 'None',
+      },
+      {
+        title: 'Time to contact',
+        subTitle:
+          searchDetails?.time_to_call === undefined
+            ? params?.get('time_to_call') !== null
+              ? params?.get('time_to_call')
+              : 'None'
+            : searchDetails?.time_to_call?.length > 0
+            ? searchDetails?.time_to_call
+            : 'None',
+      },
+      {
+        title: '',
+        subTitle: '',
+      },
+      {
+        title: 'Email',
+        subTitle:
+          searchDetails?.email === undefined
+            ? params?.get('email') !== null
+              ? params?.get('email')
+              : 'None'
+            : searchDetails?.email?.length > 0
+            ? searchDetails?.email
+            : 'None',
+      },
+      {
+        title: '',
+        subTitle: '',
+      },
+      {
+        title: '',
+        subTitle: '',
+      },
+      {
+        title: 'Street address',
+        subTitle:
+          searchDetails?.address_line1 === undefined
+            ? params?.get('address1') !== null
+              ? params?.get('address1')
+              : 'None'
+            : searchDetails?.address_line1?.length > 0
+            ? searchDetails?.address_line1
+            : 'None',
+      },
+      {
+        title: 'City',
+        subTitle:
+          searchDetails?.city === undefined
+            ? params?.get('city') !== null
+              ? params?.get('city')
+              : 'None'
+            : searchDetails?.city?.length > 0
+            ? searchDetails?.city
+            : 'None',
+      },
+      {
+        title: 'State',
+        subTitle:
+          searchDetails?.state === undefined
+            ? params?.get('state') !== null
+              ? params?.get('state')
+              : 'None'
+            : searchDetails?.state?.length > 0
+            ? searchDetails?.state
+            : 'None',
+      },
+      {
+        title: 'Zip Code',
+        subTitle:
+          searchDetails?.zip_code === undefined
+            ? params?.get('zip') !== null
+              ? params?.get('zip')
+              : 'None'
+            : searchDetails?.zip_code?.length > 0
+            ? searchDetails?.zip_code
+            : 'None',
+      },
+    ]);
   }, [searchDetails]);
 
   return (
