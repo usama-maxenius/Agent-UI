@@ -24,9 +24,22 @@ const Layout = () => {
 
   useEffect(() => {
     if (isAuthenticated === false) {
+      let currentUrl = window.location.href;
+      if (currentUrl?.includes('Education/form')) {
+        localStorage.setItem('url', currentUrl);
+      }
       openModal();
     } else if (isAuthenticated) {
+      if (
+        localStorage.getItem('url') !== null &&
+        window.location.href !== localStorage.getItem('url')
+      ) {
+        let curl = localStorage.getItem('url');
+        localStorage.removeItem('url');
+        window.location.replace(curl);
+      }
       closeModal();
+      localStorage.removeItem('url');
     }
   }, [isAuthenticated]);
 

@@ -74,8 +74,10 @@ export default function InputIcon({
   };
 
   useEffect(() => {
-    if (state[name] !== '') {
-      setShowIcon(true);
+    if (state !== undefined) {
+      if (state[name] !== '') {
+        setShowIcon(true);
+      }
     }
   }, []);
 
@@ -85,7 +87,7 @@ export default function InputIcon({
         className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
-        value={state[name]}
+        value={state !== undefined ? state[name] : null}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
           var checkString = /^[A-Za-z\s]+$/;

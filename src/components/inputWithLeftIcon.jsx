@@ -69,7 +69,7 @@ export default function InputIcon({
           widthControl={widthControl}
           placeholder={item.placeholder}
           name={name}
-          value={state[name]}
+          value={state !== undefined ? state[name] : ''}
           onChange={(e) => {
             dispatch({
               type: 'USER_DETAILS',

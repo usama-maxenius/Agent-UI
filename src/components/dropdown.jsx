@@ -77,12 +77,14 @@ export default function DropdownWithSearch({
         ];
 
   const [selected, setSelected] = useState(
-    state[name] === ''
-      ? people[0]
-      : {
-          OptionLabel: state[name],
-          OptionValue: state[name],
-        }
+    state !== undefined
+      ? state[name] === ''
+        ? people[0]
+        : {
+            OptionLabel: state[name],
+            OptionValue: state[name],
+          }
+      : people[0]
   );
   const [changeColor, setChangeColor] = useState(false);
 

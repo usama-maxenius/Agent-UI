@@ -1,12 +1,7 @@
 import React from 'react';
-// import { useSelector } from 'react-redux';
-// import { useNavigate } from 'react-router-dom';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 
 const FinishedNotes = ({ searchHandler }) => {
-  // let navigate = useNavigate();
-  // let initReducer = useSelector((store) => store);
-
   return (
     <div className="w-[519px] h-full flex flex-col justify-center mx-auto mt-10">
       <p className="text-blue text-[22px] font-Poppin font-semibold">

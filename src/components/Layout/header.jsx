@@ -277,27 +277,25 @@ const Header = () => {
         <Grid item xs={3}>
           <TitleWrapper row spaceBetween marginTop>
             {data.map((item, idx) => (
-              <>
-                <TitleWrapper flexStart key={idx}>
-                  <Typography component="p" style={style.title}>
-                    {item.title}
-                  </Typography>
-                  <Typography component="p" style={style.subTitle}>
-                    {item.title === 'Current Call'
-                      ? getCallTime(callerTime)
-                      : item.title === 'Caller Name'
-                      ? isAuthenticated
-                        ? user.name
-                        : 'None'
-                      : item.subTitle}
-                  </Typography>
-                  {item.active ? (
-                    <Divider sx={style.divider} />
-                  ) : (
-                    <Divider sx={style.transparent} />
-                  )}
-                </TitleWrapper>
-              </>
+              <TitleWrapper flexStart key={idx}>
+                <Typography component="p" style={style.title}>
+                  {item.title}
+                </Typography>
+                <Typography component="p" style={style.subTitle}>
+                  {item.title === 'Current Call'
+                    ? getCallTime(callerTime)
+                    : item.title === 'Caller Name'
+                    ? isAuthenticated
+                      ? user.name
+                      : 'None'
+                    : item.subTitle}
+                </Typography>
+                {item.active ? (
+                  <Divider sx={style.divider} />
+                ) : (
+                  <Divider sx={style.transparent} />
+                )}
+              </TitleWrapper>
             ))}
           </TitleWrapper>
         </Grid>
@@ -380,6 +378,7 @@ const Header = () => {
                 style={style.headerDropDown}
                 onClick={() => {
                   if (isAuthenticated) {
+                    localStorage.removeItem('url');
                     logout({ returnTo: window.location.origin });
                   }
                 }}
