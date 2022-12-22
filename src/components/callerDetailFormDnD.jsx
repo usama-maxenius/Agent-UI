@@ -298,9 +298,9 @@ let data = [
     id: '14',
     placeholder: 'First name',
     options: [
-      { name: 'Gender', value: '1' },
-      { name: 'Male', value: 'm' },
-      { name: 'Female', value: 'f' },
+      { OptionLabel: 'Gender', OptionValue: '1' },
+      { OptionLabel: 'Male', OptionValue: 'm' },
+      { OptionLabel: 'Female', OptionValue: 'f' },
     ],
     isDouble: true,
     name1: 'gender',
