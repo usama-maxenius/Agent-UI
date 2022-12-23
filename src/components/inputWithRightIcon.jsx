@@ -2,8 +2,9 @@
 /* eslint-disable no-unused-vars */
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Input = styled.input`
@@ -57,7 +58,28 @@ export default function InputIcon({
     width: '10%',
   };
   const dispatch = useDispatch();
+  const [params] = useSearchParams();
   const [showIcon, setShowIcon] = useState(false);
+
+  const getSpecificParamsValue = () => {
+    if (name === 'zip_code') {
+      return params.get('zip');
+    } else if (name === 'address_line1') {
+      return params.get('address1');
+    } else if (name === 'phone') {
+      return params.get('phone_number');
+    } else {
+      return params.get(name);
+    }
+  };
+
+  useEffect(() => {
+    if (state !== undefined) {
+      if (state[name] !== '') {
+        setShowIcon(true);
+      }
+    }
+  }, []);
 
   return (
     <div className="flex flex-row w-full rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
@@ -65,6 +87,7 @@ export default function InputIcon({
         className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
+        value={state !== undefined ? state[name] : null}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
           var checkString = /^[A-Za-z\s]+$/;

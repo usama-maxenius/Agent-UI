@@ -9,6 +9,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCities, getAllStates } from '../store/action';
+import { useSearchParams } from 'react-router-dom';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -30,7 +31,30 @@ export default function DropdownWithSearch({
   const dispatch = useDispatch();
   const { states } = useSelector((state) => state.InitReducer);
   let { cities } = useSelector((store) => store.InitReducer);
+  const [params] = useSearchParams();
   const [searchText, setSearchText] = useState('');
+
+  const getSpecificParamsValue = () => {
+    if (name === 'military_status') {
+      return params.get('military') === null
+        ? people[0]
+        : {
+            OptionLabel: params.get('military'),
+            OptionValue: params.get('military'),
+          };
+    } else if (name === 'hsyear') {
+      return params.get('high_school_graduation_year') === null
+        ? people[0]
+        : {
+            OptionLabel: params.get('high_school_graduation_year'),
+            OptionValue: params.get('high_school_graduation_year'),
+          };
+    } else {
+      return params.get(name) === null
+        ? people[0]
+        : { OptionLabel: params.get(name), OptionValue: params.get(name) };
+    }
+  };
 
   useEffect(() => {
     if (name === 'state') {
@@ -52,7 +76,16 @@ export default function DropdownWithSearch({
           },
         ];
 
-  const [selected, setSelected] = useState(people[0]);
+  const [selected, setSelected] = useState(
+    state !== undefined
+      ? state[name] === ''
+        ? people[0]
+        : {
+            OptionLabel: state[name],
+            OptionValue: state[name],
+          }
+      : people[0]
+  );
   const [changeColor, setChangeColor] = useState(false);
 
   const onChangeHandler = (prop) => {
@@ -118,7 +151,7 @@ export default function DropdownWithSearch({
               <span className="p-[1px] pr-[7px]">{item.Icon}</span>
               {/* <SupportAgentRoundedIcon className="text-gray mr-3" /> */}
 
-              {selected.OptionLabel}
+              {selected?.OptionLabel}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon
