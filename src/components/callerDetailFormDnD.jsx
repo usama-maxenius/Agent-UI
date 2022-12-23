@@ -451,6 +451,8 @@ function App({ setValue, value }) {
                                   Icon={Icon}
                                   setCallerState={setValue}
                                   callerState={value}
+                                  state={value}
+                                  setState={setValue}
                                   name={name}
                                 />
                               </div>
