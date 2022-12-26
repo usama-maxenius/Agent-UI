@@ -9,12 +9,7 @@ const FinishedNotes = ({ searchHandler }) => {
       </p>
       <div className="w-[450px]">
         <p className=" font-Poppin font-normal my-4 text-base">
-          Alright, let’s finish this up and provide you with school options,
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry’s standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries.
+          Alright, let’s finish this up and provide you with school options.
         </p>
 
         <p className="font-Poppin font-semibold ">

@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
+import { Dialog, Transition } from '@headlessui/react';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
@@ -19,7 +20,6 @@ import constant from '../store/constant';
 import { useContextCustom } from '../store/context';
 import FormCard from './Card';
 import FinishedNotes from './finishedNotes';
-import { Dialog, Transition } from '@headlessui/react';
 
 import {
   FormHeader,
@@ -27,7 +27,7 @@ import {
   IconWrapper,
   MainWrapper,
   // eslint-disable-next-line prettier/prettier
-  MediumPoppin,
+  MediumPoppin
 } from './styled/educationForm.style';
 
 let BottomNoteWrapper = styled.div`
@@ -217,7 +217,7 @@ let enrolment = [
   },
   {
     title:
-      'Aside from <interest> is there another area of study you’re interested in?',
+      'Aside from above interest is there another area of study you’re interested in?',
     options: [
       { OptionLabel: 'Additional area of study', OptionValue: 'Area of study' },
       { OptionLabel: 'Art & Design', OptionValue: 'Art & Design' },
