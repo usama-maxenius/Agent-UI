@@ -30,7 +30,7 @@ const FormHeader = styled.div`
 const IconWrapper = styled.div`
   margin-top: 22px;
   text-align: right;
-  position:fixed;
+  // position:fixed;
 `;
 const IconButton = styled.button`
   &:hover {
@@ -43,4 +43,3 @@ const IconButton = styled.button`
 `;
 
 export { MainWrapper, MediumPoppin, FormHeader, IconWrapper, IconButton };
-

@@ -27,7 +27,7 @@ import {
   IconWrapper,
   MainWrapper,
   // eslint-disable-next-line prettier/prettier
-  MediumPoppin
+  MediumPoppin,
 } from './styled/educationForm.style';
 
 let BottomNoteWrapper = styled.div`
@@ -490,6 +490,7 @@ const EducationForm = () => {
         ? ''
         : params?.get('any_other_areas_of_interest'),
   });
+
   const [showPopup, setShowPopup] = useState(false);
 
   let dispatchRedux = useDispatch();
@@ -519,6 +520,10 @@ const EducationForm = () => {
       state.state.length > 0
     ) {
       dispatchRedux(searchSchools(state, navigation));
+      dispatchRedux({
+        type: 'SELECTED_SCHOOL',
+        payload: null,
+      });
     } else {
       setShowPopup(true);
     }

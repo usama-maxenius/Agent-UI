@@ -35,6 +35,8 @@ const WelcomeNotes = () => {
   let { transferResult, selectedProgram, selectedSchool } = useSelector(
     (store) => store.InitReducer
   );
+
+  console.log('test 3-->', selectedSchool);
   let [question, setQuestion] = useState();
   let dispatchRedux = useDispatch();
 
