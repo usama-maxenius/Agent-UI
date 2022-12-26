@@ -34,16 +34,25 @@ export default function DropdownWithSearch({
     },
     ...options1,
   ];
-  const [selected, setSelected] = useState(people[0]);
+  const [selected, setSelected] = useState(
+    state !== undefined
+      ? state[name] === ''
+        ? people[0]
+        : {
+            OptionLabel: state[name],
+            OptionValue: state[name],
+          }
+      : people[0]
+  );
   const [changeColor, setChangeColor] = useState(false);
   const dispatch = useDispatch();
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
-    // dispatch({
-    //   type: 'USER_DETAILS',
-    //   payload: { ...state, [name]: prop.OptionValue },
-    // });
+    dispatch({
+      type: 'USER_DETAILS',
+      payload: { ...state, [name]: prop.OptionValue },
+    });
     // setState({ ...state, [name]: prop.OptionValue });
     let obj = {
       question_key: program,
@@ -84,7 +93,7 @@ export default function DropdownWithSearch({
               >
                 {Icon ? Icon : !callerID && <SupportAgentRoundedIcon />}
               </span>
-              {selected.OptionLabel}
+              {selected?.OptionLabel}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <ChevronDownIcon

@@ -91,6 +91,7 @@ export default function DropdownWithSearch({
   const onChangeHandler = (prop) => {
     setChangeColor(true);
     setSelected(prop);
+
     if (name === 'state') {
       dispatch({
         type: 'USER_DETAILS',
@@ -205,7 +206,7 @@ export default function DropdownWithSearch({
                   personOBj.OptionLabel = person.name;
                 }
                 if (person.value) {
-                  personOBj.OptionValue - person.value;
+                  personOBj.OptionValue = person.value;
                 }
                 if (
                   !person.name &&
