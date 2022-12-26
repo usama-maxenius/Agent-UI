@@ -46,9 +46,8 @@ export default function ExpandableCard({
   pingResult,
 }) {
   const [expanded, setExpanded] = React.useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   let dispatch = useDispatch();
-  let navigate = useNavigate();
-  let [searchParams] = useSearchParams();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -86,9 +85,9 @@ export default function ExpandableCard({
               e.preventDefault();
               e.stopPropagation();
               selectCard(ind);
-              redirect(
-                `/school/matches/transfer?search=${searchParams.get('search')}`
-              );
+              // setSearchParams({
+              //   search: searchParams.get('search'),
+              // });
             }}
           >
             <DoneRoundedIcon
