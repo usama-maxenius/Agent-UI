@@ -36,7 +36,6 @@ const WelcomeNotes = () => {
     (store) => store.InitReducer
   );
 
-  console.log('test 3-->', selectedSchool);
   let [question, setQuestion] = useState();
   let dispatchRedux = useDispatch();
 
