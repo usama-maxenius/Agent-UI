@@ -27,7 +27,7 @@ export default function Modal({ popup, setPopUp }) {
                     onClick={(e) => {
                       e.preventDefault();
                       setPopUp(!popup);
-                      navigate(
+                      redirect(
                         `/school/matches/transfer/?search=${searchParams.get(
                           'search'
                         )}`

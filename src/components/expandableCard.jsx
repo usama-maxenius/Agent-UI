@@ -86,7 +86,7 @@ export default function ExpandableCard({
               e.preventDefault();
               e.stopPropagation();
               selectCard(ind);
-              navigate(
+              redirect(
                 `/school/matches/transfer?search=${searchParams.get('search')}`
               );
             }}
