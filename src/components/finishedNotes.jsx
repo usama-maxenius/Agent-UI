@@ -18,7 +18,7 @@ const FinishedNotes = ({ searchHandler }) => {
         </p>
       </div>
       <RecordingDisclosed onClick={searchHandler}>
-        Display matched schoolsss
+        Display matched schools
       </RecordingDisclosed>
     </div>
   );
