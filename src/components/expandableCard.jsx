@@ -19,7 +19,7 @@ import SchoolRoundedIcon from '@mui/icons-material/SchoolRounded';
 import { useDispatch } from 'react-redux';
 import SearchDropDown from './dropdownWithSearch';
 import { MediumPoppin16, MediumPoppin22 } from './styled/commonDesign';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, redirect } from 'react-router-dom';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -46,9 +46,9 @@ export default function ExpandableCard({
   pingResult,
 }) {
   const [expanded, setExpanded] = React.useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   let dispatch = useDispatch();
-  let navigate = useNavigate();
-  let [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -86,9 +86,17 @@ export default function ExpandableCard({
               e.preventDefault();
               e.stopPropagation();
               selectCard(ind);
-              navigate(
-                `/school/matches/transfer?search=${searchParams.get('search')}`
-              );
+
+              if (!selected) {
+                navigate(
+                  `/school/matches/transfer?search=${searchParams.get(
+                    'search'
+                  )}`
+                );
+              }
+              // setSearchParams({
+              //   search: searchParams.get('search'),
+              // });
             }}
           >
             <DoneRoundedIcon

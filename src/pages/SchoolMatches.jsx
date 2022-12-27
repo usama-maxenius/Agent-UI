@@ -40,6 +40,14 @@ const Education = () => {
   let { schoolsList } = useSelector((store) => store.InitReducer);
   const dispatch = useDispatch();
 
+  let element = document.getElementById('main-wrapper');
+
+  if (element?.classList?.contains('main-page')) {
+    element?.classList?.remove('main-page');
+  }
+
+  element?.classList?.add('school-page');
+
   useEffect(() => {
     const interval = setInterval(() => {
       dispatch(ResultSchools(searchParams.get('search')));
@@ -58,14 +66,6 @@ const Education = () => {
     //   dispatch(ResultSchools(searchParams.get('search')));
     // }
   }, [schoolsList]);
-
-  let element = document.getElementById('main-wrapper');
-
-  if (element?.classList?.contains('main-page')) {
-    element?.classList?.remove('main-page');
-  }
-
-  element?.classList?.add('school-page');
 
   return (
     <React.Fragment>

@@ -35,6 +35,7 @@ const WelcomeNotes = () => {
   let { transferResult, selectedProgram, selectedSchool } = useSelector(
     (store) => store.InitReducer
   );
+
   let [question, setQuestion] = useState();
   let dispatchRedux = useDispatch();
 
@@ -92,7 +93,7 @@ const WelcomeNotes = () => {
         </Grid>
       </Grid>
       <Wrapper>
-        <div className="w-full h-full flex flex-col mt-9 pl-20">
+        <div className="w-full h-full flex flex-col mt-9 pl-5">
           <p className="text-blue text-[22px] font-Poppin font-semibold">
             READ WORD FOR WORD
           </p>

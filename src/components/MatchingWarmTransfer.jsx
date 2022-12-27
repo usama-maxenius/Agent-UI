@@ -15,9 +15,11 @@ function classNames(...classes) {
 }
 
 export default function SchoolCards({ setPopUp }) {
-  let { schoolsList } = useSelector((store) => store.InitReducer);
+  let { schoolsList, selectedSchool, pingResult } = useSelector(
+    (store) => store.InitReducer
+  );
 
-  let [categories] = useState({
+  const categories = {
     ' Warm transfers': [
       {
         id: 1,
@@ -66,13 +68,16 @@ export default function SchoolCards({ setPopUp }) {
         shareCount: 2,
       },
     ],
-  });
+  };
 
   let dispatch = useDispatch();
-  let { pingResult } = useSelector((store) => store.InitReducer);
   let [searchParams] = useSearchParams();
   // Methods for Tab 1
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(
+    selectedSchool !== undefined && selectedSchool !== null
+      ? [selectedSchool]
+      : []
+  );
   const selectCard = (ind) => {
     let ele = ind;
     if (
@@ -83,12 +88,20 @@ export default function SchoolCards({ setPopUp }) {
       setSelected([]);
       dispatch(clearPingTransfer());
     }
-    if (!selected.includes(ind)) {
+    if (
+      !selected.find(
+        (item1) => item1?.result_identifier === ele?.result_identifier && ele
+      )
+    ) {
       if (selected.length < 1) {
         dispatch(TransferAPI(ind, searchParams.get('search')));
         dispatch(PingAPI(ind, searchParams.get('search')));
 
         setSelected([...selected, ele]);
+        dispatch({
+          type: 'SELECTED_SCHOOL',
+          payload: ele,
+        });
       } else {
         setPopUp(true);
       }
@@ -96,10 +109,10 @@ export default function SchoolCards({ setPopUp }) {
   };
 
   useEffect(() => {
-    dispatch({
-      type: 'SELECTED_SCHOOL',
-      payload: selected[0],
-    });
+    // dispatch({
+    //   type: 'SELECTED_SCHOOL',
+    //   payload: selected[0],
+    // });
   }, [selected]);
 
   // Methods for Tab2
