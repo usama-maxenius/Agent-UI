@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -27,6 +27,32 @@ const RightContentWrapper = styled('div')(() => ({
 const Education = () => {
   const { state } = useContextCustom();
   let { mode } = useSelector((store) => store.InitReducer);
+  const [value, setValue] = useState({
+    gender: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    address_line1: '',
+    city: '',
+    state: '',
+    zip_code: '',
+    computer_internet_access: '',
+    age: '',
+    hsyear: '',
+    current_education_level: '',
+    us_citizen: '',
+    military_status: '',
+    online_or_campus: '',
+    can_complete_enrollment: '',
+    is_contacted_by_school: '',
+    graduated_in_us: '',
+    time_to_call: '',
+    areas_of_interest: '',
+    another_areas_of_interest: '',
+    any_other_areas_of_interest: '',
+  });
+
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
@@ -38,7 +64,11 @@ const Education = () => {
           </Grid>
           <Grid item xs={6}>
             <RightContentWrapper>
-              {mode ? <CallerDetails /> : <EducationForm />}
+              {mode ? (
+                <CallerDetails state={value} setState={setValue} />
+              ) : (
+                <EducationForm state={value} setState={setValue} />
+              )}
             </RightContentWrapper>
             <RightDrawer>
               {state.isSecurityDrawer && <DisclosureSecurity />}

@@ -4,7 +4,7 @@ import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { searchSchools } from '../store/action/searchAPI';
@@ -16,7 +16,7 @@ import {
   IconButton,
   IconWrapper,
   MainWrapper,
-  MediumPoppin
+  MediumPoppin,
 } from './styled/educationForm.style';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 
@@ -26,77 +26,21 @@ const Wrapper = styled('div')(() => ({
   flexDirection: 'column',
 }));
 
-const CallerDetail = () => {
+const CallerDetail = (props) => {
+  const { state, setState } = props;
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
   const dispatchRedux = useDispatch();
   const [params] = useSearchParams();
 
-  const [value, setValue] = useState({
-    gender: params?.get('gender') === null ? '' : params?.get('gender'),
-    first_name:
-      params?.get('first_name') === null ? '' : params?.get('first_name'),
-    last_name:
-      params?.get('last_name') === null ? '' : params?.get('last_name'),
-    email: params?.get('email') === null ? '' : params?.get('email'),
-    phone:
-      params?.get('phone_number') === null ? '' : params?.get('phone_number'),
-    address_line1:
-      params?.get('address1') === null ? '' : params?.get('address1'),
-    city: params?.get('city') === null ? '' : params?.get('city'),
-    state: params?.get('state') === null ? '' : params?.get('state'),
-    zip_code: params?.get('zip') === null ? '' : params?.get('zip'),
-    computer_internet_access:
-      params?.get('computer_internet_access') === null
-        ? ''
-        : params?.get('computer_internet_access'),
-    age: params?.get('age') === null ? '' : params?.get('age'),
-    hsyear:
-      params?.get('high_school_graduation_year') === null
-        ? ''
-        : params?.get('high_school_graduation_year'),
-    current_education_level:
-      params?.get('current_education_level') === null
-        ? ''
-        : params?.get('current_education_level'),
-    us_citizen:
-      params?.get('us_citizen') === null ? '' : params?.get('us_citizen'),
-    military_status:
-      params?.get('military') === null ? '' : params?.get('military'),
-    online_or_campus:
-      params?.get('online_or_campus') === null
-        ? ''
-        : params?.get('online_or_campus'),
-    can_complete_enrollment:
-      params?.get('can_complete_enrollment') === null
-        ? ''
-        : params?.get('can_complete_enrollment'),
-    is_contacted_by_school:
-      params?.get('is_contacted_by_school') === null
-        ? ''
-        : params?.get('is_contacted_by_school'),
-    graduated_in_us:
-      params?.get('graduated_in_us') === null
-        ? ''
-        : params?.get('graduated_in_us'),
-    time_to_call:
-      params?.get('time_to_call') === null ? '' : params?.get('time_to_call'),
-    areas_of_interest:
-      params?.get('areas_of_interest') === null
-        ? ''
-        : params?.get('areas_of_interest'),
-    another_areas_of_interest:
-      params?.get('another_areas_of_interest') === null
-        ? ''
-        : params?.get('another_areas_of_interest'),
-    any_other_areas_of_interest:
-      params?.get('any_other_areas_of_interest') === null
-        ? ''
-        : params?.get('any_other_areas_of_interest'),
-  });
+  useEffect(() => {
+    params.forEach((param) =>
+      setState((prev) => ({ ...prev, [state[param]]: state[param] }))
+    );
+  }, [params]);
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatchRedux(searchSchools(value, navigate));
+    dispatchRedux(searchSchools(state, navigate));
   };
   return (
     <MainWrapper>
@@ -145,7 +89,7 @@ const CallerDetail = () => {
       <Wrapper>
         <div className="bg-white w-[570px] mt-[26px] rounded-box">
           <div className="flex flex-col pb-[26px]">
-            <DragnDropForm setValue={setValue} value={value} />
+            <DragnDropForm setValue={setState} value={state} />
           </div>
         </div>
         <div className="w-[519px] h-full flex flex-col justify-center mx-auto mt-[42px]">
