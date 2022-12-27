@@ -23,7 +23,6 @@ function countReducer(state, action) {
         isHelperDrawer: true,
         isCallerDrawer: false,
         isDraggable: false,
-
       };
     }
     case constant.SECURITY_DRAWER: {
@@ -69,6 +68,7 @@ function countReducer(state, action) {
 
 function ContextProvider({ children }) {
   const [state, dispatch] = React.useReducer(countReducer, initVal);
+
   const value = { state, dispatch };
   return <Context.Provider value={value}>{children}</Context.Provider>;
 }
@@ -82,4 +82,3 @@ function useContextCustom() {
 }
 
 export { ContextProvider, Context, useContextCustom };
-
