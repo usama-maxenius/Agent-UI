@@ -38,6 +38,7 @@ const CallerDetail = (props) => {
       setState((prev) => ({ ...prev, [state[param]]: state[param] }))
     );
   }, [params]);
+
   const searchHandler = (e) => {
     e.preventDefault();
     dispatchRedux(searchSchools(state, navigate));

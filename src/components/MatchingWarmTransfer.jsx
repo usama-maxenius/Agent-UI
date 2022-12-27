@@ -15,9 +15,7 @@ function classNames(...classes) {
 }
 
 export default function SchoolCards({ setPopUp }) {
-  let { schoolsList, selectedSchool, pingResult } = useSelector(
-    (store) => store.InitReducer
-  );
+  let { schoolsList, pingResult } = useSelector((store) => store.InitReducer);
 
   const categories = {
     ' Warm transfers': [
@@ -74,9 +72,10 @@ export default function SchoolCards({ setPopUp }) {
   let [searchParams] = useSearchParams();
   // Methods for Tab 1
   const [selected, setSelected] = useState(
-    selectedSchool !== undefined && selectedSchool !== null
-      ? [selectedSchool]
-      : []
+    // selectedSchool !== undefined && selectedSchool !== null
+    //   ? [selectedSchool]
+    //   :
+    []
   );
   const selectCard = (ind) => {
     let ele = ind;
@@ -94,10 +93,9 @@ export default function SchoolCards({ setPopUp }) {
       )
     ) {
       if (selected.length < 1) {
+        setSelected([...selected, ele]);
         dispatch(TransferAPI(ind, searchParams.get('search')));
         dispatch(PingAPI(ind, searchParams.get('search')));
-
-        setSelected([...selected, ele]);
         dispatch({
           type: 'SELECTED_SCHOOL',
           payload: ele,

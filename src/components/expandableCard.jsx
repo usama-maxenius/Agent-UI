@@ -87,13 +87,13 @@ export default function ExpandableCard({
               e.stopPropagation();
               selectCard(ind);
 
-              if (!selected) {
-                navigate(
-                  `/school/matches/transfer?search=${searchParams.get(
-                    'search'
-                  )}`
-                );
-              }
+              // if (!selected) {
+              //   navigate(
+              //     `/school/matches/transfer?search=${searchParams.get(
+              //       'search'
+              //     )}`
+              //   );
+              // }
               // setSearchParams({
               //   search: searchParams.get('search'),
               // });
