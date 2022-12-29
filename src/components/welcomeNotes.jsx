@@ -1,10 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const WelcomeNotes = () => {
   let navigate = useNavigate();
+
+  const queryParams = new URLSearchParams(window.location.search);
+
+  const userDetailStraingfy = localStorage.getItem('form');
+  const userDetailParams =
+    userDetailStraingfy && JSON.parse(userDetailStraingfy);
+
+  useEffect(() => {
+    userDetailParams &&
+      Object.keys(userDetailParams).forEach((key) => {
+        if (queryParams.get(key) !== null) {
+          return (userDetailParams[key] = queryParams.get(key));
+        }
+      });
+    // if (working) {
+    localStorage.setItem('form', JSON.stringify(userDetailParams));
+    // } else {
+    //   console.log('noooot working');
+    // }
+  }, [userDetailParams]);
+
   const { isAuthenticated, user } = useAuth0();
 
   return (
