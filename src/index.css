@@ -69,10 +69,12 @@ input[type='number'] {
 
 .main-page {
   position: absolute;
+  width: 100%;
 }
 
-.school-page{
-  position: "relative";
+.school-page {
+  position: 'relative';
+  width: 100%;
 }
 
 @keyframes matching-screen-animation {
