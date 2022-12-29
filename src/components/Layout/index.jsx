@@ -56,7 +56,16 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated && !isLoading) {
+    if (!isAuthenticated && !isLoading) {
+      let currentUrl = window.location.href;
+      if (
+        currentUrl?.includes('Education/form') ||
+        currentUrl.includes('company_code')
+      ) {
+        localStorage.setItem('url', currentUrl);
+      }
+      openModal();
+    } else if (isAuthenticated) {
       if (
         localStorage.getItem('url') !== null &&
         window.location.href !== localStorage.getItem('url')
@@ -68,19 +77,10 @@ const Layout = () => {
       if (window.location.href.includes('company_code')) {
         getToken();
       }
-      localStorage.removeItem('url');
       closeModal();
-    } else {
-      let currentUrl = window.location.href;
-      if (
-        currentUrl?.includes('Education/form') ||
-        currentUrl.includes('company_code')
-      ) {
-        localStorage.setItem('url', currentUrl);
-      }
-      openModal();
+      localStorage.removeItem('url');
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isLoading]);
 
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',
@@ -159,10 +159,10 @@ const Layout = () => {
                   <div className="mt-4">
                     <RecordingDisclosed
                       onClick={() => {
-                        if (!isAuthenticated && !user) {
+                        if (!isAuthenticated && !isLoading) {
                           loginWithRedirect();
                           closeModal();
-                        }
+                        } else closeModal();
                       }}
                     >
                       Login
