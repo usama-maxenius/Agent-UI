@@ -61,6 +61,10 @@ export default function InputIcon({
   const [params] = useSearchParams();
   const [showIcon, setShowIcon] = useState(false);
 
+  const [showOutLine, setShowOutLine] = useState(false);
+
+  const [empty, setEmpty] = useState(true);
+
   const getSpecificParamsValue = () => {
     if (name === 'zip_code') {
       return params.get('zip');
@@ -82,7 +86,13 @@ export default function InputIcon({
   }, []);
 
   return (
-    <div className="flex flex-row w-full rounded-box items-center bg-lightGray border border-[#16161640]  px-1.5 text-blue">
+    <div
+      className={`flex flex-row w-full rounded-box items-center bg-lightGray ${
+        showOutLine && empty
+          ? 'outline outline-offset-2 outline-pink-400'
+          : 'border border-[#16161640]'
+      }  px-1.5 text-blue`}
+    >
       <input
         className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
@@ -101,36 +111,56 @@ export default function InputIcon({
             case 'first_name':
               if (e.target.value.match(checkString)) {
                 setShowIcon(true);
+                setShowOutLine(false);
+                setEmpty(false);
               } else {
                 setShowIcon(false);
+                setShowOutLine(true);
+                setEmpty(true);
               }
               break;
             case 'last_name':
               if (e.target.value.match(checkString)) {
                 setShowIcon(true);
+                setShowOutLine(false);
+                setEmpty(false);
               } else {
                 setShowIcon(false);
+                setShowOutLine(true);
+                setEmpty(true);
               }
               break;
             case 'phone':
               if (e.target.value.replace(/\D/g, '').match(phoneNo)) {
                 setShowIcon(true);
+                setShowOutLine(false);
+                setEmpty(false);
               } else {
                 setShowIcon(false);
+                setShowOutLine(true);
+                setEmpty(true);
               }
               break;
             case 'email':
               if (e.target.value.match(emailRegex)) {
                 setShowIcon(true);
+                setShowOutLine(false);
+                setEmpty(false);
               } else {
                 setShowIcon(false);
+                setShowOutLine(true);
+                setEmpty(true);
               }
               break;
             case 'zip_code':
               if (e.target.value.match(zipRegex)) {
                 setShowIcon(true);
+                setShowOutLine(false);
+                setEmpty(false);
               } else {
                 setShowIcon(false);
+                setShowOutLine(true);
+                setEmpty(true);
               }
               break;
           }
