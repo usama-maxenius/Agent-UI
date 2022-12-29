@@ -3,7 +3,7 @@
 import React, { Fragment, useState } from 'react';
 import SideBar from './sidebar';
 import Header from './header';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Dialog, Transition } from '@headlessui/react';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -14,6 +14,7 @@ import axios from 'axios';
 const Layout = () => {
   let [isOpen, setIsOpen] = useState(false);
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const { loginWithRedirect } = useAuth0();
   const {
     isAuthenticated,
@@ -159,10 +160,13 @@ const Layout = () => {
                   <div className="mt-4">
                     <RecordingDisclosed
                       onClick={() => {
-                        if (!isAuthenticated && !isLoading) {
+                        if (!isAuthenticated) {
                           loginWithRedirect();
                           closeModal();
-                        } else closeModal();
+                        } else {
+                          closeModal();
+                          return navigate('education/form');
+                        }
                       }}
                     >
                       Login
