@@ -15,8 +15,13 @@ const Layout = () => {
   let [isOpen, setIsOpen] = useState(false);
   const [params] = useSearchParams();
   const { loginWithRedirect } = useAuth0();
-  const { isAuthenticated, user, getAccessTokenSilently, getIdTokenClaims } =
-    useAuth0();
+  const {
+    isAuthenticated,
+    user,
+    isLoading,
+    getAccessTokenSilently,
+    getIdTokenClaims,
+  } = useAuth0();
 
   function closeModal() {
     setIsOpen(false);
@@ -51,16 +56,7 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (!isAuthenticated && localStorage.getItem('url')) {
-      let currentUrl = window.location.href;
-      if (
-        currentUrl?.includes('Education/form') ||
-        currentUrl.includes('company_code')
-      ) {
-        localStorage.setItem('url', currentUrl);
-      }
-      openModal();
-    } else if (isAuthenticated) {
+    if (isAuthenticated && !isLoading) {
       if (
         localStorage.getItem('url') !== null &&
         window.location.href !== localStorage.getItem('url')
@@ -72,10 +68,19 @@ const Layout = () => {
       if (window.location.href.includes('company_code')) {
         getToken();
       }
-      closeModal();
       localStorage.removeItem('url');
+      closeModal();
+    } else {
+      let currentUrl = window.location.href;
+      if (
+        currentUrl?.includes('Education/form') ||
+        currentUrl.includes('company_code')
+      ) {
+        localStorage.setItem('url', currentUrl);
+      }
+      openModal();
     }
-  }, [isAuthenticated, user]);
+  }, [isAuthenticated]);
 
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',
