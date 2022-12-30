@@ -42,24 +42,34 @@ export default function ExpandableCard({
   selectCard,
   ind,
   selected,
+  programs,
   program,
   pingResult,
 }) {
   const [expanded, setExpanded] = React.useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedProgram, setSelectedProgram] = React.useState({});
   let dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const handleExpandClick = () => setExpanded(!expanded);
 
   const selectProgramHandler = (obj) => {
+    setSelectedProgram(obj);
     dispatch({
       type: 'PROGRAM_SELECTED',
       payload: obj,
     });
   };
+
+  const copyPrograms = [...programs];
+  const programOptions = copyPrograms?.map((prog) => {
+    return {
+      ...prog,
+      OptionLabel: prog.name,
+      OptionValue: prog.name,
+    };
+  });
 
   return (
     <Card
@@ -85,6 +95,7 @@ export default function ExpandableCard({
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
+
               selectCard(ind);
 
               // if (!selected) {
@@ -151,37 +162,34 @@ export default function ExpandableCard({
               )}
             />
           }
-          program={ind.program}
+          program={ind}
           placeholder="Select a program"
-          options={[
-            {
-              OptionLabel: ind.program,
-              OptionValue: '1',
-            },
-          ]}
+          options={programOptions}
           selectProgramHandler={selectProgramHandler}
         />
       </div>
 
-      {ind.questions?.map((item, key) => {
-        return (
-          <div
-            className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]"
-            key={key}
-          >
-            <SearchDropDown
-              Icon={<QuizRoundedIcon className="text-gray mr-3" />}
-              placeholder={item.QuestionLabel}
-              options={item.QuestionOptions}
-              programSelected={selectCard}
-            />
-          </div>
-        );
-      })}
+      {Object.keys(selectedProgram).length
+        ? ind.questions?.map((item, key) => {
+            return (
+              <div
+                className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]"
+                key={key}
+              >
+                <SearchDropDown
+                  Icon={<QuizRoundedIcon className="text-gray mr-3" />}
+                  placeholder={item.QuestionLabel}
+                  options={item.QuestionOptions}
+                  programSelected={() => selectCard(item)}
+                />
+              </div>
+            );
+          })
+        : ''}
       {pingResult && (
         <div
           className={classNames(
-            'mx-auto w-[calc(95% - 32px)]  mx-[16px]',
+            'mx-auto w-[calc(95% - 32px)]  md:mx-[16px]',
             selected ? 'text-white' : 'text-blue'
           )}
         >

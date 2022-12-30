@@ -250,11 +250,6 @@ const UserDetails = () => {
   const parsedUserDetail = useRef(parsedUserDetails);
 
   useEffect(() => {
-    // if (searchDetails !== undefined) {
-
-    console.log('parsedUserDetail', parsedUserDetail.current.first_name);
-    console.log('searchDetails', searchDetails);
-
     setUserData(
       (prev) => (
         { ...prev },

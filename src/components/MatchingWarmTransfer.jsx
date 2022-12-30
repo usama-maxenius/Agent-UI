@@ -1,21 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import ExpandableCard from './expandableCard';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import {
-  clearPingTransfer,
+  // clearPingTransfer,
   PingAPI,
   TransferAPI,
 } from '../store/action/searchAPI';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import React from 'react';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function SchoolCards({ setPopUp }) {
-  let { schoolsList, pingResult } = useSelector((store) => store.InitReducer);
+  // useNavigate();
+  const { state } = useLocation();
+
+  const [selectedTab, setSelectedTab] = useState(state?.selectedTab ?? 0);
+
+  let { schoolsList, pingResult, search_identifier_details, selectedSchools } =
+    useSelector((store) => store.InitReducer);
 
   const categories = {
     ' Warm transfers': [
@@ -71,47 +78,55 @@ export default function SchoolCards({ setPopUp }) {
   let dispatch = useDispatch();
   let [searchParams] = useSearchParams();
   // Methods for Tab 1
-  const [selected, setSelected] = useState(
-    // selectedSchool !== undefined && selectedSchool !== null
-    //   ? [selectedSchool]
-    //   :
-    []
-  );
+  const [selected, setSelected] = useState([]);
   const selectCard = (ind) => {
     let ele = ind;
-    if (
-      selected.find(
-        (item1) => item1?.result_identifier === ele?.result_identifier && ele
-      )
-    ) {
-      setSelected([]);
-      dispatch(clearPingTransfer());
-    }
-    if (
-      !selected.find(
-        (item1) => item1?.result_identifier === ele?.result_identifier && ele
-      )
-    ) {
-      if (selected.length < 1) {
-        setSelected([...selected, ele]);
-        dispatch(TransferAPI(ind, searchParams.get('search')));
-        dispatch(PingAPI(ind, searchParams.get('search')));
-        dispatch({
-          type: 'SELECTED_SCHOOL',
-          payload: ele,
-        });
-      } else {
-        setPopUp(true);
-      }
-    }
+    // if (
+    //   selected.find(
+    //     (item1) => item1?.result_identifier === ele?.result_identifier && ele
+    //   )
+    // ) {
+    //   const removeItem = selected.filter(
+    //     (item1) => item1?.result_identifier !== ele?.result_identifier
+    //   );
+    //   setSelected(removeItem);
+    //   dispatch(clearPingTransfer());
+    // }
+    // if (
+    // !selected.find(
+    //     (item1) => item1?.result_identifier === ele?.result_identifier && ele
+    //   )
+    // ) {
+    // if (selected.length < 1) {
+    setSelected([...selected, ele]);
+    dispatch(TransferAPI(ind, searchParams.get('search')));
+    dispatch(PingAPI(ind, searchParams.get('search')));
+    dispatch({
+      type: 'SELECTED_SCHOOLS',
+      payload: ind,
+    });
+    // }
   };
 
-  useEffect(() => {
-    // dispatch({
-    //   type: 'SELECTED_SCHOOL',
-    //   payload: selected[0],
-    // });
-  }, [selected]);
+  // console.log(
+  //   '🚀 ~ file: MatchingWarmTransfer.jsx:122 ~ //useEffect ~ selectedSchools',
+  //   selectedSchools,
+  //   search_identifier_details
+  // );
+  // useEffect(() => {
+
+  // else
+  // useEffect(() => {
+  // setSelected(selectedSchools);
+  if (selectedSchools.length && search_identifier_details) {
+    // navigate(
+    //   `/school/matches/submitMatch/?search=${search_identifier_details}`,
+    //   {
+    //     state: { selectedTab },
+    //   }
+    // );
+  }
+  // }, [selectedSchools]);
 
   // Methods for Tab2
   // const [program, setProgram] = useState(null);
@@ -129,21 +144,63 @@ export default function SchoolCards({ setPopUp }) {
   const warmTransferOffers = schoolsList?.filter(
     (item) => item.result_type === 'transfer' && item
   );
-  const directOffers = schoolsList?.filter(
-    (item) => item.result_type === 'lead' && item
-  );
+
   const externalOffers = schoolsList?.filter(
     (item) =>
       item.result_type !== 'lead' && item.result_type !== 'transfer' && item
   );
 
+  // Write down offers related code --start
+  /** Lead type offers */
+  /** 1. filter lead type offers */
+  const directOffers = schoolsList?.filter(
+    (item) => item.result_type === 'lead' && item
+  );
+
+  /** 2. Merge Each school programs and generate array which showings schools and programs list in one object  */
+
+  const uniqueSchoolsOfDirectOffers =
+    directOffers &&
+    Object.values(
+      directOffers.reduce((acc, curr) => {
+        curr.programs = []; // add new programs prop
+        curr.programs.push({
+          questions: curr.questions,
+          name: curr.program,
+        });
+        if (!acc[curr.schoolid]) {
+          acc[curr.schoolid] = [{ ...curr }];
+        } else {
+          const currentSize = acc[curr.schoolid].length;
+
+          if (currentSize === 1) {
+            const alreadyExist = acc[curr.schoolid][0]?.programs?.find(
+              (exist) => exist.name === curr.program
+            );
+            if (!alreadyExist) {
+              acc[curr.schoolid][0].programs.push({
+                questions: curr.questions,
+                name: curr.program,
+              });
+            }
+          }
+        }
+        return acc;
+      }, {})
+    ).flat();
+
+  /** 3. Get questions of selected program  */
+
+  /** 3. Take answer of questions and  sending submit request  */
+
   return (
     <div className="w-full px-2 py-4 sm:px-0">
-      <Tab.Group>
+      <Tab.Group defaultIndex={selectedTab}>
         <Tab.List className="flex justify-between space-x-1 rounded-xl p-1">
           {Object.keys(categories).map((category, key) => (
             <Tab
               key={category}
+              onClick={() => setSelectedTab(key)}
               className={({ selected }) =>
                 classNames(
                   'w-40 rounded-lg py-2.5 mx-4.5 text-md font-Poppin leading-5 text-gray font-medium text-lg ',
@@ -163,7 +220,9 @@ export default function SchoolCards({ setPopUp }) {
                 } ${category}`}
               {key === 1 &&
                 `${
-                  directOffers?.length !== undefined ? directOffers?.length : 0
+                  uniqueSchoolsOfDirectOffers?.length !== undefined
+                    ? uniqueSchoolsOfDirectOffers?.length
+                    : 0
                 } ${category}`}
               {key === 2 &&
                 `${
@@ -196,13 +255,14 @@ export default function SchoolCards({ setPopUp }) {
           </Tab.Panel>
           <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
-              {directOffers?.map((item, key) => (
+              {uniqueSchoolsOfDirectOffers?.map((item, key) => (
                 <div className="mt-5" key={key}>
                   <ExpandableCard
                     setPopUp={setPopUp}
                     ind={item}
+                    programs={item.programs}
                     selectCard={selectCard}
-                    selected={selected.find(
+                    selected={selectedSchools?.find(
                       (item1) =>
                         item1?.result_identifier === item?.result_identifier &&
                         item

@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
-// import SchoolToProceed from '../components/SchoolToProceed';
+import SchoolToProceed from '../components/SchoolToProceed';
 import { useDispatch, useSelector } from 'react-redux';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import DisclosureCallerDetails from '../components/disclosureCallerDetails';
@@ -12,6 +12,7 @@ import DisclosureHelp from '../components/disclosureHelp';
 import DisclosureSecurity from '../components/disclosureSecurity';
 import MatchingWarmTransfer from '../components/MatchingWarmTransfer';
 import RightDrawer from '../components/rightDrawer';
+import SubmitMatch from '../components/submitMatch';
 import WarningPopOver from '../components/warningPopOver';
 import { ResultSchools } from '../store/action/searchAPI';
 import { useContextCustom } from '../store/context';
@@ -37,7 +38,9 @@ const Education = () => {
   const [popup, setPopUp] = useState(false);
   const { state } = useContextCustom();
   let [searchParams] = useSearchParams();
-  let { schoolsList } = useSelector((store) => store.InitReducer);
+  let { schoolsList, selectedSchools } = useSelector(
+    (store) => store.InitReducer
+  );
   const dispatch = useDispatch();
 
   let element = document.getElementById('main-wrapper');
@@ -79,7 +82,8 @@ const Education = () => {
           </Grid>
           <Grid item xs={6}>
             <RightContentWrapper>
-              <Outlet />
+              {/* <Outlet /> */}
+              {selectedSchools.length ? <SubmitMatch /> : <SchoolToProceed />}
             </RightContentWrapper>
             <RightDrawer>
               {state.isSecurityDrawer && <DisclosureSecurity />}
