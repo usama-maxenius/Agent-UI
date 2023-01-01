@@ -17,8 +17,6 @@ import CallerDetails from './components/CallerDetails';
 import MatchedSuccess from './components/matchedSuccess';
 import MatchingLoader from './components/matchingLoading';
 import MatchingNotes from './components/matchingNotes';
-import SchoolToProceed from './components/SchoolToProceed';
-import SubmitMatch from './components/submitMatch';
 import SubmitMatchError from './components/submitMatchError';
 import SubmittingLoading from './components/submittingMatchesLoader';
 
@@ -59,11 +57,7 @@ function App() {
   });
   const form = localStorage.getItem('form');
   const form2 = form && JSON.parse(form);
-  if (form2) {
-    console.log('formIsEmpty: ' + form);
-  } else {
-    localStorage.setItem('form', JSON.stringify(userDetailParams));
-  }
+  if (!form2) localStorage.setItem('form', JSON.stringify(userDetailParams));
 
   return (
     <ContextProvider>
@@ -73,7 +67,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="/education/form" element={<Education />} />
             <Route path="/school/matches" element={<SchoolMatches />}>
-              <Route index element={<SchoolToProceed />} />
+              {/* <Route index element={<SchoolToProceed />} /> */}
               <Route
                 path="/school/matches/transfer"
                 element={<MatchingNotes />}
@@ -86,10 +80,10 @@ function App() {
                 path="/school/matches/callerDetails"
                 element={<CallerDetails />}
               />
-              <Route
+              {/* <Route
                 path="/school/matches/submitMatch"
                 element={<SubmitMatch />}
-              />
+              /> */}
               <Route
                 path="/school/matches/submitMatchError"
                 element={<SubmitMatchError />}

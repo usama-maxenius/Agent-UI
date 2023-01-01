@@ -5,8 +5,11 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
+import React from 'react';
 import { Fragment, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
+import { addToArray, updateObjectInArray } from '../helper/removeDublicates';
 import { getAllCities } from '../store/action';
 
 function classNames(...classes) {
@@ -19,6 +22,7 @@ export default function DropdownWithSearch({
   state,
   setState,
   callerID,
+  question,
   options,
   selectProgramHandler,
   recommendedIcon,
@@ -26,14 +30,15 @@ export default function DropdownWithSearch({
   setCallerState,
   name,
 }) {
-  const options1 = options !== undefined ? options : [];
+  const options1 = options ?? [];
   const people = [
     {
-      OptionLabel: placeholder ? placeholder : 'Select an agent to transfer to',
-      OptionValue: placeholder ? placeholder : 'Select an agent to transfer to',
+      OptionLabel: placeholder ?? 'Select an agent to transfer to',
+      OptionValue: placeholder ?? 'Select an agent to transfer to',
     },
     ...options1,
   ];
+
   const [selected, setSelected] = useState(
     state !== undefined
       ? state[name] === ''
@@ -46,19 +51,38 @@ export default function DropdownWithSearch({
   );
   const [changeColor, setChangeColor] = useState(false);
   const dispatch = useDispatch();
-  const onChangeHandler = (prop) => {
+  const { selectedSchools } = useSelector((store) => store.InitReducer);
+
+  const onChangeHandler = async (prop) => {
+    if (question) {
+      question.value = prop;
+      const updatedAnswers = selectedSchools?.map((school) =>
+        school.selected_program?.questions?.map((qest) => {
+          if (qest.QuestionFieldName === question.QuestionFieldName) {
+            qest.value = prop;
+            return school;
+          }
+          return school;
+        })
+      );
+      dispatch({
+        type: 'SELECTED_SCHOOLS',
+        payload: updatedAnswers,
+      });
+    }
+
     setChangeColor(true);
     setSelected(prop);
     dispatch({
       type: 'USER_DETAILS',
       payload: { ...state, [name]: prop.OptionValue },
     });
-    // setState({ ...state, [name]: prop.OptionValue });
-    let obj = {
-      question_key: program,
-      question_value: prop.OptionValue,
-    };
-    if (selectProgramHandler) selectProgramHandler(obj);
+    // let obj = {
+    //   ...prop,
+    //   question_key: prop.OptionLabel,
+    //   question_value: prop.OptionValue,
+    // };
+    if (selectProgramHandler) selectProgramHandler(prop);
     if (setCallerState) {
       setCallerState({ ...callerState, [name]: prop.OptionValue });
     }
@@ -74,7 +98,7 @@ export default function DropdownWithSearch({
         <div className="relative mt-1">
           <Listbox.Button
             className={classNames(
-              'relative w-full cursor-default rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
+              'relative w-full cursor-default md:rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
               // program == true ? 'border-red' : 'border-gray',
               callerID == true
                 ? 'border-blue  h-[52px] font-Poppin text-base rounded-[8px]'
@@ -133,12 +157,15 @@ export default function DropdownWithSearch({
               {people.map((person, personIdx) => {
                 if (placeholder == 'Advisors') {
                   person = {
+                    QuestionFieldName: person.QuestionFieldName,
                     OptionLabel: person.AdvisorName,
                     OptionValue: person.AdvisorId,
                   };
                 }
                 if (placeholder == 'Select Your State') {
                   person = {
+                    QuestionFieldName: person.QuestionFieldName,
+
                     OptionLabel: person.name,
                     OptionValue: person.name,
                   };
@@ -153,7 +180,7 @@ export default function DropdownWithSearch({
                         }`
                       }
                       value={person}
-                      onClick={(e) => onChangeHandler(person)}
+                      onClick={() => onChangeHandler(person)}
                     >
                       {({ selected }) => (
                         <>

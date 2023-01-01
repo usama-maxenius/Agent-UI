@@ -86,7 +86,6 @@ const Layout = () => {
   const MainWrapper = styled('div')(() => ({
     overflowX: 'hidden',
     height: '100%',
-    // position: 'absolute',
   }));
 
   const RecordingDisclosed = styled('div')(() => ({
@@ -162,7 +161,7 @@ const Layout = () => {
                       onClick={() => {
                         if (!isAuthenticated) {
                           loginWithRedirect();
-                          closeModal();
+                          return closeModal();
                         } else {
                           closeModal();
                           return navigate('education/form');

@@ -34,8 +34,8 @@ const CallerDetail = (props) => {
   const [params] = useSearchParams();
 
   useEffect(() => {
-    params.forEach((param) =>
-      setState((prev) => ({ ...prev, [state[param]]: state[param] }))
+    Object.keys(state).forEach((key) =>
+      setState((prev) => ({ ...prev, [key]: params.get(key) }))
     );
   }, [params]);
 

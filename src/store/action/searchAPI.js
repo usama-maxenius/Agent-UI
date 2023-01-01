@@ -229,6 +229,10 @@ export let searchSchools = (data, navigate) => {
         type: 'SEARCH_RESULTS',
         payload: response,
       });
+      dispatch({
+        type: 'SEARCH_IDENTIFIER_RESPONSE',
+        payload: response,
+      });
     }
   };
 };
@@ -246,6 +250,10 @@ export let ResultSchools = (searchIdentifier, navigate) => {
       if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
       dispatch({
         type: 'SEARCH_SCHOOLS',
+        payload: response[0],
+      });
+      dispatch({
+        type: 'SEARCH_RESULT_RESPONSE',
         payload: response[0],
       });
     } else {
