@@ -14,6 +14,11 @@ let init = {
   searchDetails: undefined,
   search_results: undefined,
   selectedSchools: [],
+  offers: {
+    directOffers: [],
+    warmOffers: [],
+    externalOffers: [],
+  },
 };
 
 export function InitReducer(state = init, action) {
@@ -51,25 +56,18 @@ export function InitReducer(state = init, action) {
         ...state,
         search_results: payload,
       };
-    case 'SELECTED_SCHOOLS': {
-      /** @type {any[]} */
-      let updateSchools = [...state.selectedSchools];
-      if (updateSchools.length) {
-        const isExist = state.selectedSchools.find(
-          (s) => s?.schoolid === payload.schoolid
-        );
-        if (isExist) {
-          updateSchools = updateSchools.filter(
-            (s) => s.schoolid !== payload.schoolid
-          );
-        } else updateSchools.push(payload);
-      } else updateSchools.push(payload);
+    case 'SELECTED_SCHOOLS':
       return {
         ...state,
-        selectedSchools: updateSchools,
-        selectedScohool: updateSchools.length ? true : false,
+        selectedSchools: payload,
+        selectedScohool: payload.length ? true : false,
       };
-    }
+    case 'OFFERS_LIST':
+      return {
+        ...state,
+        ...payload,
+      };
+
     case 'SEARCH_SCHOOLS':
       return {
         ...state,

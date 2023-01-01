@@ -16,6 +16,9 @@ import SubmitMatch from '../components/submitMatch';
 import WarningPopOver from '../components/warningPopOver';
 import { ResultSchools } from '../store/action/searchAPI';
 import { useContextCustom } from '../store/context';
+import OffersTab from '../components/offers';
+import { mergeSchoolPrograms } from '../helper/mergeSchoolPrograms';
+import { useSchoolResults } from '../hooks/useOffers';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: props.expand ? 160 : 87,
@@ -36,20 +39,23 @@ const RightContentWrapper = styled('div')(() => ({
 
 const Education = () => {
   const [popup, setPopUp] = useState(false);
+  const dispatch = useDispatch();
+  const { data } = useSchoolResults();
   const { state } = useContextCustom();
+  const [isSelected, setIsSelected] = useState({
+    directOffers: false,
+    warmOffers: false,
+    externalOffers: false,
+  });
   let [searchParams] = useSearchParams();
+  const [offers, setOffers] = useState({
+    directOffers: [],
+    warmOffers: [],
+    externalOffers: [],
+  });
   let { schoolsList, selectedSchools } = useSelector(
     (store) => store.InitReducer
   );
-  const dispatch = useDispatch();
-
-  let element = document.getElementById('main-wrapper');
-
-  if (element?.classList?.contains('main-page')) {
-    element?.classList?.remove('main-page');
-  }
-
-  element?.classList?.add('school-page');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -70,20 +76,87 @@ const Education = () => {
     // }
   }, [schoolsList]);
 
+  useEffect(() => {
+    (async () => {
+      if (data) {
+        let warmOffers = data?.filter(
+          (item) => item.result_type === 'transfer' && item
+        );
+        warmOffers = warmOffers?.length
+          ? mergeSchoolPrograms(warmOffers)
+          : warmOffers;
+
+        let externalOffers = data?.filter(
+          (item) =>
+            item.result_type !== 'lead' && item.result_type !== 'transfer'
+        );
+        externalOffers = externalOffers?.length
+          ? mergeSchoolPrograms(externalOffers)
+          : externalOffers;
+
+        let directOffers = data?.filter((item) => item.result_type === 'lead');
+        directOffers = directOffers?.length
+          ? mergeSchoolPrograms(directOffers)
+          : directOffers;
+        directOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+        });
+
+        setOffers({
+          ...offers,
+          directOffers,
+          warmOffers,
+          externalOffers,
+        });
+      }
+    })();
+  }, [data]);
+
+  useEffect(() => {
+    const isSelectedDirect = offers.directOffers.find((o) => o.selected);
+    setIsSelected({
+      ...isSelected,
+      directOffers: isSelectedDirect,
+    });
+  }, [offers]);
+
+  const updateDirectOffersHandler = React.useCallback((val) => {
+    setOffers({
+      ...offers,
+      directOffers: val,
+    });
+  }, []);
+
+  let element = document.getElementById('main-wrapper');
+
+  if (element?.classList?.contains('main-page')) {
+    element?.classList?.remove('main-page');
+  }
+
+  element?.classList?.add('school-page');
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container>
           <Grid item xs={6}>
             <LeftContentWrapper popup={popup} expand={state.expand}>
-              <MatchingWarmTransfer setPopUp={setPopUp} />
+              <OffersTab
+                state={offers}
+                updateHandler={updateDirectOffersHandler}
+              />
+              {/* <MatchingWarmTransfer setPopUp={setPopUp} /> */}
             </LeftContentWrapper>
             <WarningPopOver popup={popup} setPopUp={setPopUp} />
           </Grid>
           <Grid item xs={6}>
             <RightContentWrapper>
               {/* <Outlet /> */}
-              {selectedSchools.length ? <SubmitMatch /> : <SchoolToProceed />}
+              {isSelected.directOffers ? (
+                <SubmitMatch state={offers.directOffers} />
+              ) : (
+                <SchoolToProceed />
+              )}
             </RightContentWrapper>
             <RightDrawer>
               {state.isSecurityDrawer && <DisclosureSecurity />}

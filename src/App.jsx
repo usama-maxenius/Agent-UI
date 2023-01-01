@@ -17,8 +17,6 @@ import CallerDetails from './components/CallerDetails';
 import MatchedSuccess from './components/matchedSuccess';
 import MatchingLoader from './components/matchingLoading';
 import MatchingNotes from './components/matchingNotes';
-// import SchoolToProceed from './components/SchoolToProceed';
-// import SubmitMatch from './components/submitMatch';
 import SubmitMatchError from './components/submitMatchError';
 import SubmittingLoading from './components/submittingMatchesLoader';
 

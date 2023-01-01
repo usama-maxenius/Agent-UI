@@ -22,6 +22,7 @@ export default function DropdownWithSearch({
   state,
   setState,
   callerID,
+  question,
   options,
   selectProgramHandler,
   recommendedIcon,
@@ -29,7 +30,6 @@ export default function DropdownWithSearch({
   setCallerState,
   name,
 }) {
-  console.log('🚀 ~ file: dropdownWithSearch.jsx:32 ~ options', options);
   const options1 = options ?? [];
   const people = [
     {
@@ -54,13 +54,22 @@ export default function DropdownWithSearch({
   const { selectedSchools } = useSelector((store) => store.InitReducer);
 
   const onChangeHandler = async (prop) => {
-    console.log(
-      '🚀 ~ file: dropdownWithSearch.jsx:55 ~ onChangeHandler ~ prop',
-      prop
-    );
-    const selectedPrograms = prop?.name
-      ? selectedSchools.map((selected) => (selected.selected_program = prop))
-      : selectedSchools;
+    if (question) {
+      question.value = prop;
+      const updatedAnswers = selectedSchools?.map((school) =>
+        school.selected_program?.questions?.map((qest) => {
+          if (qest.QuestionFieldName === question.QuestionFieldName) {
+            qest.value = prop;
+            return school;
+          }
+          return school;
+        })
+      );
+      dispatch({
+        type: 'SELECTED_SCHOOLS',
+        payload: updatedAnswers,
+      });
+    }
 
     setChangeColor(true);
     setSelected(prop);
@@ -68,11 +77,12 @@ export default function DropdownWithSearch({
       type: 'USER_DETAILS',
       payload: { ...state, [name]: prop.OptionValue },
     });
-    let obj = {
-      question_key: program,
-      question_value: prop.OptionValue,
-    };
-    if (selectProgramHandler) selectProgramHandler(obj);
+    // let obj = {
+    //   ...prop,
+    //   question_key: prop.OptionLabel,
+    //   question_value: prop.OptionValue,
+    // };
+    if (selectProgramHandler) selectProgramHandler(prop);
     if (setCallerState) {
       setCallerState({ ...callerState, [name]: prop.OptionValue });
     }

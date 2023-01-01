@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tab } from '@headlessui/react';
 import ExpandableCard from './expandableCard';
 import { useSelector } from 'react-redux';
@@ -10,6 +10,8 @@ import {
 } from '../store/action/searchAPI';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import React from 'react';
+import { addToArray } from '../helper/removeDublicates';
+import { mergeSchoolPrograms } from '../helper/mergeSchoolPrograms';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -18,11 +20,14 @@ function classNames(...classes) {
 export default function SchoolCards({ setPopUp }) {
   // useNavigate();
   const { state } = useLocation();
-
+  const [offers, setOffers] = useState({
+    direct_offers: [],
+  });
   const [selectedTab, setSelectedTab] = useState(state?.selectedTab ?? 0);
 
-  let { schoolsList, pingResult, search_identifier_details, selectedSchools } =
-    useSelector((store) => store.InitReducer);
+  let { schoolsList, pingResult, selectedSchools } = useSelector(
+    (store) => store.InitReducer
+  );
 
   const categories = {
     ' Warm transfers': [
@@ -81,65 +86,16 @@ export default function SchoolCards({ setPopUp }) {
   const [selected, setSelected] = useState([]);
   const selectCard = (ind) => {
     let ele = ind;
-    // if (
-    //   selected.find(
-    //     (item1) => item1?.result_identifier === ele?.result_identifier && ele
-    //   )
-    // ) {
-    //   const removeItem = selected.filter(
-    //     (item1) => item1?.result_identifier !== ele?.result_identifier
-    //   );
-    //   setSelected(removeItem);
-    //   dispatch(clearPingTransfer());
-    // }
-    // if (
-    // !selected.find(
-    //     (item1) => item1?.result_identifier === ele?.result_identifier && ele
-    //   )
-    // ) {
-    // if (selected.length < 1) {
+
     setSelected([...selected, ele]);
     dispatch(TransferAPI(ind, searchParams.get('search')));
     dispatch(PingAPI(ind, searchParams.get('search')));
+    const results = addToArray(selectedSchools, ind, 'schoolid');
     dispatch({
       type: 'SELECTED_SCHOOLS',
-      payload: ind,
+      payload: results,
     });
-    // }
   };
-
-  // console.log(
-  //   '🚀 ~ file: MatchingWarmTransfer.jsx:122 ~ //useEffect ~ selectedSchools',
-  //   selectedSchools,
-  //   search_identifier_details
-  // );
-  // useEffect(() => {
-
-  // else
-  // useEffect(() => {
-  // setSelected(selectedSchools);
-  if (selectedSchools.length && search_identifier_details) {
-    // navigate(
-    //   `/school/matches/submitMatch/?search=${search_identifier_details}`,
-    //   {
-    //     state: { selectedTab },
-    //   }
-    // );
-  }
-  // }, [selectedSchools]);
-
-  // Methods for Tab2
-  // const [program, setProgram] = useState(null);
-
-  // const selectProgram = (prop) => {
-  //   if (prop) {
-  //     setProgram(prop);
-  //     return;
-  //   }
-  //   if (!program) {
-  //     setProgram(true);
-  //   }
-  // };
 
   const warmTransferOffers = schoolsList?.filter(
     (item) => item.result_type === 'transfer' && item
@@ -153,41 +109,30 @@ export default function SchoolCards({ setPopUp }) {
   // Write down offers related code --start
   /** Lead type offers */
   /** 1. filter lead type offers */
-  const directOffers = schoolsList?.filter(
-    (item) => item.result_type === 'lead' && item
-  );
 
   /** 2. Merge Each school programs and generate array which showings schools and programs list in one object  */
 
-  const uniqueSchoolsOfDirectOffers =
-    directOffers &&
-    Object.values(
-      directOffers.reduce((acc, curr) => {
-        curr.programs = []; // add new programs prop
-        curr.programs.push({
-          questions: curr.questions,
-          name: curr.program,
-        });
-        if (!acc[curr.schoolid]) {
-          acc[curr.schoolid] = [{ ...curr }];
-        } else {
-          const currentSize = acc[curr.schoolid].length;
+  const updateOffers = (prop) =>
+    setOffers((prev) => ({
+      ...prev,
+      prop,
+    }));
 
-          if (currentSize === 1) {
-            const alreadyExist = acc[curr.schoolid][0]?.programs?.find(
-              (exist) => exist.name === curr.program
-            );
-            if (!alreadyExist) {
-              acc[curr.schoolid][0].programs.push({
-                questions: curr.questions,
-                name: curr.program,
-              });
-            }
-          }
-        }
-        return acc;
-      }, {})
-    ).flat();
+  useEffect(() => {
+    (async () => {
+      const directOffers = schoolsList?.filter(
+        (item) => item.result_type === 'lead' && item
+      );
+
+      /** @type {*} */
+      const mergeDirectOffers = await mergeSchoolPrograms(directOffers);
+      mergeDirectOffers.forEach((off) => (off.selected = false));
+      setOffers((prev) => ({
+        ...prev,
+        direct_offers: mergeDirectOffers,
+      }));
+    })();
+  }, [schoolsList]);
 
   /** 3. Get questions of selected program  */
 
@@ -220,8 +165,8 @@ export default function SchoolCards({ setPopUp }) {
                 } ${category}`}
               {key === 1 &&
                 `${
-                  uniqueSchoolsOfDirectOffers?.length !== undefined
-                    ? uniqueSchoolsOfDirectOffers?.length
+                  offers.direct_offers?.length !== undefined
+                    ? offers.direct_offers?.length
                     : 0
                 } ${category}`}
               {key === 2 &&
@@ -255,13 +200,15 @@ export default function SchoolCards({ setPopUp }) {
           </Tab.Panel>
           <Tab.Panel className="outline-none">
             <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
-              {uniqueSchoolsOfDirectOffers?.map((item, key) => (
+              {offers.direct_offers?.map((item, key) => (
                 <div className="mt-5" key={key}>
                   <ExpandableCard
                     setPopUp={setPopUp}
                     ind={item}
                     programs={item.programs}
+                    selected_program={item?.selected_program}
                     selectCard={selectCard}
+                    updateOffers={updateOffers}
                     selected={selectedSchools?.find(
                       (item1) =>
                         item1?.result_identifier === item?.result_identifier &&
