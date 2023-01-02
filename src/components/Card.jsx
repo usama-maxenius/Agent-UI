@@ -47,7 +47,14 @@ function FormCard({ item, key, setState, state }) {
       key={key}
     >
       <CardContent
-        sx={item.noPad ? { padding: 0, paddingBottom: '0 !important' } : {}}
+        sx={
+          item.noPad
+            ? {
+                padding: 0,
+                paddingBottom: '0 !important',
+              }
+            : {}
+        }
       >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
         <div className={item.styleClasses + ' ' + item?.styleHeight}>
