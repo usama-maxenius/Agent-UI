@@ -19,6 +19,8 @@ import { useContextCustom } from '../store/context';
 import OffersTab from '../components/offers';
 import { mergeSchoolPrograms } from '../helper/mergeSchoolPrograms';
 import { useSchoolResults } from '../hooks/useOffers';
+import { warmTransfersData } from '../data/warmTransferData';
+// import { filterAndMergeOffers } from '../helper/offersFilteration';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: props.expand ? 160 : 87,
@@ -42,20 +44,20 @@ const Education = () => {
   const dispatch = useDispatch();
   const { data } = useSchoolResults();
   const { state } = useContextCustom();
+  const [selectedTab, setSelectedTab] = useState(1);
+
   const [isSelected, setIsSelected] = useState({
     directOffers: false,
-    warmOffers: false,
+    warmTransfers: false,
     externalOffers: false,
   });
   let [searchParams] = useSearchParams();
   const [offers, setOffers] = useState({
     directOffers: [],
-    warmOffers: [],
+    warmTransfers: [],
     externalOffers: [],
   });
-  let { schoolsList, selectedSchools } = useSelector(
-    (store) => store.InitReducer
-  );
+  let { schoolsList } = useSelector((store) => store.InitReducer);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -79,12 +81,17 @@ const Education = () => {
   useEffect(() => {
     (async () => {
       if (data) {
-        let warmOffers = data?.filter(
+        let warmOffers = warmTransfersData?.filter(
           (item) => item.result_type === 'transfer' && item
         );
         warmOffers = warmOffers?.length
           ? mergeSchoolPrograms(warmOffers)
           : warmOffers;
+        warmOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
+        });
 
         let externalOffers = data?.filter(
           (item) =>
@@ -93,6 +100,11 @@ const Education = () => {
         externalOffers = externalOffers?.length
           ? mergeSchoolPrograms(externalOffers)
           : externalOffers;
+        externalOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
+        });
 
         let directOffers = data?.filter((item) => item.result_type === 'lead');
         directOffers = directOffers?.length
@@ -101,12 +113,13 @@ const Education = () => {
         directOffers?.forEach((item) => {
           item.selected = item.selected ?? false;
           item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
         });
 
         setOffers({
           ...offers,
           directOffers,
-          warmOffers,
+          warmTransfers: warmOffers,
           externalOffers,
         });
       }
@@ -114,20 +127,63 @@ const Education = () => {
   }, [data]);
 
   useEffect(() => {
-    const isSelectedDirect = offers.directOffers.find((o) => o.selected);
-    setIsSelected({
-      ...isSelected,
-      directOffers: isSelectedDirect,
-    });
-  }, [offers]);
+    // (async () => {
+    //   if (schoolsList) await filterAndMergeOffers(schoolsList, offers);
+    // })();
+  }, [schoolsList]);
+
+  useEffect(() => {
+    if (selectedTab === 0) {
+      return setIsSelected((prev) => ({
+        ...prev,
+        warmTransfers: offers.warmTransfers.some((o) => o.selected),
+        directOffers: false,
+        externalOffers: false,
+      }));
+    }
+    if (selectedTab === 1) {
+      console.log(offers.directOffers.some((o) => o.selected));
+      return setIsSelected((prev) => ({
+        ...prev,
+        warmTransfers: false,
+        directOffers: offers.directOffers.some((o) => o.selected),
+        externalOffers: false,
+      }));
+    }
+    if (selectedTab === 2) {
+      return setIsSelected((prev) => ({
+        ...prev,
+        directOffers: false,
+        warmTransfers: false,
+        externalOffers: offers.externalOffers.some((o) => o.selected),
+      }));
+    }
+  }, [offers, selectedTab]);
 
   const updateDirectOffersHandler = React.useCallback((val) => {
-    setOffers({
-      ...offers,
-      directOffers: val,
-    });
+    if (val[0]?.result_type === 'transfer') {
+      return setOffers((prev) => ({
+        ...prev,
+        warmTransfers: val,
+      }));
+    } else if (val[0]?.result_type === 'lead') {
+      return setOffers((prev) => ({
+        ...prev,
+        directOffers: val,
+      }));
+    } else {
+      return setOffers((prev) => ({
+        ...prev,
+        externalOffers: val,
+      }));
+    }
   }, []);
 
+  const updateSelectedTabHandler = React.useCallback(
+    (val) => setSelectedTab(val),
+    []
+  );
+  const updatePopupHandler = React.useCallback((val) => setPopUp(val), []);
   let element = document.getElementById('main-wrapper');
 
   if (element?.classList?.contains('main-page')) {
@@ -143,19 +199,48 @@ const Education = () => {
             <LeftContentWrapper popup={popup} expand={state.expand}>
               <OffersTab
                 state={offers}
+                selectedTab={selectedTab}
                 updateHandler={updateDirectOffersHandler}
+                updateSelectedTabHandler={updateSelectedTabHandler}
+                updatePopupHandler={updatePopupHandler}
               />
-              {/* <MatchingWarmTransfer setPopUp={setPopUp} /> */}
             </LeftContentWrapper>
             <WarningPopOver popup={popup} setPopUp={setPopUp} />
           </Grid>
           <Grid item xs={6}>
             <RightContentWrapper>
-              {/* <Outlet /> */}
-              {isSelected.directOffers ? (
-                <SubmitMatch state={offers.directOffers} />
+              {selectedTab === 0 ? (
+                isSelected.warmTransfers ? (
+                  <SubmitMatch
+                    state={offers.warmTransfers}
+                    keyName="transfer"
+                  />
+                ) : (
+                  <SchoolToProceed />
+                )
               ) : (
-                <SchoolToProceed />
+                ''
+              )}
+              {selectedTab === 1 ? (
+                isSelected.directOffers ? (
+                  <SubmitMatch state={offers.directOffers} keyName="direct" />
+                ) : (
+                  <SchoolToProceed />
+                )
+              ) : (
+                ''
+              )}
+              {selectedTab === 2 ? (
+                isSelected.externalOffers ? (
+                  <SubmitMatch
+                    state={offers.externalOffers}
+                    keyName="external"
+                  />
+                ) : (
+                  <SchoolToProceed />
+                )
+              ) : (
+                ''
               )}
             </RightContentWrapper>
             <RightDrawer>
