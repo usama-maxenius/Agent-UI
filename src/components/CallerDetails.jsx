@@ -4,10 +4,11 @@ import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
 import ReorderRoundedIcon from '@mui/icons-material/ReorderRounded';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
-import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { searchSchools } from '../store/action/searchAPI';
+import { searchData } from '../store/action/userDetailAction';
 import constant from '../store/constant';
 import { useContextCustom } from '../store/context';
 import DragnDropForm from './callerDetailFormDnD';
@@ -26,23 +27,20 @@ const Wrapper = styled('div')(() => ({
   flexDirection: 'column',
 }));
 
-const CallerDetail = (props) => {
-  const { state, setState } = props;
+const CallerDetail = () => {
+  // const { state } = props;
+
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
   const dispatchRedux = useDispatch();
-  const [params] = useSearchParams();
-
-  useEffect(() => {
-    Object.keys(state).forEach((key) =>
-      setState((prev) => ({ ...prev, [key]: params.get(key) }))
-    );
-  }, [params]);
+  const { paramDetails } = useSelector((state) => state.SearchDetail);
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatchRedux(searchSchools(state, navigate));
+
+    dispatchRedux(searchSchools(paramDetails, navigate));
   };
+
   return (
     <MainWrapper>
       <Grid container>
@@ -90,7 +88,11 @@ const CallerDetail = (props) => {
       <Wrapper>
         <div className="bg-white w-[570px] mt-[26px] rounded-box">
           <div className="flex flex-col pb-[26px]">
-            <DragnDropForm setValue={setState} value={state} />
+            <DragnDropForm
+              // setValue={setState}
+              setValue={(data) => dispatchRedux(searchData(data))}
+              value={paramDetails && paramDetails}
+            />
           </div>
         </div>
         <div className="w-[519px] h-full flex flex-col justify-center mx-auto mt-[42px]">

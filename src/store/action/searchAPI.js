@@ -6,8 +6,13 @@ import { get, post } from '../../helper/api_handler';
 //   let result = await get('https://geolocation-db.com/json/');
 //   return result.IPv4;
 // };
-
+const area_of_interests = [];
 export let searchSchools = (data, navigate) => {
+  // area_of_interests.push(data.area_of_interest);
+  // area_of_interests.push(...data.another_areas_of_interest);
+  // area_of_interests.push(...data.any_other_areas_of_interest);
+  // console.log('area_of_interests', area_of_interests);
+
   return async (dispatch) => {
     // let IP = await myIP();
     let {
@@ -35,6 +40,13 @@ export let searchSchools = (data, navigate) => {
       another_areas_of_interest,
       any_other_areas_of_interest,
     } = data;
+
+    area_of_interests.push(
+      areas_of_interest,
+      another_areas_of_interest,
+      any_other_areas_of_interest
+    );
+
     // let body = {
     //   accesskey: process.env.REACT_APP_ACCESS_KEY,
     //   prospect: {
@@ -128,43 +140,43 @@ export let searchSchools = (data, navigate) => {
     //     traffic_source_type: 'grant',
     //   },
     // };
-
+    console.log('body');
     let body = {
       accesskey: 'e10b29a532-3dd36-d1675-36f4e-87b94',
       prospect: {
-        gender: 'f',
-        first_name: 'fname',
-        last_name: 'lname',
-        email: 'testing@candidmaven.com',
-        phone: '7577741831',
+        gender: gender,
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        phone: phone,
         phone2: '',
-        address_line1: '961 birch rd',
+        address_line1: address_line1,
         address_line2: '',
-        city: 'phoenix',
-        state: 'AZ',
-        zip_code: '85005',
-        computer_internet_access: 'yes',
-        age: '29',
-        hsyear: 2014,
-        current_education_level: 'High School Diploma',
+        city: city,
+        state: state,
+        zip_code: zip_code,
+        computer_internet_access: computer_internet_access,
+        age: age,
+        hsyear: hsyear,
+        current_education_level: current_education_level,
         preferred_education_level: '',
-        us_citizen: 'yes',
+        us_citizen: us_citizen,
         military: {
-          military_status: 'Yes',
+          military_status: military_status,
           military_affiliation: 'air force',
           relationship: '',
         },
-        preferred_enrollment: 0,
-        online_or_campus: 'either',
+        preferred_enrollment: preferred_enrollment,
+        online_or_campus: online_or_campus,
         ip: '172.70.175.11',
       },
       search: {
-        areas_of_interest: ['liberal arts', 'entertainment'],
+        areas_of_interest: area_of_interests,
         can_complete_enrollment: 'no',
         rn_license: 'no',
         teaching_certificate: 'no',
-        is_contacted_by_school: '0',
-        graduated_in_us: '1',
+        is_contacted_by_school: is_contacted_by_school,
+        graduated_in_us: graduated_in_us,
         channel_name: 'web',
         ss1: '9829',
         ss2: 'organic',
@@ -181,8 +193,7 @@ export let searchSchools = (data, navigate) => {
         supplier_trustedform_token: 'c52c65236469061b609a1046ec60e5b21b48939f',
         supplier_trustedform_url:
           'https://cert.trustedform.com/c52c65236469061b609a1046ec60e5b21b48939f',
-        time_to_call:
-          'https://cert.trustedform.com/c52c65236469061b609a1046ec60e5b21b48939f',
+        time_to_call: time_to_call,
         callcenter: {
           cc_rep_id: 'NA',
           PublisherBrandName: 'NA',
@@ -223,8 +234,9 @@ export let searchSchools = (data, navigate) => {
     let url = 'https://api.cmicon.com/v3/search';
 
     let response = await post(url, JSON.stringify(body));
+
     if (response.search_identifier) {
-      navigate('/school/loading/?search' + response.search_identifier);
+      navigate('/school/loading/?search=' + response.search_identifier);
       dispatch({
         type: 'SEARCH_RESULTS',
         payload: response,
@@ -246,6 +258,8 @@ export let ResultSchools = (searchIdentifier, navigate) => {
     let url = 'https://api.cmicon.com/v3/results';
 
     let response = await post(url, JSON.stringify(body));
+
+    console.log('response', response);
     if (Array.isArray(response)) {
       if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
       dispatch({
