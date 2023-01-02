@@ -81,7 +81,7 @@ const Education = () => {
   useEffect(() => {
     (async () => {
       if (data) {
-        let warmOffers = warmTransfersData?.filter(
+        let warmOffers = data?.filter(
           (item) => item.result_type === 'transfer' && item
         );
         warmOffers = warmOffers?.length
