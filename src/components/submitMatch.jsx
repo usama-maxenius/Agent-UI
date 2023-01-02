@@ -17,6 +17,7 @@ import constant from '../store/constant';
 import { useSearchParams } from 'react-router-dom';
 import { submitOffer } from '../services/submitOffer';
 import SubmittingLoading from '../components/submittingMatchesLoader';
+import { useTransferResults } from '../hooks/useTransfers';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -24,34 +25,62 @@ const Wrapper = styled('div')(() => ({
   alignItems: 'center',
   height: 'calc(100vh - 250px )',
 }));
+const accesskey = process.env.REACT_APP_ACCESS_KEY;
 
-const submitMatch = ({ state }) => {
+const submitMatch = ({ state, keyName }) => {
   const { dispatch } = useContextCustom();
   const [selectedOffers, setSelectedOffers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [transfersBody, setTransfersBody] = useState({
+    result_identifier: '',
+    answers: [],
+  });
+  const { data } = useTransferResults(transfersBody);
   const [params] = useSearchParams();
+
+  const search_identifier = params?.get('search');
 
   useEffect(() => {
     const findSelectedOffers = state?.filter((offer) => offer.selected);
     setSelectedOffers(findSelectedOffers);
   }, [state]);
 
+  useEffect(() => {
+    if (keyName === 'transfer') {
+      const set_identifier =
+        selectedOffers.length > 0
+          ? selectedOffers[0]?.result_set_identifier
+          : '';
+      const answers =
+        selectedOffers.length > 0 ? selectedOffers[0]?.questions : [];
+      setTransfersBody((prev) => ({
+        ...prev,
+        result_identifier: set_identifier,
+        answers: answers,
+      }));
+    }
+  }, [selectedOffers]);
+
   const submit = async () => {
     setLoading(true);
-    /** Get all selected Offers  */
+    /** Filter by selected Offers  */
     const findSelectedOffers = await state?.filter((offer) => offer.selected);
 
-    const accesskey = process.env.REACT_APP_ACCESS_KEY;
-    const search_identifier = params?.get('search');
     const prepareBodyRequest = await findSelectedOffers?.map((offer) => {
       let answers = [];
       if (offer.selected_program?.questions) {
-        answers = offer.selected_program?.questions?.map((question) => {
-          return {
-            question_key: question.value?.OptionLabel,
-            question_value: question.value?.OptionValue,
-          };
-        });
+        // filter by visible questions
+        const valid_questions = offer.selected_program?.questions.filter(
+          (qes) => qes.IsVisible
+        );
+        if (valid_questions.length) {
+          answers = valid_questions?.map((question) => {
+            return {
+              question_key: question.value?.OptionLabel,
+              question_value: question.value?.OptionValue,
+            };
+          });
+        }
       }
       return {
         accesskey,
@@ -65,7 +94,7 @@ const submitMatch = ({ state }) => {
     // Sending Submit api requests
     for (const body of prepareBodyRequest) {
       await new Promise((resolve) =>
-        setTimeout(() => resolve(submitOffer(body)), 3000)
+        setTimeout(() => resolve(submitOffer(body)), 1000)
       );
     }
     setLoading(false);
@@ -132,15 +161,25 @@ const submitMatch = ({ state }) => {
               to hear this.
             </p>
           </div>
-
-          <RecordingDisclosed
-            // onClick={() => {
-            //   navigate('/school/matches/submittingLoading');
-            // }}
-            onClick={submit}
-          >
-            Submit Match
-          </RecordingDisclosed>
+          {keyName === 'transfer' ? (
+            <>
+              <div className="text-blue text-[22px] font-Poppin font-semibold">
+                +1 719-598-0200
+              </div>
+              Dropdown
+              <RecordingDisclosed onClick={submit}>
+                Submit Match
+              </RecordingDisclosed>
+            </>
+          ) : keyName === 'direct' ? (
+            <RecordingDisclosed onClick={submit}>
+              Submit Match
+            </RecordingDisclosed>
+          ) : (
+            <RecordingDisclosed onClick={submit}>
+              Submit Match
+            </RecordingDisclosed>
+          )}
         </div>
       </Wrapper>
     </MainWrapper>

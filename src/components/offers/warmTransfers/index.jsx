@@ -1,26 +1,30 @@
-import React from 'react';
 import { Tab } from '@headlessui/react';
+import React from 'react';
 import ExpandablesCard from '../../cards/ExpandablesCard';
 
-const DirectOffers = ({ directOffers, updateHandler, updatePopupHandler }) => (
-  <>
+const WarmTransfers = ({
+  warmTransfers,
+  updateHandler,
+  updatePopupHandler,
+}) => {
+  return (
     <Tab.Panel className="outline-none">
       <div className="overflow-y-scroll h-[calc(100vh-120px)] no-scrollbar pb-5">
-        {directOffers?.map((offer) => (
-          <div className="mt-5" key={offer.schoolid}>
+        {warmTransfers?.map((item, key) => (
+          <div className="mt-5" key={key}>
             <ExpandablesCard
-              keyName="direct"
-              state={directOffers}
+              keyName="transfer"
+              state={warmTransfers}
               updateOffersHandler={updateHandler}
               updatePopupHandler={updatePopupHandler}
-              school={offer}
-              selected={offer.selected}
+              school={item}
+              selected={item.selected}
             />
           </div>
         ))}
       </div>
     </Tab.Panel>
-  </>
-);
+  );
+};
 
-export default React.memo(DirectOffers);
+export default WarmTransfers;
