@@ -20,6 +20,7 @@ import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 
 import { MediumPoppin16, MediumPoppin22 } from '../styled/commonDesign';
 import Dropdown from '../dropdown/index';
+import { schoolSelectionToggle } from '../../helper/offersFilteration';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -38,7 +39,14 @@ const ExpandMore = styled((props) => {
 
 let cardRoot = { maxWidth: '574px', overflow: 'unset' };
 
-const ExpandablesCard = ({ state, school, selected, updateOffersHandler }) => {
+const ExpandablesCard = ({
+  keyName,
+  state,
+  school,
+  selected,
+  updateOffersHandler,
+  updatePopupHandler,
+}) => {
   const [expanded, setExpanded] = React.useState(false);
   const [programQuestions, setProgramQuestions] = React.useState([]);
 
@@ -55,8 +63,9 @@ const ExpandablesCard = ({ state, school, selected, updateOffersHandler }) => {
 
   // Select program handler
   const programsHandler = React.useCallback((prog) => {
-    const updateSelectedProgram = state.map((st) => {
+    const updateSelectedProgram = state?.map((st) => {
       if (st.schoolid === school.schoolid) {
+        st.required = false;
         st.selected_program = {
           ...prog,
           questions: st.questions,
@@ -94,17 +103,35 @@ const ExpandablesCard = ({ state, school, selected, updateOffersHandler }) => {
   const selectSchoolHandler = React.useCallback(async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const res = await state.map((st) => {
-      if (st.schoolid === school.schoolid) {
-        st.selected = !st.selected;
-        // st.selected_program=null
-        return st;
+    if (keyName === 'transfer' && !school.selected_program) {
+      const alreadSelected = state?.find((school) => school.selected);
+      if (alreadSelected) {
+        return updatePopupHandler(true);
+      } else {
+        const res = await schoolSelectionToggle(
+          state,
+          school,
+          setProgramQuestions
+        );
+        await updateOffersHandler(res);
+        return;
       }
-      return st;
-    });
-    await updateOffersHandler(res);
+    } else {
+      const res = await schoolSelectionToggle(
+        state,
+        school,
+        setProgramQuestions
+      );
+      await updateOffersHandler(res);
+      return;
+    }
   }, []);
 
+  const selectedClass = school.required
+    ? 'text-red'
+    : school.selected_program
+    ? 'text-blue'
+    : 'text-gray';
   return (
     <Card
       sx={[
@@ -173,12 +200,7 @@ const ExpandablesCard = ({ state, school, selected, updateOffersHandler }) => {
       <div className="mx-auto w-[calc(95% - 32px)] mb-4 mx-[16px]">
         <Dropdown
           Icon={
-            <SchoolRoundedIcon
-              className={classNames(
-                'mr-3',
-                !school.selected_program ? 'text-red' : 'text-gray  '
-              )}
-            />
+            <SchoolRoundedIcon className={classNames('mr-3', selectedClass)} />
           }
           school={school}
           question={undefined}
