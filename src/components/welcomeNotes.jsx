@@ -8,10 +8,10 @@ const WelcomeNotes = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const queryParams = new URLSearchParams(window.location.search);
+  // useEffect(() => {
+  //   console.log(queryParams.append());
+  // }, [queryParams]);
 
-  // const userDetailStraingfy = localStorage.getItem('form');
-  // const userDetailParams =
-  //   userDetailStraingfy && JSON.parse(userDetailStraingfy);
   const obj = {
     gender: '',
     first_name: '',
@@ -39,15 +39,11 @@ const WelcomeNotes = () => {
   };
 
   useEffect(() => {
-    // userDetailParams &&
-    //   Object.keys(userDetailParams).forEach((key) => {
-    //     if (queryParams.get(key) !== null) {
-    //       return (userDetailParams[key] = queryParams.get(key));
-    //     }
-    //   });
-
-    for (const [key, value] of queryParams) {
-      obj[key] = value;
+    const code = queryParams.get('code');
+    if (code === null) {
+      for (const [key, value] of queryParams) {
+        obj[key] = value;
+      }
     }
 
     obj && dispatch(searchData(obj));

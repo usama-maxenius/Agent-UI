@@ -286,7 +286,9 @@ const Header = () => {
                     ? getCallTime(callerTime)
                     : item.title === 'Caller Name'
                     ? isAuthenticated
-                      ? user.name
+                      ? user.name.includes('@')
+                        ? user.nickname
+                        : user.name
                       : 'None'
                     : item.subTitle}
                 </Typography>
