@@ -601,6 +601,7 @@ const EducationForm = (props) => {
           </Grid>
         </Grid>
         {contact.map((item, key) => {
+          console.log('itemmm', item);
           return (
             <Fragment key={key}>
               <FormCard
