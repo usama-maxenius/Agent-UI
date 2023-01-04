@@ -17,7 +17,7 @@ export function mergeSchoolPrograms(array) {
 
         if (currentSize === 1) {
           const alreadyExist = acc[curr.schoolid][0]?.programs?.find(
-            (exist) => exist.program === curr.program
+            (exist) => exist.result_identifier === curr.result_identifier
           );
           if (!alreadyExist) {
             acc[curr.schoolid][0].programs.push({
