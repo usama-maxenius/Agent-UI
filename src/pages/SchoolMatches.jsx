@@ -17,7 +17,9 @@ import { ResultSchools } from '../store/action/searchAPI';
 import { useContextCustom } from '../store/context';
 import OffersTab from '../components/offers';
 import MatchedSuccess from '../components/matchedSuccess';
+import { useSchoolResults } from '../hooks/useOffers';
 import { filterAndMergeOffers } from '../helper/offersFilteration';
+import { mergeSchoolPrograms } from '../helper/mergeSchoolPrograms';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: props.expand ? 160 : 87,
@@ -39,6 +41,7 @@ const RightContentWrapper = styled('div')(() => ({
 const Education = () => {
   const [popup, setPopUp] = useState(false);
   const dispatch = useDispatch();
+  const { data } = useSchoolResults();
   const { state } = useContextCustom();
   const { schoolsList } = useSelector((store) => store.InitReducer);
   const [successCounts, setSuccessCounts] = useState({
@@ -87,19 +90,61 @@ const Education = () => {
     };
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      await dispatch(ResultSchools(searchParams.get('search')));
-    })();
-  }, []);
-
   // Update and Merge the results in the state
+  // useEffect(() => {
+  //   (async () => {
+  //     if (schoolsList)
+  //       await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
+  //   })();
+  // }, [schoolsList]);
+
   useEffect(() => {
     (async () => {
-      if (schoolsList)
-        await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
+      if (data) {
+        let warmOffers = data?.filter(
+          (item) => item.result_type === 'transfer' && item
+        );
+        warmOffers = warmOffers?.length
+          ? mergeSchoolPrograms(warmOffers)
+          : warmOffers;
+        warmOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
+        });
+
+        let externalOffers = data?.filter(
+          (item) =>
+            item.result_type !== 'lead' && item.result_type !== 'transfer'
+        );
+        externalOffers = externalOffers?.length
+          ? mergeSchoolPrograms(externalOffers)
+          : externalOffers;
+        externalOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
+        });
+
+        let directOffers = data?.filter((item) => item.result_type === 'lead');
+        directOffers = directOffers?.length
+          ? mergeSchoolPrograms(directOffers)
+          : directOffers;
+        directOffers?.forEach((item) => {
+          item.selected = item.selected ?? false;
+          item.selected_program = item.selected_program ?? null;
+          item.required = item.required ?? false;
+        });
+
+        setOffers({
+          ...offers,
+          directOffers,
+          warmTransfers: warmOffers,
+          externalOffers,
+        });
+      }
     })();
-  }, [schoolsList]);
+  }, [data]);
 
   // Update State when switching tabs
   useEffect(() => {

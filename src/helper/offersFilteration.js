@@ -122,13 +122,13 @@ export const filterAndMergeOffers = async (
     }
 
     // Initialize some additional properties
-    directOffersWithNestedPrograms?.forEach((school) => {
+    await directOffersWithNestedPrograms?.forEach((school) => {
       school.selected = school.selected ?? false;
       school.selected_program = school.selected_program ?? null;
       school.required = school.required ?? false;
       if (school?.programs?.length > 0) {
-        school.programs.forEach((prog) => {
-          prog.questions = prog?.questions.map((question) => {
+        school.programs?.forEach((prog) => {
+          prog.questions = prog?.questions?.map((question) => {
             if (question.IsVisible) {
               question.required = false;
               question.value = {
