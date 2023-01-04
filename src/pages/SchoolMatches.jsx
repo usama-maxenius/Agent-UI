@@ -6,21 +6,18 @@ import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
 import SchoolToProceed from '../components/SchoolToProceed';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import DisclosureCallerDetails from '../components/disclosureCallerDetails';
 import DisclosureHelp from '../components/disclosureHelp';
 import DisclosureSecurity from '../components/disclosureSecurity';
-import MatchingWarmTransfer from '../components/MatchingWarmTransfer';
 import RightDrawer from '../components/rightDrawer';
 import SubmitMatch from '../components/submitMatch';
 import WarningPopOver from '../components/warningPopOver';
 import { ResultSchools } from '../store/action/searchAPI';
 import { useContextCustom } from '../store/context';
 import OffersTab from '../components/offers';
-import { mergeSchoolPrograms } from '../helper/mergeSchoolPrograms';
-import { useSchoolResults } from '../hooks/useOffers';
-import { warmTransfersData } from '../data/warmTransferData';
-// import { filterAndMergeOffers } from '../helper/offersFilteration';
+import MatchedSuccess from '../components/matchedSuccess';
+import { filterAndMergeOffers } from '../helper/offersFilteration';
 
 const LeftContentWrapper = styled('div')((props) => ({
   paddingLeft: props.expand ? 160 : 87,
@@ -42,8 +39,12 @@ const RightContentWrapper = styled('div')(() => ({
 const Education = () => {
   const [popup, setPopUp] = useState(false);
   const dispatch = useDispatch();
-  const { data } = useSchoolResults();
   const { state } = useContextCustom();
+  const { schoolsList } = useSelector((store) => store.InitReducer);
+  const [successCounts, setSuccessCounts] = useState({
+    show: false,
+    count: 0,
+  });
   const [selectedTab, setSelectedTab] = useState(1);
 
   const [isSelected, setIsSelected] = useState({
@@ -52,101 +53,69 @@ const Education = () => {
     externalOffers: false,
   });
   let [searchParams] = useSearchParams();
-  const [offers, setOffers] = useState({
-    directOffers: [],
-    warmTransfers: [],
-    externalOffers: [],
-  });
-  let { schoolsList } = useSelector((store) => store.InitReducer);
+  const [offers, setOffers] = useState(
+    /** @type {import('../types/schools.types').IOfferState} */
+    ({
+      warmTransfers: [],
+      directOffers: [],
+      externalOffers: [],
+    })
+  );
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      dispatch(ResultSchools(searchParams.get('search')));
-    }, 2500);
+    let mounted = true;
+    let interval;
+    let timeoutInterval;
+    (async () => {
+      if (mounted) {
+        await new Promise((resolve) => {
+          interval = setInterval(
+            async () =>
+              resolve(dispatch(ResultSchools(searchParams.get('search')))),
+            5000
+          );
+        });
 
-    const timeoutInterval = setTimeout(() => {
-      clearInterval(interval);
-    }, 180000);
-
+        timeoutInterval = setTimeout(() => clearInterval(interval), 18000);
+        return clearTimeout(timeoutInterval);
+      }
+    })();
     return () => {
+      mounted = false;
       clearInterval(interval);
-      clearInterval(timeoutInterval);
+      clearTimeout(timeoutInterval);
     };
-
-    // if (!schoolsList) {
-    //   dispatch(ResultSchools(searchParams.get('search')));
-    // }
-  }, [schoolsList]);
+  }, []);
 
   useEffect(() => {
     (async () => {
-      if (data) {
-        let warmOffers = data?.filter(
-          (item) => item.result_type === 'transfer' && item
-        );
-        warmOffers = warmOffers?.length
-          ? mergeSchoolPrograms(warmOffers)
-          : warmOffers;
-        warmOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        let externalOffers = data?.filter(
-          (item) =>
-            item.result_type !== 'lead' && item.result_type !== 'transfer'
-        );
-        externalOffers = externalOffers?.length
-          ? mergeSchoolPrograms(externalOffers)
-          : externalOffers;
-        externalOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        let directOffers = data?.filter((item) => item.result_type === 'lead');
-        directOffers = directOffers?.length
-          ? mergeSchoolPrograms(directOffers)
-          : directOffers;
-        directOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        setOffers({
-          ...offers,
-          directOffers,
-          warmTransfers: warmOffers,
-          externalOffers,
-        });
-      }
+      await dispatch(ResultSchools(searchParams.get('search')));
     })();
-  }, [data]);
+  }, []);
 
+  // Update and Merge the results in the state
   useEffect(() => {
-    // (async () => {
-    //   if (schoolsList) await filterAndMergeOffers(schoolsList, offers);
-    // })();
+    (async () => {
+      if (schoolsList)
+        await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
+    })();
   }, [schoolsList]);
 
+  // Update State when switching tabs
   useEffect(() => {
     if (selectedTab === 0) {
       return setIsSelected((prev) => ({
         ...prev,
-        warmTransfers: offers.warmTransfers.some((o) => o.selected),
+        warmTransfers: offers.warmTransfers?.some((o) => o.selected),
         directOffers: false,
         externalOffers: false,
       }));
     }
     if (selectedTab === 1) {
-      console.log(offers.directOffers.some((o) => o.selected));
       return setIsSelected((prev) => ({
         ...prev,
         warmTransfers: false,
-        directOffers: offers.directOffers.some((o) => o.selected),
+        directOffers: offers.directOffers?.some((o) => o.selected),
         externalOffers: false,
       }));
     }
@@ -155,12 +124,13 @@ const Education = () => {
         ...prev,
         directOffers: false,
         warmTransfers: false,
-        externalOffers: offers.externalOffers.some((o) => o.selected),
+        externalOffers: offers.externalOffers?.some((o) => o.selected),
       }));
     }
   }, [offers, selectedTab]);
 
-  const updateDirectOffersHandler = React.useCallback((val) => {
+  // Update state offers handlers
+  function updateOffersHandler(val) {
     if (val[0]?.result_type === 'transfer') {
       return setOffers((prev) => ({
         ...prev,
@@ -177,13 +147,27 @@ const Education = () => {
         externalOffers: val,
       }));
     }
-  }, []);
+  }
 
+  // Update selected tab state handlers
   const updateSelectedTabHandler = React.useCallback(
     (val) => setSelectedTab(val),
     []
   );
+
+  // Update popUp and count state handlers
+  const updateSuccessCountsHandler = React.useCallback(
+    (show, count) =>
+      setSuccessCounts((prev) => ({
+        ...prev,
+        show,
+        count,
+      })),
+    []
+  );
   const updatePopupHandler = React.useCallback((val) => setPopUp(val), []);
+  const offerName =
+    selectedTab === 0 ? 'WARM' : selectedTab === 1 ? 'DIRECT' : 'EXTERNAL';
   let element = document.getElementById('main-wrapper');
 
   if (element?.classList?.contains('main-page')) {
@@ -194,65 +178,78 @@ const Education = () => {
   return (
     <React.Fragment>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container>
-          <Grid item xs={6}>
-            <LeftContentWrapper popup={popup} expand={state.expand}>
-              <OffersTab
-                state={offers}
-                selectedTab={selectedTab}
-                updateHandler={updateDirectOffersHandler}
-                updateSelectedTabHandler={updateSelectedTabHandler}
-                updatePopupHandler={updatePopupHandler}
-              />
-            </LeftContentWrapper>
-            <WarningPopOver popup={popup} setPopUp={setPopUp} />
+        {successCounts.show ? (
+          <MatchedSuccess count={successCounts.count} offerName={offerName} />
+        ) : (
+          <Grid container>
+            <Grid item xs={6}>
+              <LeftContentWrapper popup={popup} expand={state.expand}>
+                <OffersTab
+                  state={offers}
+                  selectedTab={selectedTab}
+                  updateHandler={updateOffersHandler}
+                  updateSelectedTabHandler={updateSelectedTabHandler}
+                  updatePopupHandler={updatePopupHandler}
+                />
+              </LeftContentWrapper>
+              <WarningPopOver popup={popup} setPopUp={setPopUp} />
+            </Grid>
+            <Grid item xs={6}>
+              <RightContentWrapper>
+                {selectedTab === 0 ? (
+                  isSelected.warmTransfers ? (
+                    <SubmitMatch
+                      state={offers.warmTransfers}
+                      keyName="transfer"
+                      updateOffersHandler={updateOffersHandler}
+                      updateSuccessCountsHandler={updateSuccessCountsHandler}
+                    />
+                  ) : (
+                    <SchoolToProceed />
+                  )
+                ) : (
+                  ''
+                )}
+                {selectedTab === 1 ? (
+                  isSelected.directOffers ? (
+                    <SubmitMatch
+                      state={offers.directOffers}
+                      keyName="direct"
+                      updateOffersHandler={updateOffersHandler}
+                      updateSuccessCountsHandler={updateSuccessCountsHandler}
+                    />
+                  ) : (
+                    <SchoolToProceed />
+                  )
+                ) : (
+                  ''
+                )}
+                {selectedTab === 2 ? (
+                  isSelected.externalOffers ? (
+                    <SubmitMatch
+                      state={offers.externalOffers}
+                      keyName="external"
+                      updateOffersHandler={updateOffersHandler}
+                      updateSuccessCountsHandler={updateSuccessCountsHandler}
+                    />
+                  ) : (
+                    <SchoolToProceed />
+                  )
+                ) : (
+                  ''
+                )}
+              </RightContentWrapper>
+              <RightDrawer>
+                {state.isSecurityDrawer && <DisclosureSecurity />}
+                {state.isHelperDrawer && <DisclosureHelp />}
+                {state.isCallerDrawer && <DisclosureCallerDetails />}
+              </RightDrawer>
+            </Grid>
           </Grid>
-          <Grid item xs={6}>
-            <RightContentWrapper>
-              {selectedTab === 0 ? (
-                isSelected.warmTransfers ? (
-                  <SubmitMatch
-                    state={offers.warmTransfers}
-                    keyName="transfer"
-                  />
-                ) : (
-                  <SchoolToProceed />
-                )
-              ) : (
-                ''
-              )}
-              {selectedTab === 1 ? (
-                isSelected.directOffers ? (
-                  <SubmitMatch state={offers.directOffers} keyName="direct" />
-                ) : (
-                  <SchoolToProceed />
-                )
-              ) : (
-                ''
-              )}
-              {selectedTab === 2 ? (
-                isSelected.externalOffers ? (
-                  <SubmitMatch
-                    state={offers.externalOffers}
-                    keyName="external"
-                  />
-                ) : (
-                  <SchoolToProceed />
-                )
-              ) : (
-                ''
-              )}
-            </RightContentWrapper>
-            <RightDrawer>
-              {state.isSecurityDrawer && <DisclosureSecurity />}
-              {state.isHelperDrawer && <DisclosureHelp />}
-              {state.isCallerDrawer && <DisclosureCallerDetails />}
-            </RightDrawer>
-          </Grid>
-        </Grid>
+        )}
       </Box>
     </React.Fragment>
   );
 };
 
-export default Education;
+export default React.memo(Education);

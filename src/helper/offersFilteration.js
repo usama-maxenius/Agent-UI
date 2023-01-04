@@ -1,78 +1,300 @@
+// @ts-check
+
 /* eslint-disable no-undef */
-import { warmTransfersData } from '../data/warmTransferData';
+// import { warmTransfersData } from '../data/warmTransferData';
 import { mergeSchoolPrograms } from './mergeSchoolPrograms';
 
-export const filterAndMergeOffers = async (data, state) => {
-  // Warm transfers
-  let warmOffers = warmTransfersData?.filter(
-    (item) => item.result_type === 'transfer' && item
+/**
+ * @param {import('../types/schools.types').ISchoolResponse[]} data
+ * @param {import('../types/schools.types').IOfferState} state
+ * @param {*} updateOffersHandler
+ */
+export const filterAndMergeOffers = async (
+  data,
+  state,
+  updateOffersHandler
+) => {
+  // ---------------  Warm Transfer Offers  --------------------
+  // 1. Filter the list of warm offers
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
+  let warmOffers = await data?.filter(
+    (item) => item.result_type === 'transfer'
   );
-  warmOffers = warmOffers?.length
-    ? mergeSchoolPrograms(warmOffers)
-    : warmOffers;
-  warmOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
 
-  // External Offers
+  if (!state.warmTransfers.length) {
+    // Merge the list of warm offers which contain the same school
+    /** @type {import('../types/schools.types').IWarmTransferOffers[] | undefined} */
+    let warmOffersWithNestedPrograms;
+
+    if (warmOffers?.length) {
+      warmOffersWithNestedPrograms = await mergeSchoolPrograms(warmOffers);
+    }
+
+    // Initialize some additional properties
+    warmOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs && school.programs.length) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
+            return question;
+          });
+        });
+      }
+    });
+    updateOffersHandler(warmOffers);
+  } else {
+    /** @type {import('../types/schools.types').IWarmTransferOffers[]} */
+    const stateOffers = [...state.warmTransfers];
+    await warmOffers?.forEach((school) => {
+      // check school exist
+      const schoolExist = state.warmTransfers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program already exist or not
+        const programExist = schoolExist?.programs?.find(
+          (e) => school.result_set_identifier === e.result_set_identifier
+        );
+
+        if (programExist) {
+          return school;
+        } else {
+          const updateQuestion = school.questions?.map((quest) => {
+            if (quest.IsVisible) {
+              quest.required = false;
+              quest.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return quest;
+            }
+            return quest;
+          });
+          // add new program in school programs Array
+          schoolExist.programs?.push({
+            OptionLabel: school.program,
+            QuestionValue: school.program,
+            questions: updateQuestion,
+            program: school.program,
+            result_identifier: school.result_identifier,
+            result_set_identifier: school.result_set_identifier,
+          });
+          return school;
+        }
+      } else {
+        stateOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+          programs: [],
+          result_type: 'transfer',
+        });
+        return school;
+      }
+    });
+    updateOffersHandler(stateOffers);
+  }
+
+  // ---------------  Direct Offers  --------------------
+  // 1. Filter the list of direct offers
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
+  let directOffers = data?.filter((item) => item.result_type === 'lead');
+
+  if (!state.directOffers.length) {
+    // Merge the list of warm offers which contain the same school
+    /** @type {import('../types/schools.types').IDirectOffers[] | undefined} */
+    let directOffersWithNestedPrograms;
+
+    if (directOffers?.length) {
+      directOffersWithNestedPrograms = await mergeSchoolPrograms(directOffers);
+    }
+
+    // Initialize some additional properties
+    directOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs?.length > 0) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
+            return question;
+          });
+        });
+      }
+    });
+    updateOffersHandler(directOffers);
+  } else {
+    /** @type {import('../types/schools.types').IDirectOffers[]} */
+    const stateOffers = [...state.directOffers];
+
+    await directOffers?.forEach((school) => {
+      // check school exist
+      const schoolExist = state.directOffers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program already exist or not
+        const programExist = schoolExist?.programs?.find(
+          (e) => school.result_set_identifier === e.result_set_identifier
+        );
+
+        if (programExist) {
+          return school;
+        } else {
+          const updateQuestion = school.questions?.map((quest) => {
+            if (quest.IsVisible) {
+              quest.required = false;
+              quest.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return quest;
+            }
+            return quest;
+          });
+
+          // add new program in school programs Array
+          schoolExist.programs?.push({
+            OptionLabel: school.program,
+            QuestionValue: school.program,
+            questions: updateQuestion,
+            program: school.program,
+            result_identifier: school.result_identifier,
+            result_set_identifier: school.result_set_identifier,
+          });
+          return school;
+        }
+      } else {
+        stateOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+          programs: [],
+          result_type: 'lead',
+        });
+        return school;
+      }
+    });
+    updateOffersHandler(stateOffers);
+  }
+
+  // -----------------  External Offers ---------------------
+
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
   let externalOffers = data?.filter(
     (item) => item.result_type !== 'lead' && item.result_type !== 'transfer'
   );
-  externalOffers = externalOffers?.length
-    ? mergeSchoolPrograms(externalOffers)
-    : externalOffers;
-  externalOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
 
-  // Direct Offers
-  let directOffers = data?.filter((item) => item.result_type === 'lead');
-  directOffers = directOffers?.length
-    ? mergeSchoolPrograms(directOffers)
-    : directOffers;
-  directOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
+  if (!state.externalOffers.length) {
+    // Merge the list of warm offers which contain the same school
+    /** @type {import('../types/schools.types').IExternalOffers[] | undefined} */
+    let externalOffersWithNestedPrograms;
 
-  if (state.directOffers?.length > 0) {
-    const result = directOffers?.map((item) => {
-      const schoolExist = state.directOffers?.find(
-        (sch) => sch.schoolid === item.schoolid
+    if (externalOffers?.length) {
+      externalOffersWithNestedPrograms = await mergeSchoolPrograms(
+        externalOffers
       );
-      if (schoolExist) {
-        const programExist = schoolExist?.programs?.find((e) =>
-          item.programs?.some((pro) => pro.program === e.program)
-        );
-        if (programExist) {
-          return item;
-        } else {
-          return programExist.programs.push(item.program);
-        }
-      } else {
-        return directOffers.push(item);
+    }
+
+    // Initialize some additional properties
+    externalOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs?.length > 0) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
+            return question;
+          });
+        });
       }
     });
-    console.log('🚀 ~ file: SchoolMatches.jsx:169 ~ result ~ result', result);
-  }
+    updateOffersHandler(externalOffers);
+  } else {
+    /** @type {import('../types/schools.types').IExternalOffers[]} */
+    const stateOffers = [...state.externalOffers];
 
-  // updateState((prev) => ({
-  //   ...prev,
-  //   directOffers,
-  //   warmTransfers: warmOffers,
-  //   externalOffers,
-  // }));
-  // updateState({
-  //   ...offers,
-  //   directOffers,
-  //   warmTransfers: warmOffers,
-  //   externalOffers,
-  // });
+    await externalOffers?.forEach((school) => {
+      // check school exist
+      const schoolExist = state.externalOffers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program already exist or not
+        const programExist = schoolExist?.programs?.find(
+          (e) => school.result_set_identifier === e.result_set_identifier
+        );
+
+        if (programExist) {
+          return school;
+        } else {
+          const updateQuestion = school.questions?.map((quest) => {
+            if (quest.IsVisible) {
+              quest.required = false;
+              quest.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return quest;
+            }
+            return quest;
+          });
+
+          // add new program in school programs Array
+          schoolExist.programs?.push({
+            OptionLabel: school.program,
+            QuestionValue: school.program,
+            questions: updateQuestion,
+            program: school.program,
+            result_identifier: school.result_identifier,
+            result_set_identifier: school.result_set_identifier,
+          });
+          return school;
+        }
+      } else {
+        stateOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+          programs: [],
+        });
+        return school;
+      }
+    });
+    updateOffersHandler(stateOffers);
+  }
 };
 
 export const prepareBody = async (arry) => {
@@ -110,6 +332,7 @@ export const prepareBody = async (arry) => {
   return prepareBodyRequest;
 };
 
+// Toggle the selection of school
 export const schoolSelectionToggle = async (
   arry,
   school,
@@ -136,4 +359,26 @@ export const schoolSelectionToggle = async (
     return st;
   });
   return res;
+};
+
+// Check questions fields validation
+export const checkQuestionValidation = async (arry) => {
+  const findSelectedOffers = await arry?.filter((offer) => offer.selected);
+  let validationError = false;
+  const result = await findSelectedOffers?.map((school) => {
+    if (school.selected_program?.questions?.length > 0) {
+      school.selected_program?.questions?.map((quest) => {
+        if (quest.IsVisible && !quest?.value?.OptionValue.length) {
+          quest.required = true;
+          validationError = true;
+          return quest;
+        } else {
+          return quest;
+        }
+      });
+      return school;
+    }
+    return school;
+  });
+  return { error: validationError, data: result };
 };

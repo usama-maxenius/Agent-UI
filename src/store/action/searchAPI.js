@@ -261,7 +261,6 @@ export let ResultSchools = (searchIdentifier, navigate) => {
 
     let response = await post(url, JSON.stringify(body));
 
-    console.log('response', response);
     if (Array.isArray(response)) {
       if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
       dispatch({
@@ -272,11 +271,6 @@ export let ResultSchools = (searchIdentifier, navigate) => {
         type: 'SEARCH_RESULT_RESPONSE',
         payload: response[0],
       });
-    } else {
-      if (navigate)
-        navigate(
-          '/school/matches/submitMatchError/?search=' + searchIdentifier
-        );
     }
   };
 };

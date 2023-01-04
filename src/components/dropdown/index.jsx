@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
-import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
+
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import React, { useEffect } from 'react';
@@ -11,12 +11,14 @@ import { Fragment, useState } from 'react';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
+
 function Dropdown({
   Icon,
   placeholder,
   options,
   school,
   clickHandler,
+  colorClass = 'default',
   question,
 }) {
   const [changeColor, setChangeColor] = useState(false);
@@ -30,26 +32,19 @@ function Dropdown({
     return clickHandler(option, question);
   }, []);
 
-  // set initial state if program not selected
-  useEffect(() => {
-    if (!school.selected_program) {
-      setSelectedOption({
-        OptionLabel: placeholder,
-        OptionValue: placeholder,
-      });
-    }
-  }, [school.selected_program]);
+  const classes = {
+    default: 'text-gray',
+    error: 'text-red',
+    success: 'text-blue',
+  };
+  const borderClasses = {
+    default: 'border border-gray',
+    error: 'border border-red',
+    success: 'border border-blue',
+  };
 
-  const selectedClass = school.required
-    ? 'text-red'
-    : school.selected_program
-    ? 'text-blue'
-    : 'text-gray';
-  const selectedBorderClass = school.required
-    ? 'border border-red'
-    : school.selected_program
-    ? 'border border-blue'
-    : 'border border-gray';
+  const textClassName = classes[colorClass];
+  const borderClassName = borderClasses[colorClass];
 
   return (
     <div className="w-full">
@@ -58,19 +53,19 @@ function Dropdown({
           <Listbox.Button
             className={classNames(
               'relative w-full cursor-default md:rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm',
-              selectedBorderClass
+              borderClassName
             )}
           >
             <span
               className={classNames(
                 'block truncate font-Poppin',
-                selectedClass
+                textClassName
               )}
             >
-              <span className={classNames(selectedClass)}>
+              <span className={classNames(textClassName)}>
                 {Icon ? Icon : <SupportAgentRoundedIcon />}
               </span>
-              <span className={classNames(selectedClass)}>
+              <span className={classNames(textClassName)}>
                 {selectedOption.OptionLabel}
               </span>
             </span>
@@ -78,7 +73,7 @@ function Dropdown({
               <ChevronDownIcon
                 className={classNames(
                   'h-5 w-5',
-                  selectedClass
+                  textClassName
                   // callerID == true && 'text-blue h-6 w-6'
                 )}
                 aria-hidden="true"
