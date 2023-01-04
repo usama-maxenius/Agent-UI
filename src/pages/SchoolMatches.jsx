@@ -87,58 +87,10 @@ const Education = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (data) {
-  //       let warmOffers = data?.filter(
-  //         (item) => item.result_type === 'transfer' && item
-  //       );
-  //       warmOffers = warmOffers?.length
-  //         ? mergeSchoolPrograms(warmOffers)
-  //         : warmOffers;
-  //       warmOffers?.forEach((item) => {
-  //         item.selected = item.selected ?? false;
-  //         item.selected_program = item.selected_program ?? null;
-  //         item.required = item.required ?? false;
-  //       });
-
-  //       let externalOffers = data?.filter(
-  //         (item) =>
-  //           item.result_type !== 'lead' && item.result_type !== 'transfer'
-  //       );
-  //       externalOffers = externalOffers?.length
-  //         ? mergeSchoolPrograms(externalOffers)
-  //         : externalOffers;
-  //       externalOffers?.forEach((item) => {
-  //         item.selected = item.selected ?? false;
-  //         item.selected_program = item.selected_program ?? null;
-  //         item.required = item.required ?? false;
-  //       });
-
-  //       let directOffers = data?.filter((item) => item.result_type === 'lead');
-  //       directOffers = directOffers?.length
-  //         ? mergeSchoolPrograms(directOffers)
-  //         : directOffers;
-  //       directOffers?.forEach((item) => {
-  //         item.selected = item.selected ?? false;
-  //         item.selected_program = item.selected_program ?? null;
-  //         item.required = item.required ?? false;
-  //       });
-
-  //       setOffers({
-  //         ...offers,
-  //         directOffers,
-  //         warmTransfers: warmOffers,
-  //         externalOffers,
-  //       });
-  //     }
-  //   })();
-  // }, [data]);
-
   useEffect(() => {
     (async () => {
       if (schoolsList)
-        await filterAndMergeOffers(schoolsList, offers, setOffers);
+        await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
     })();
   }, [schoolsList]);
 
@@ -169,7 +121,7 @@ const Education = () => {
     }
   }, [offers, selectedTab]);
 
-  const updateOffersHandler = React.useCallback((val) => {
+  function updateOffersHandler(val) {
     if (val[0]?.result_type === 'transfer') {
       return setOffers((prev) => ({
         ...prev,
@@ -186,7 +138,7 @@ const Education = () => {
         externalOffers: val,
       }));
     }
-  }, []);
+  }
 
   const updateSelectedTabHandler = React.useCallback(
     (val) => setSelectedTab(val),
@@ -237,6 +189,7 @@ const Education = () => {
                     <SubmitMatch
                       state={offers.warmTransfers}
                       keyName="transfer"
+                      updateOffersHandler={updateOffersHandler}
                       updateSuccessCountsHandler={updateSuccessCountsHandler}
                     />
                   ) : (
@@ -250,6 +203,7 @@ const Education = () => {
                     <SubmitMatch
                       state={offers.directOffers}
                       keyName="direct"
+                      updateOffersHandler={updateOffersHandler}
                       updateSuccessCountsHandler={updateSuccessCountsHandler}
                     />
                   ) : (
@@ -263,6 +217,7 @@ const Education = () => {
                     <SubmitMatch
                       state={offers.externalOffers}
                       keyName="external"
+                      updateOffersHandler={updateOffersHandler}
                       updateSuccessCountsHandler={updateSuccessCountsHandler}
                     />
                   ) : (

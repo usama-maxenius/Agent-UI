@@ -84,6 +84,7 @@ const ExpandablesCard = ({
       const res = sch.selected_program?.questions?.map((qest) => {
         if (qest.QuestionFieldName === question.QuestionFieldName) {
           qest.value = selectedOption;
+          qest.required = false;
           return qest;
         }
         return qest;
@@ -132,6 +133,7 @@ const ExpandablesCard = ({
     : school.selected_program
     ? 'text-blue'
     : 'text-gray';
+
   return (
     <Card
       sx={[
@@ -204,6 +206,13 @@ const ExpandablesCard = ({
           }
           school={school}
           question={undefined}
+          colorClass={
+            school.required
+              ? 'error'
+              : school?.selected_program
+              ? 'success'
+              : 'default'
+          }
           placeholder="Select a program"
           options={school.programs}
           clickHandler={programsHandler}
@@ -218,9 +227,28 @@ const ExpandablesCard = ({
               key={key}
             >
               <Dropdown
-                Icon={<QuizRoundedIcon className="text-gray mr-3" />}
+                Icon={
+                  <QuizRoundedIcon
+                    className={classNames(
+                      `mr-3 ${
+                        question?.required
+                          ? 'text-red'
+                          : question?.value?.OptionLabel
+                          ? 'text-blue'
+                          : 'text-gray'
+                      }`
+                    )}
+                  />
+                }
                 school={school}
                 question={question}
+                colorClass={
+                  question?.required
+                    ? 'error'
+                    : question?.value?.OptionLabel
+                    ? 'success'
+                    : 'default'
+                }
                 options={question?.QuestionOptions}
                 placeholder="Additional Question One?"
                 clickHandler={questionsHandler}

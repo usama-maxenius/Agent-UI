@@ -21,6 +21,7 @@ import SubmittingLoading from '../components/submittingMatchesLoader';
 import { useTransferResults } from '../hooks/useTransfers';
 import Dropdown from './dropdown/index';
 import { advisorData } from '../data/advisorData';
+import { checkQuestionValidation } from '../helper/offersFilteration';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -29,7 +30,12 @@ const Wrapper = styled('div')(() => ({
   height: 'calc(100vh - 250px )',
 }));
 
-const submitMatch = ({ state, keyName, updateSuccessCountsHandler }) => {
+const submitMatch = ({
+  state,
+  keyName,
+  updateOffersHandler,
+  updateSuccessCountsHandler,
+}) => {
   const { dispatch } = useContextCustom();
   const [selectedOffers, setSelectedOffers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -94,9 +100,14 @@ const submitMatch = ({ state, keyName, updateSuccessCountsHandler }) => {
   const submit = async () => {
     setLoading(true);
     if (keyName === 'direct') {
-      const { count } = await directOffersSubmit(state);
-      console.log('🚀 ~ file: submitMatch.jsx:96 ~ submit ~ count', count);
-      if (count > 0) await updateSuccessCountsHandler(true, count);
+      const { error, data } = await checkQuestionValidation(state);
+      if (error) {
+        await updateOffersHandler(data);
+      } else {
+        const { count } = await directOffersSubmit(state);
+        console.log('🚀 ~ file: submitMatch.jsx:96 ~ submit ~ count', count);
+        if (count > 0) await updateSuccessCountsHandler(true, count);
+      }
     }
     if (keyName === 'transfer') {
       await submitOffer(transferSubmit);
