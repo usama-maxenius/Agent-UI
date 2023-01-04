@@ -10,7 +10,7 @@ const Input = styled.input`
   width: ${(props) => (props.widthControl ? '82%' : `99%`)};
   height: 50px;
   background: white;
-  color: #16161640;
+  color: #16161680;
   padding-left: 42px;
   margin-top: 10px;
   font-size: 20px;

@@ -231,6 +231,8 @@ export let searchSchools = (data, navigate) => {
       },
     };
 
+    console.log('body', body);
+
     let url = 'https://api.cmicon.com/v3/search';
 
     let response = await post(url, JSON.stringify(body));
