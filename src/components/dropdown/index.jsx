@@ -2,7 +2,7 @@
 /* eslint-disable prettier/prettier */
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
-import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
+
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import React, { useEffect } from 'react';
@@ -30,24 +30,24 @@ function Dropdown({
     return clickHandler(option, question);
   }, []);
 
-  // set initial state if program not selected
-  useEffect(() => {
-    if (!school.selected_program) {
-      setSelectedOption({
-        OptionLabel: placeholder,
-        OptionValue: placeholder,
-      });
-    }
-  }, [school.selected_program]);
+  // // set initial state if program not selected
+  // useEffect(() => {
+  //   if (!school?.selected_program) {
+  //     setSelectedOption({
+  //       OptionLabel: placeholder,
+  //       OptionValue: placeholder,
+  //     });
+  //   }
+  // }, [school]);
 
-  const selectedClass = school.required
+  const selectedClass = school?.required
     ? 'text-red'
-    : school.selected_program
+    : school?.selected_program
     ? 'text-blue'
     : 'text-gray';
-  const selectedBorderClass = school.required
+  const selectedBorderClass = school?.required
     ? 'border border-red'
-    : school.selected_program
+    : school?.selected_program
     ? 'border border-blue'
     : 'border border-gray';
 

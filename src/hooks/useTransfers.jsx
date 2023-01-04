@@ -6,10 +6,6 @@ import { post } from '../helper/api_handler';
 const BaseUrl = process.env.REACT_APP_BASE_URL;
 
 export const useTransferResults = (bodyProps) => {
-  console.log(
-    '🚀 ~ file: useTransfers.jsx:11 ~ useTransferResults ~ bodyProps',
-    bodyProps
-  );
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,11 +23,15 @@ export const useTransferResults = (bodyProps) => {
       try {
         setLoading(true);
         if (bodyProps?.result_identifier) {
+          console.log(
+            '🚀 ~ file: useTransfers.jsx:11 ~ useTransferResults ~ bodyProps',
+            bodyProps
+          );
           const response = await post(
             `${BaseUrl}/transfers`,
             JSON.stringify(body)
           );
-          setData(response[0]);
+          setData(response);
         }
       } catch (err) {
         setError(err);

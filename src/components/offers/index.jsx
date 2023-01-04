@@ -53,17 +53,21 @@ const OffersTab = ({
             ))}
           </Tab.List>
           <Tab.Panels className="mt-4">
-            <WarmTransfers
-              warmTransfers={state.warmTransfers}
-              updateHandler={updateHandler}
-              updatePopupHandler={updatePopupHandler}
-            />
+            <Tab.Panel className="outline-none">
+              <WarmTransfers
+                warmTransfers={state.warmTransfers}
+                updateHandler={updateHandler}
+                updatePopupHandler={updatePopupHandler}
+              />
+            </Tab.Panel>
             {/* Direct Offers */}
-            <DirectOffers
-              directOffers={state.directOffers}
-              updateHandler={updateHandler}
-              updatePopupHandler={updatePopupHandler}
-            />
+            <Tab.Panel className="outline-none">
+              <DirectOffers
+                directOffers={state.directOffers}
+                updateHandler={updateHandler}
+                updatePopupHandler={updatePopupHandler}
+              />
+            </Tab.Panel>
             <Tab.Panel className="outline-none">
               <div className="mt-[244px] w-[100%] flex flex-row justify-center items-center text-gray100 font-Poppin text-[22px] mx-auto text-center">
                 The caller hasn’t matched with any Schools for external transfer

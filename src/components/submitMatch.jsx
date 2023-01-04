@@ -3,6 +3,7 @@
 import LiveHelpRoundedIcon from '@mui/icons-material/LiveHelpRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import PolicyRoundedIcon from '@mui/icons-material/PolicyRounded';
+import RecommendRoundedIcon from '@mui/icons-material/RecommendRounded';
 import Grid from '@mui/material/Grid';
 import { styled } from '@mui/material/styles';
 import React, { useEffect, useState } from 'react';
@@ -15,9 +16,11 @@ import { RecordingDisclosed } from './styled/wecomeNote.style';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
 import { useSearchParams } from 'react-router-dom';
-import { submitOffer } from '../services/submitOffer';
+import { directOffersSubmit, submitOffer } from '../services/submitOffer';
 import SubmittingLoading from '../components/submittingMatchesLoader';
 import { useTransferResults } from '../hooks/useTransfers';
+import Dropdown from './dropdown/index';
+import { advisorData } from '../data/advisorData';
 
 const Wrapper = styled('div')(() => ({
   display: 'flex',
@@ -25,20 +28,42 @@ const Wrapper = styled('div')(() => ({
   alignItems: 'center',
   height: 'calc(100vh - 250px )',
 }));
-const accesskey = process.env.REACT_APP_ACCESS_KEY;
 
-const submitMatch = ({ state, keyName }) => {
+const submitMatch = ({ state, keyName, updateSuccessCountsHandler }) => {
   const { dispatch } = useContextCustom();
   const [selectedOffers, setSelectedOffers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [advisorOptions, setAdvisorOptions] = useState([]);
+  const [transferSubmit, setTransferSubmit] = useState({
+    question_key: '',
+    question_value: '',
+    result_identifier: '',
+    answers: [],
+  });
+
   const [transfersBody, setTransfersBody] = useState({
     result_identifier: '',
     answers: [],
   });
-  const { data } = useTransferResults(transfersBody);
-  const [params] = useSearchParams();
+  const { data } = useTransferResults(
+    keyName !== 'direct' ? transfersBody : ''
+  );
 
-  const search_identifier = params?.get('search');
+  useEffect(() => {
+    const advisors = data?.Advisors?.length
+      ? data?.Advisors
+      : advisorData.Advisors;
+    const options = advisors?.map((itm) => {
+      itm.OptionLabel = itm.AdvisorName;
+      itm.OptionValue = itm.AdvisorId;
+      return itm;
+    });
+    setAdvisorOptions(options);
+
+    return () => {
+      setAdvisorOptions([]);
+    };
+  }, [data]);
 
   useEffect(() => {
     const findSelectedOffers = state?.filter((offer) => offer.selected);
@@ -58,47 +83,35 @@ const submitMatch = ({ state, keyName }) => {
         result_identifier: set_identifier,
         answers: answers,
       }));
+      setTransferSubmit((prev) => ({
+        ...prev,
+        result_identifier: set_identifier,
+        answers: answers,
+      }));
     }
   }, [selectedOffers]);
 
   const submit = async () => {
     setLoading(true);
-    /** Filter by selected Offers  */
-    const findSelectedOffers = await state?.filter((offer) => offer.selected);
-
-    const prepareBodyRequest = await findSelectedOffers?.map((offer) => {
-      let answers = [];
-      if (offer.selected_program?.questions) {
-        // filter by visible questions
-        const valid_questions = offer.selected_program?.questions.filter(
-          (qes) => qes.IsVisible
-        );
-        if (valid_questions.length) {
-          answers = valid_questions?.map((question) => {
-            return {
-              question_key: question.value?.OptionLabel,
-              question_value: question.value?.OptionValue,
-            };
-          });
-        }
-      }
-      return {
-        accesskey,
-        search_identifier: search_identifier,
-        search_result_identifier: offer.result_identifier,
-        search_result_set_identifier: offer.result_set_identifier,
-        answers: answers ?? [],
-      };
-    });
-
-    // Sending Submit api requests
-    for (const body of prepareBodyRequest) {
-      await new Promise((resolve) =>
-        setTimeout(() => resolve(submitOffer(body)), 1000)
-      );
+    if (keyName === 'direct') {
+      const { count } = await directOffersSubmit(state);
+      console.log('🚀 ~ file: submitMatch.jsx:96 ~ submit ~ count', count);
+      if (count > 0) await updateSuccessCountsHandler(true, count);
+    }
+    if (keyName === 'transfer') {
+      await submitOffer(transferSubmit);
     }
     setLoading(false);
   };
+
+  const dropdownClickHandler = React.useCallback((obj) => {
+    return setTransferSubmit((prev) => ({
+      ...prev,
+      question_key: data?.AdvisorFieldName,
+      question_value: obj?.OptionValue,
+    }));
+  }, []);
+
   return loading ? (
     <SubmittingLoading />
   ) : (
@@ -155,7 +168,7 @@ const submitMatch = ({ state, keyName }) => {
               Here is the generic statement I also have to read it includes the
               School I have currently selected, it’s{' '}
               {selectedOffers?.map((off) => (
-                <span key={off.schoolid}>{off?.school}, </span>
+                <span key={off?.schoolid}>{off?.school}, </span>
               ))}
               this is great fun to read on a call and the caller is always happy
               to hear this.
@@ -163,10 +176,17 @@ const submitMatch = ({ state, keyName }) => {
           </div>
           {keyName === 'transfer' ? (
             <>
+              <br />
               <div className="text-blue text-[22px] font-Poppin font-semibold">
-                +1 719-598-0200
+                {data?.TransferPhone || advisorData.TransferPhone}
               </div>
-              Dropdown
+              <Dropdown
+                Icon={<RecommendRoundedIcon />}
+                options={advisorOptions}
+                clickHandler={dropdownClickHandler}
+                placeholder="Select an agent to transfer to"
+              />
+
               <RecordingDisclosed onClick={submit}>
                 Submit Match
               </RecordingDisclosed>

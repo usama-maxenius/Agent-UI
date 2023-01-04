@@ -7,6 +7,8 @@ export function mergeSchoolPrograms(array) {
         program: curr.program,
         OptionLabel: curr.program,
         QuestionValue: curr.program,
+        result_identifier: curr.result_identifier,
+        result_set_identifier: curr.result_set_identifier,
       });
       if (!acc[curr.schoolid]) {
         acc[curr.schoolid] = [{ ...curr }];
@@ -23,6 +25,8 @@ export function mergeSchoolPrograms(array) {
               QuestionValue: curr.program,
               questions: curr.questions,
               program: curr.program,
+              result_identifier: curr.result_identifier,
+              result_set_identifier: curr.result_set_identifier,
             });
           }
         }

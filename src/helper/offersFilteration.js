@@ -1,22 +1,180 @@
+// @ts-check
+
 /* eslint-disable no-undef */
-import { warmTransfersData } from '../data/warmTransferData';
+// import { warmTransfersData } from '../data/warmTransferData';
 import { mergeSchoolPrograms } from './mergeSchoolPrograms';
 
-export const filterAndMergeOffers = async (data, state) => {
-  // Warm transfers
-  let warmOffers = warmTransfersData?.filter(
+export const filterAndMergeOffers = async (data, state, updateState) => {
+  // ---------------  Warm Transfer Offers  --------------------
+  // 1. Filter the list of warm offers
+  let warmOffers = await data?.filter(
     (item) => item.result_type === 'transfer' && item
   );
-  warmOffers = warmOffers?.length
-    ? mergeSchoolPrograms(warmOffers)
-    : warmOffers;
-  warmOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
 
-  // External Offers
+  // warmOffers?.forEach((item) => {
+  //   item.selected = item.selected ?? false;
+  //   item.selected_program = item.selected_program ?? null;
+  //   item.required = item.required ?? false;
+  // });
+
+  // await warmOffers?.map((item) => {
+  //   // check school exist
+  //   const schoolExist = state.warmTransfers?.find(
+  //     (sch) => sch.schoolid === item.schoolid
+  //   );
+
+  //   if (schoolExist) {
+  //     // check program exist
+  //     const programExist = schoolExist?.programs?.find((e) =>
+  //       item.programs?.some(
+  //         (pro) => pro.result_set_identifier === e.result_set_identifier
+  //       )
+  //     );
+
+  //     if (!programExist) {
+  //       schoolExist.programs.push(item);
+  //       return item;
+  //     } else {
+  //       item.selected_program = programExist?.selected_program;
+  //       item.selected = programExist?.selected;
+  //       item.required = programExist?.required;
+  //       return item;
+  //     }
+  //   } else {
+  //     warmOffers.push({
+  //       ...item,
+  //       selected: false,
+  //       selected_program: null,
+  //       required: false,
+  //     });
+  //     return item;
+  //   }
+  // });
+
+  if (!state.warmTransfers.length) {
+    // 2. Merge the list of warm offers which contain the same school
+    if (warmOffers?.length) warmOffers = await mergeSchoolPrograms(warmOffers);
+    warmOffers?.forEach((item) => {
+      item.selected = item.selected ?? false;
+      item.selected_program = item.selected_program ?? null;
+      item.required = item.required ?? false;
+    });
+  } else {
+    warmOffers = await warmOffers?.map((school) => {
+      // check school exist
+      const schoolExist = state.warmTransfers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program exist
+        const programExist = schoolExist?.programs?.find((e) =>
+          school.programs?.some(
+            (pro) => pro.result_set_identifier === e.result_set_identifier
+          )
+        );
+
+        if (!programExist) {
+          console.log(
+            '🚀 ~ file: offersFilteration.js:78 ~ warmOffers=awaitwarmOffers?.map ~ program not Exist'
+          );
+          schoolExist.programs.push({});
+          return school;
+        } else {
+          school.selected_program = programExist?.selected_program;
+          school.selected = programExist?.selected;
+          school.required = programExist?.required;
+          return school;
+        }
+      } else {
+        warmOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+        });
+        return school;
+      }
+    });
+  }
+
+  // ---------------  Direct Offers  --------------------
+  // 1. Filter the list of direct offers
+  let directOffers = data?.filter((item) => item.result_type === 'lead');
+
+  // 2. Merge the list of direct offers which contain the same school
+  // if (directOffers?.length)
+  //   directOffers = await mergeSchoolPrograms(directOffers);
+
+  // 3. If new Offers contain previous one
+
+  if (!state.directOffers.length) {
+    // 2. Merge the list of warm offers which contain the same school
+    if (directOffers?.length)
+      directOffers = await mergeSchoolPrograms(directOffers);
+    directOffers?.forEach((item) => {
+      item.selected = item.selected ?? false;
+      item.selected_program = item.selected_program ?? null;
+      item.required = item.required ?? false;
+    });
+    return updateState((prev) => ({
+      ...prev,
+      directOffers: directOffers,
+    }));
+  } else {
+    const stateOffers = [...state.directOffers];
+    await directOffers?.forEach((school) => {
+      // check school exist
+      const schoolExist = state.directOffers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program exist
+        // const programExist = schoolExist?.programs?.find((e) =>
+        //   school.programs?.some(
+        //     (pro) => pro.result_set_identifier === e.result_set_identifier
+        //   )
+        // );
+        const programExist = schoolExist?.programs?.find(
+          (e) => school.result_set_identifier === e.result_set_identifier
+        );
+
+        if (programExist) {
+          return school;
+        } else {
+          schoolExist.programs?.push({
+            OptionLabel: school.program,
+            QuestionValue: school.program,
+            questions: school.questions,
+            program: school.program,
+            result_identifier: school.result_identifier,
+            result_set_identifier: school.result_set_identifier,
+          });
+          return school;
+        }
+      } else {
+        stateOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+        });
+        return school;
+      }
+    });
+    updateState((prev) => ({
+      ...prev,
+      directOffers: stateOffers,
+    }));
+    console.log(
+      '🚀 ~ file: offersFilteration.js:165 ~ res ~ school',
+      stateOffers
+    );
+  }
+
+  // -----------------  External Offers ---------------------
+
   let externalOffers = data?.filter(
     (item) => item.result_type !== 'lead' && item.result_type !== 'transfer'
   );
@@ -29,50 +187,12 @@ export const filterAndMergeOffers = async (data, state) => {
     item.required = item.required ?? false;
   });
 
-  // Direct Offers
-  let directOffers = data?.filter((item) => item.result_type === 'lead');
-  directOffers = directOffers?.length
-    ? mergeSchoolPrograms(directOffers)
-    : directOffers;
-  directOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
-
-  if (state.directOffers?.length > 0) {
-    const result = directOffers?.map((item) => {
-      const schoolExist = state.directOffers?.find(
-        (sch) => sch.schoolid === item.schoolid
-      );
-      if (schoolExist) {
-        const programExist = schoolExist?.programs?.find((e) =>
-          item.programs?.some((pro) => pro.program === e.program)
-        );
-        if (programExist) {
-          return item;
-        } else {
-          return programExist.programs.push(item.program);
-        }
-      } else {
-        return directOffers.push(item);
-      }
-    });
-    console.log('🚀 ~ file: SchoolMatches.jsx:169 ~ result ~ result', result);
-  }
-
   // updateState((prev) => ({
   //   ...prev,
   //   directOffers,
   //   warmTransfers: warmOffers,
   //   externalOffers,
   // }));
-  // updateState({
-  //   ...offers,
-  //   directOffers,
-  //   warmTransfers: warmOffers,
-  //   externalOffers,
-  // });
 };
 
 export const prepareBody = async (arry) => {

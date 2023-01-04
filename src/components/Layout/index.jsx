@@ -65,7 +65,7 @@ const Layout = () => {
       ) {
         localStorage.setItem('url', currentUrl);
       }
-      openModal();
+      if (!user?.email) openModal();
     } else if (isAuthenticated) {
       if (
         localStorage.getItem('url') !== null &&
