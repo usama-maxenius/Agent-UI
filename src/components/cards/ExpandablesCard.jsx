@@ -53,6 +53,11 @@ const ExpandablesCard = ({
   // Filtering Questions on the basis of IsVisible property
   React.useEffect(() => {
     const selected_program = school.selected_program;
+    console.log(
+      '🚀 ~ file: ExpandablesCard.jsx:56 ~ React.useEffect ~ selected_program',
+      school,
+      selected_program
+    );
     if (selected_program?.questions) {
       const filterVisibleQuestions = selected_program?.questions?.filter(
         (qest) => qest.IsVisible
@@ -64,11 +69,15 @@ const ExpandablesCard = ({
   // Select program handler
   const programsHandler = React.useCallback((prog) => {
     const updateSelectedProgram = state?.map((st) => {
+      console.log(
+        '🚀 ~ file: ExpandablesCard.jsx:73 ~ updateSelectedProgram ~ st',
+        st
+      );
       if (st.schoolid === school.schoolid) {
         st.required = false;
         st.selected_program = {
           ...prog,
-          questions: st.questions,
+          // questions: st.questions,
         };
         return st;
       }
