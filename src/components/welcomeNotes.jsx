@@ -42,7 +42,21 @@ const WelcomeNotes = () => {
     const code = queryParams.get('code');
     if (code === null) {
       for (const [key, value] of queryParams) {
-        obj[key] = value;
+        if (key === 'phone') {
+          obj[key] = value
+            ?.split('-')
+            .join('')
+            ?.split('(')
+            .join('')
+            ?.split(')')
+            .join('')
+            .split(' ')
+            .join('')
+            .match(/.{1,3}/g)
+            ?.join('-');
+        } else {
+          obj[key] = value;
+        }
       }
     }
 

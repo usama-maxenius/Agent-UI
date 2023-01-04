@@ -97,14 +97,30 @@ export default function InputIcon({
         className="bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
-        value={state !== undefined ? state[name] : null}
+        value={
+          state !== undefined
+            ? name == 'phone'
+              ? state[name]
+                  ?.split('-')
+                  .join('')
+                  ?.split('(')
+                  .join('')
+                  ?.split(')')
+                  .join('')
+                  .split(' ')
+                  .join('')
+                  .match(/.{1,3}/g)
+                  ?.join('-')
+              : state[name]
+            : null
+        }
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
           var checkString = /^[A-Za-z\s]+$/;
           // var phoneNo =
           //   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-          var phoneNo = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
-          var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+          var phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+          var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,9})+$/;
           var zipRegex = /^\d{5}(-\d{4})?$/;
 
           switch (e.target.name) {

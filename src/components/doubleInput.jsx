@@ -14,7 +14,7 @@ function DropdownAndInput({
   fromDND,
 }) {
   let { cities } = useSelector((store) => store.InitReducer);
-
+  console.log('Item', item.name);
   return (
     <div
       className={classNames(

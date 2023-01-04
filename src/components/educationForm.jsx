@@ -473,10 +473,11 @@ const EducationForm = (props) => {
   const searchHandler = (e) => {
     e.preventDefault();
     const checkString = /^[A-Za-z\s]+$/;
-    const phoneNo = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
-    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    const phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+
+    const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,9})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
-    console.log('final Record', paramDetails);
 
     if (
       paramDetails.first_name.length > 0 &&
@@ -491,6 +492,7 @@ const EducationForm = (props) => {
       paramDetails.city.length > 0 &&
       paramDetails.state.length > 0
     ) {
+      console.log("I'm not coming here");
       dispatchRedux(searchSchools(paramDetails, navigation));
 
       dispatchRedux({
@@ -498,11 +500,28 @@ const EducationForm = (props) => {
         payload: null,
       });
     } else {
+      console.log('because coming here');
+
       setShowPopup(true);
     }
   };
 
   const dispatchHandler = (data) => {
+    const phoneFormat = data?.phone
+      ?.split('-')
+      .join('')
+      ?.split('(')
+      .join('')
+      ?.split(')')
+      .join('')
+      .split(' ')
+      .join('')
+      .match(/.{1,3}/g)
+      ?.join('-');
+
+    data.phone = phoneFormat;
+    console.log(phoneFormat);
+
     dispatchRedux(searchData(data));
   };
 
@@ -601,7 +620,6 @@ const EducationForm = (props) => {
           </Grid>
         </Grid>
         {contact.map((item, key) => {
-          console.log('itemmm', item);
           return (
             <Fragment key={key}>
               <FormCard
