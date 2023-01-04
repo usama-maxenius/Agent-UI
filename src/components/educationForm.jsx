@@ -1,6 +1,7 @@
 /* eslint-disable no-useless-escape */
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
+import { useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import AccessTimeRoundedIcon from '@mui/icons-material/AccessTimeRounded';
 import CalendarMonthRoundedIcon from '@mui/icons-material/CalendarMonthRounded';
@@ -16,6 +17,8 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { getAllCities, getAllStates } from '../store/action';
 import { searchSchools } from '../store/action/searchAPI';
+import { searchData } from '../store/action/userDetailAction';
+
 import constant from '../store/constant';
 import { useContextCustom } from '../store/context';
 import FormCard from './Card';
@@ -29,6 +32,7 @@ import {
   // eslint-disable-next-line prettier/prettier
   MediumPoppin,
 } from './styled/educationForm.style';
+import { useSelector } from 'react-redux';
 
 let BottomNoteWrapper = styled.div`
   padding: 10px;
@@ -425,15 +429,38 @@ const Button = styled('div')(() => ({
 
 const EducationForm = (props) => {
   const { state, setState } = props;
+
+  const { paramDetails } = useSelector((state) => state.SearchDetail);
+
   const { dispatch } = useContextCustom();
   const navigation = useNavigate();
-  const [params] = useSearchParams();
 
-  useEffect(() => {
-    params.forEach((param) =>
-      setState((prev) => ({ ...prev, [state[param]]: state[param] }))
-    );
-  }, [params]);
+  // const [params] = useSearchParams();
+  // const [persistData, setPersistData] = useState({});
+  // useEffect(() => {
+  //   params.forEach((param) =>
+  //     setState((prev) => ({ ...prev, [state[param]]: state[param] }))
+  //   );
+  // }, [params]);
+
+  // const persistLocalData = localStorage.getItem('form');
+  // const userDetailDatas = JSON.parse(persistLocalData);
+
+  // const userDetailData = useRef(userDetailDatas);
+
+  // useEffect(() => {
+  //   setPersistData(userDetailData.current);
+  // }, [userDetailData]);
+
+  // useEffect(() => {
+  //   const obj = state;
+  //   persistData &&
+  //     Object.keys(persistData).forEach((key) => {
+  //       obj[key] = state[key].length ? state[key] : persistData[key];
+  //     });
+
+  //   setState(obj);
+  // }, [persistData]);
 
   const [showPopup, setShowPopup] = useState(false);
 
@@ -449,21 +476,23 @@ const EducationForm = (props) => {
     const phoneNo = /^(1|)?(\d{3})(\d{3})(\d{4})$/;
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
+    console.log('final Record', paramDetails);
 
     if (
-      state.first_name.length > 0 &&
-      state.first_name.match(checkString) &&
-      state.last_name.length > 0 &&
-      state.last_name.match(checkString) &&
-      state.email.length > 0 &&
-      state.email.match(emailRegex) &&
-      state.phone.length > 0 &&
-      state.phone.replace(/\D/g, '').match(phoneNo) &&
-      state.address_line1.length > 0 &&
-      state.city.length > 0 &&
-      state.state.length > 0
+      paramDetails.first_name.length > 0 &&
+      paramDetails.first_name.match(checkString) &&
+      paramDetails.last_name.length > 0 &&
+      paramDetails.last_name.match(checkString) &&
+      paramDetails.email.length > 0 &&
+      paramDetails.email.match(emailRegex) &&
+      paramDetails.phone.length > 0 &&
+      paramDetails.phone.replace(/\D/g, '').match(phoneNo) &&
+      paramDetails.address_line1.length > 0 &&
+      paramDetails.city.length > 0 &&
+      paramDetails.state.length > 0
     ) {
-      dispatchRedux(searchSchools(state, navigation));
+      dispatchRedux(searchSchools(paramDetails, navigation));
+
       dispatchRedux({
         type: 'SELECTED_SCHOOL',
         payload: null,
@@ -471,6 +500,10 @@ const EducationForm = (props) => {
     } else {
       setShowPopup(true);
     }
+  };
+
+  const dispatchHandler = (data) => {
+    dispatchRedux(searchData(data));
   };
 
   return (
@@ -516,7 +549,11 @@ const EducationForm = (props) => {
         {data.map((item, key) => {
           return (
             <Fragment key={key}>
-              <FormCard item={item} setState={setState} state={state} />
+              <FormCard
+                item={item}
+                setState={dispatchHandler}
+                state={paramDetails}
+              />
             </Fragment>
           );
         })}
@@ -530,7 +567,11 @@ const EducationForm = (props) => {
         {personalDetails.map((item, key) => {
           return (
             <Fragment key={key}>
-              <FormCard item={item} setState={setState} state={state} />
+              <FormCard
+                item={item}
+                setState={dispatchHandler}
+                state={paramDetails}
+              />
             </Fragment>
           );
         })}
@@ -544,7 +585,11 @@ const EducationForm = (props) => {
         {enrolment.map((item, key) => {
           return (
             <Fragment key={key}>
-              <FormCard item={item} setState={setState} state={state} />
+              <FormCard
+                item={item}
+                setState={dispatchHandler}
+                state={paramDetails}
+              />
             </Fragment>
           );
         })}
@@ -556,9 +601,14 @@ const EducationForm = (props) => {
           </Grid>
         </Grid>
         {contact.map((item, key) => {
+          console.log('itemmm', item);
           return (
             <Fragment key={key}>
-              <FormCard item={item} setState={setState} state={state} />
+              <FormCard
+                item={item}
+                setState={dispatchHandler}
+                state={paramDetails}
+              />
             </Fragment>
           );
         })}

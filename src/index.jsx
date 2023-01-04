@@ -5,8 +5,11 @@ import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
-import store from './store/store';
+import { store, persistor } from './store/store';
+// import persistor from './store/store';
+
 import { Auth0Provider } from '@auth0/auth0-react';
+import { PersistGate } from 'redux-persist/integration/react';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,7 +20,9 @@ ReactDOM.render(
       cacheLocation="localstorage"
     >
       <Provider store={store}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
     </Auth0Provider>
   </React.StrictMode>,

@@ -11,13 +11,14 @@ import { Fragment, useState } from 'react';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
+
 function Dropdown({
   Icon,
   placeholder,
   options,
   school,
   clickHandler,
-  colorClass,
+  colorClass = 'default',
   question,
 }) {
   const [changeColor, setChangeColor] = useState(false);
@@ -31,16 +32,6 @@ function Dropdown({
     return clickHandler(option, question);
   }, []);
 
-  // // set initial state if program not selected
-  // useEffect(() => {
-  //   if (!school?.selected_program) {
-  //     setSelectedOption({
-  //       OptionLabel: placeholder,
-  //       OptionValue: placeholder,
-  //     });
-  //   }
-  // }, [school]);
-
   const classes = {
     default: 'text-gray',
     error: 'text-red',
@@ -51,16 +42,6 @@ function Dropdown({
     error: 'border border-red',
     success: 'border border-blue',
   };
-  const selectedClass = school?.required
-    ? 'text-red'
-    : school?.selected_program
-    ? 'text-blue'
-    : 'text-gray';
-  const selectedBorderClass = school?.required
-    ? 'border border-red'
-    : school?.selected_program
-    ? 'border border-blue'
-    : 'border border-gray';
 
   const textClassName = classes[colorClass];
   const borderClassName = borderClasses[colorClass];

@@ -29,6 +29,7 @@ const Wrapper = styled('div')(() => ({
   alignItems: 'center',
   height: 'calc(100vh - 250px )',
 }));
+const accesskey = process.env.REACT_APP_ACCESS_KEY;
 
 const submitMatch = ({
   state,
@@ -37,31 +38,41 @@ const submitMatch = ({
   updateSuccessCountsHandler,
 }) => {
   const { dispatch } = useContextCustom();
-  const [selectedOffers, setSelectedOffers] = useState([]);
+  const [selectedOffers, setSelectedOffers] = useState(
+    /** @type {import('../types/schools.types').ISchoolResponse[] | []} */
+    ([])
+  );
   const [loading, setLoading] = useState(false);
-  const [advisorOptions, setAdvisorOptions] = useState([]);
-  const [transferSubmit, setTransferSubmit] = useState({
-    question_key: '',
-    question_value: '',
-    result_identifier: '',
-    answers: [],
-  });
+  const [advisorOptions, setAdvisorOptions] = useState(
+    /** @type {import('../types/transfers.types').IAdvisorOptions[] | []} */
+    ([])
+  );
+  const [transferSubmit, setTransferSubmit] = useState(
+    /** @type {{question_key:string | undefined; question_value:string | undefined; result_identifier:string | undefined; result_set_identifier: string | undefined; answers:[] }} */
+    ({
+      question_key: '',
+      question_value: '',
+      result_identifier: '',
+      result_set_identifier: '',
+      answers: [],
+    })
+  );
 
   const [transfersBody, setTransfersBody] = useState({
     result_identifier: '',
+    result_set_identifier: '',
     answers: [],
   });
-  const { data } = useTransferResults(
-    keyName !== 'direct' ? transfersBody : ''
-  );
+  const { data } = useTransferResults(transfersBody);
 
+  // Add OptionLabel and OptionValue property in advisorOptions state
   useEffect(() => {
     const advisors = data?.Advisors?.length
       ? data?.Advisors
       : advisorData.Advisors;
     const options = advisors?.map((itm) => {
-      itm.OptionLabel = itm.AdvisorName;
-      itm.OptionValue = itm.AdvisorId;
+      itm.OptionLabel = itm?.AdvisorName;
+      itm.OptionValue = itm?.AdvisorId;
       return itm;
     });
     setAdvisorOptions(options);
@@ -71,32 +82,46 @@ const submitMatch = ({
     };
   }, [data]);
 
+  // Update state of selected offers count
   useEffect(() => {
     const findSelectedOffers = state?.filter((offer) => offer.selected);
     setSelectedOffers(findSelectedOffers);
   }, [state]);
 
+  // Update Transfer body state to send transfer request
   useEffect(() => {
     if (keyName === 'transfer') {
+      /** @type {string } */
       const set_identifier =
         selectedOffers.length > 0
           ? selectedOffers[0]?.result_set_identifier
           : '';
+      /** @type {string } */
+      const search_set_identifier =
+        selectedOffers.length > 0
+          ? selectedOffers[0]?.result_set_identifier
+          : '';
+
+      /** @type {*} */
       const answers =
         selectedOffers.length > 0 ? selectedOffers[0]?.questions : [];
+
       setTransfersBody((prev) => ({
         ...prev,
         result_identifier: set_identifier,
+        result_set_identifier: search_set_identifier,
         answers: answers,
       }));
       setTransferSubmit((prev) => ({
         ...prev,
         result_identifier: set_identifier,
+        result_set_identifier: search_set_identifier,
         answers: answers,
       }));
     }
   }, [selectedOffers]);
 
+  // Offers Submittions functionality
   const submit = async () => {
     setLoading(true);
     if (keyName === 'direct') {
@@ -110,16 +135,31 @@ const submitMatch = ({
       }
     }
     if (keyName === 'transfer') {
-      await submitOffer(transferSubmit);
+      // Transfer submit body preparation
+      const body = {
+        accesskey,
+        result_identifier: transferSubmit.result_identifier,
+        result_set_identifier: transferSubmit.result_set_identifier,
+        answers: [
+          {
+            // question_key: transferSubmit.question_key,
+            question_key: data?.AdvisorFieldName,
+            question_value: transferSubmit.question_value,
+          },
+        ],
+      };
+      const { count } = await submitOffer(body);
+      if (count > 0) await updateSuccessCountsHandler(true, count);
     }
     setLoading(false);
   };
 
+  // Update selected option on change event
   const dropdownClickHandler = React.useCallback((obj) => {
     return setTransferSubmit((prev) => ({
       ...prev,
-      question_key: data?.AdvisorFieldName,
-      question_value: obj?.OptionValue,
+      question_key: data?.AdvisorFieldName ?? undefined,
+      question_value: obj?.OptionValue ?? undefined,
     }));
   }, []);
 
@@ -189,12 +229,15 @@ const submitMatch = ({
             <>
               <br />
               <div className="text-blue text-[22px] font-Poppin font-semibold">
-                {data?.TransferPhone || advisorData.TransferPhone}
+                {data?.TransferPhone || advisorData?.TransferPhone}
               </div>
               <Dropdown
                 Icon={<RecommendRoundedIcon />}
                 options={advisorOptions}
                 clickHandler={dropdownClickHandler}
+                colorClass="default"
+                question={undefined}
+                school={undefined}
                 placeholder="Select an agent to transfer to"
               />
 
@@ -217,4 +260,4 @@ const submitMatch = ({
   );
 };
 
-export default submitMatch;
+export default React.memo(submitMatch);

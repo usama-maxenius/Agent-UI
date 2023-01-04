@@ -56,10 +56,16 @@ export const directOffersSubmit = async (directOffers) => {
 export const submitOffer = async (body) => {
   let url = `${baseUrl}/submit`;
 
+  let results = [];
   try {
     let response = await post(url, JSON.stringify(body));
+    results.push(response[0]);
     return response;
   } catch (err) {
     console.log('🚀 ~ file: submitOffer.js:17 ~ submitOffer ~ err', err);
   }
+  return {
+    response: results,
+    count: results.length,
+  };
 };

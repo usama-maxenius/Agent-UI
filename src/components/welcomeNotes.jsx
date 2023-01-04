@@ -2,29 +2,52 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RecordingDisclosed } from './styled/wecomeNote.style';
 import { useAuth0 } from '@auth0/auth0-react';
-
+import { useDispatch } from 'react-redux';
+import { searchData } from '../store/action/userDetailAction';
 const WelcomeNotes = () => {
   let navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const queryParams = new URLSearchParams(window.location.search);
+  // useEffect(() => {
+  //   console.log(queryParams.append());
+  // }, [queryParams]);
 
-  const userDetailStraingfy = localStorage.getItem('form');
-  const userDetailParams =
-    userDetailStraingfy && JSON.parse(userDetailStraingfy);
+  const obj = {
+    gender: '',
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    address_line1: '',
+    city: '',
+    state: '',
+    zip_code: '',
+    computer_internet_access: '',
+    age: '',
+    hsyear: '',
+    current_education_level: '',
+    us_citizen: '',
+    military_status: '',
+    online_or_campus: '',
+    can_complete_enrollment: '',
+    is_contacted_by_school: '',
+    graduated_in_us: '',
+    time_to_call: '',
+    areas_of_interest: '',
+    another_areas_of_interest: '',
+    any_other_areas_of_interest: '',
+  };
 
   useEffect(() => {
-    userDetailParams &&
-      Object.keys(userDetailParams).forEach((key) => {
-        if (queryParams.get(key) !== null) {
-          return (userDetailParams[key] = queryParams.get(key));
-        }
-      });
-    // if (working) {
-    localStorage.setItem('form', JSON.stringify(userDetailParams));
-    // } else {
-    //   console.log('noooot working');
-    // }
-  }, [userDetailParams]);
+    const code = queryParams.get('code');
+    if (code === null) {
+      for (const [key, value] of queryParams) {
+        obj[key] = value;
+      }
+    }
+
+    obj && dispatch(searchData(obj));
+  }, [queryParams]);
 
   const { isAuthenticated, user } = useAuth0();
 

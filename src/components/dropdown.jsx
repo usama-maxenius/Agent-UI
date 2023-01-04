@@ -31,19 +31,24 @@ export default function DropdownWithSearch({
   const dispatch = useDispatch();
   const { states } = useSelector((state) => state.InitReducer);
   let { cities } = useSelector((store) => store.InitReducer);
-  const [params] = useSearchParams();
+  const { paramDetails } = useSelector((state) => state.SearchDetail);
+
+  // const [params] = useSearchParams();
+  const params = paramDetails;
+
   const [searchText, setSearchText] = useState('');
 
   const getSpecificParamsValue = () => {
     if (name === 'military_status') {
       return params.get('military') === null
-        ? people[0]
+        ? // return params.military_status === null
+          people[0]
         : {
             OptionLabel: params.get('military'),
             OptionValue: params.get('military'),
           };
     } else if (name === 'hsyear') {
-      return params.get('high_school_graduation_year') === null
+      return params.high_school_graduation_year === null
         ? people[0]
         : {
             OptionLabel: params.get('high_school_graduation_year'),

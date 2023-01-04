@@ -39,7 +39,6 @@ const RightContentWrapper = styled('div')(() => ({
 const Education = () => {
   const [popup, setPopUp] = useState(false);
   const dispatch = useDispatch();
-  // useSchoolResultsLoop();
   const { state } = useContextCustom();
   const { schoolsList } = useSelector((store) => store.InitReducer);
   const [successCounts, setSuccessCounts] = useState({
@@ -54,11 +53,14 @@ const Education = () => {
     externalOffers: false,
   });
   let [searchParams] = useSearchParams();
-  const [offers, setOffers] = useState({
-    warmTransfers: [],
-    directOffers: [],
-    externalOffers: [],
-  });
+  const [offers, setOffers] = useState(
+    /** @type {import('../types/schools.types').IOfferState} */
+    ({
+      warmTransfers: [],
+      directOffers: [],
+      externalOffers: [],
+    })
+  );
 
   useEffect(() => {
     let mounted = true;
@@ -69,9 +71,7 @@ const Education = () => {
         await new Promise((resolve) => {
           interval = setInterval(
             async () =>
-              resolve(
-                await dispatch(ResultSchools(searchParams.get('search')))
-              ),
+              resolve(dispatch(ResultSchools(searchParams.get('search')))),
             5000
           );
         });
@@ -89,11 +89,19 @@ const Education = () => {
 
   useEffect(() => {
     (async () => {
+      await dispatch(ResultSchools(searchParams.get('search')));
+    })();
+  }, []);
+
+  // Update and Merge the results in the state
+  useEffect(() => {
+    (async () => {
       if (schoolsList)
         await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
     })();
   }, [schoolsList]);
 
+  // Update State when switching tabs
   useEffect(() => {
     if (selectedTab === 0) {
       return setIsSelected((prev) => ({
@@ -121,6 +129,7 @@ const Education = () => {
     }
   }, [offers, selectedTab]);
 
+  // Update state offers handlers
   function updateOffersHandler(val) {
     if (val[0]?.result_type === 'transfer') {
       return setOffers((prev) => ({
@@ -140,10 +149,13 @@ const Education = () => {
     }
   }
 
+  // Update selected tab state handlers
   const updateSelectedTabHandler = React.useCallback(
     (val) => setSelectedTab(val),
     []
   );
+
+  // Update popUp and count state handlers
   const updateSuccessCountsHandler = React.useCallback(
     (show, count) =>
       setSuccessCounts((prev) => ({

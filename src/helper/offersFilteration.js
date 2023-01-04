@@ -4,6 +4,11 @@
 // import { warmTransfersData } from '../data/warmTransferData';
 import { mergeSchoolPrograms } from './mergeSchoolPrograms';
 
+/**
+ * @param {import('../types/schools.types').ISchoolResponse[]} data
+ * @param {import('../types/schools.types').IOfferState} state
+ * @param {*} updateOffersHandler
+ */
 export const filterAndMergeOffers = async (
   data,
   state,
@@ -11,22 +16,44 @@ export const filterAndMergeOffers = async (
 ) => {
   // ---------------  Warm Transfer Offers  --------------------
   // 1. Filter the list of warm offers
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
   let warmOffers = await data?.filter(
-    (item) => item.result_type === 'transfer' && item
+    (item) => item.result_type === 'transfer'
   );
 
   if (!state.warmTransfers.length) {
     // Merge the list of warm offers which contain the same school
-    if (warmOffers?.length) warmOffers = await mergeSchoolPrograms(warmOffers);
+    /** @type {import('../types/schools.types').IWarmTransferOffers[] | undefined} */
+    let warmOffersWithNestedPrograms;
+
+    if (warmOffers?.length) {
+      warmOffersWithNestedPrograms = await mergeSchoolPrograms(warmOffers);
+    }
 
     // Initialize some additional properties
-    warmOffers?.forEach((item) => {
-      item.selected = item.selected ?? false;
-      item.selected_program = item.selected_program ?? null;
-      item.required = item.required ?? false;
+    warmOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs && school.programs.length) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
+            return question;
+          });
+        });
+      }
     });
     updateOffersHandler(warmOffers);
   } else {
+    /** @type {import('../types/schools.types').IWarmTransferOffers[]} */
     const stateOffers = [...state.warmTransfers];
     await warmOffers?.forEach((school) => {
       // check school exist
@@ -43,11 +70,22 @@ export const filterAndMergeOffers = async (
         if (programExist) {
           return school;
         } else {
+          const updateQuestion = school.questions?.map((quest) => {
+            if (quest.IsVisible) {
+              quest.required = false;
+              quest.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return quest;
+            }
+            return quest;
+          });
           // add new program in school programs Array
           schoolExist.programs?.push({
             OptionLabel: school.program,
             QuestionValue: school.program,
-            questions: school.questions,
+            questions: updateQuestion,
             program: school.program,
             result_identifier: school.result_identifier,
             result_set_identifier: school.result_set_identifier,
@@ -60,6 +98,8 @@ export const filterAndMergeOffers = async (
           selected: false,
           selected_program: null,
           required: false,
+          programs: [],
+          result_type: 'transfer',
         });
         return school;
       }
@@ -69,35 +109,44 @@ export const filterAndMergeOffers = async (
 
   // ---------------  Direct Offers  --------------------
   // 1. Filter the list of direct offers
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
   let directOffers = data?.filter((item) => item.result_type === 'lead');
 
   if (!state.directOffers.length) {
     // Merge the list of warm offers which contain the same school
-    if (directOffers?.length)
-      directOffers = await mergeSchoolPrograms(directOffers);
+    /** @type {import('../types/schools.types').IDirectOffers[] | undefined} */
+    let directOffersWithNestedPrograms;
+
+    if (directOffers?.length) {
+      directOffersWithNestedPrograms = await mergeSchoolPrograms(directOffers);
+    }
 
     // Initialize some additional properties
-    directOffers?.forEach((item) => {
-      item.selected = item.selected ?? false;
-      item.selected_program = item.selected_program ?? null;
-      item.required = item.required ?? false;
-      if (item?.programs?.questions?.length > 0) {
-        item.programs.questions = item?.programs?.questions.map((question) => {
-          if (question.IsVisible) {
-            question.required = false;
-            question.value = {
-              OptionLabel: '',
-              OptionValue: '',
-            };
+    directOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs?.length > 0) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
             return question;
-          }
-          return question;
+          });
         });
       }
     });
     updateOffersHandler(directOffers);
   } else {
+    /** @type {import('../types/schools.types').IDirectOffers[]} */
     const stateOffers = [...state.directOffers];
+
     await directOffers?.forEach((school) => {
       // check school exist
       const schoolExist = state.directOffers?.find(
@@ -142,6 +191,8 @@ export const filterAndMergeOffers = async (
           selected: false,
           selected_program: null,
           required: false,
+          programs: [],
+          result_type: 'lead',
         });
         return school;
       }
@@ -151,24 +202,99 @@ export const filterAndMergeOffers = async (
 
   // -----------------  External Offers ---------------------
 
+  /** @type {import('../types/schools.types').ISchoolResponse[]} */
   let externalOffers = data?.filter(
     (item) => item.result_type !== 'lead' && item.result_type !== 'transfer'
   );
-  externalOffers = externalOffers?.length
-    ? mergeSchoolPrograms(externalOffers)
-    : externalOffers;
-  externalOffers?.forEach((item) => {
-    item.selected = item.selected ?? false;
-    item.selected_program = item.selected_program ?? null;
-    item.required = item.required ?? false;
-  });
 
-  // updateState((prev) => ({
-  //   ...prev,
-  //   directOffers,
-  //   warmTransfers: warmOffers,
-  //   externalOffers,
-  // }));
+  if (!state.externalOffers.length) {
+    // Merge the list of warm offers which contain the same school
+    /** @type {import('../types/schools.types').IExternalOffers[] | undefined} */
+    let externalOffersWithNestedPrograms;
+
+    if (externalOffers?.length) {
+      externalOffersWithNestedPrograms = await mergeSchoolPrograms(
+        externalOffers
+      );
+    }
+
+    // Initialize some additional properties
+    externalOffersWithNestedPrograms?.forEach((school) => {
+      school.selected = school.selected ?? false;
+      school.selected_program = school.selected_program ?? null;
+      school.required = school.required ?? false;
+      if (school?.programs?.length > 0) {
+        school.programs.forEach((prog) => {
+          prog.questions = prog?.questions.map((question) => {
+            if (question.IsVisible) {
+              question.required = false;
+              question.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return question;
+            }
+            return question;
+          });
+        });
+      }
+    });
+    updateOffersHandler(externalOffers);
+  } else {
+    /** @type {import('../types/schools.types').IExternalOffers[]} */
+    const stateOffers = [...state.externalOffers];
+
+    await externalOffers?.forEach((school) => {
+      // check school exist
+      const schoolExist = state.externalOffers?.find(
+        (sch) => sch.schoolid === school.schoolid
+      );
+
+      if (schoolExist) {
+        // check program already exist or not
+        const programExist = schoolExist?.programs?.find(
+          (e) => school.result_set_identifier === e.result_set_identifier
+        );
+
+        if (programExist) {
+          return school;
+        } else {
+          const updateQuestion = school.questions?.map((quest) => {
+            if (quest.IsVisible) {
+              quest.required = false;
+              quest.value = {
+                OptionLabel: '',
+                OptionValue: '',
+              };
+              return quest;
+            }
+            return quest;
+          });
+
+          // add new program in school programs Array
+          schoolExist.programs?.push({
+            OptionLabel: school.program,
+            QuestionValue: school.program,
+            questions: updateQuestion,
+            program: school.program,
+            result_identifier: school.result_identifier,
+            result_set_identifier: school.result_set_identifier,
+          });
+          return school;
+        }
+      } else {
+        stateOffers.push({
+          ...school,
+          selected: false,
+          selected_program: null,
+          required: false,
+          programs: [],
+        });
+        return school;
+      }
+    });
+    updateOffersHandler(stateOffers);
+  }
 };
 
 export const prepareBody = async (arry) => {
@@ -206,6 +332,7 @@ export const prepareBody = async (arry) => {
   return prepareBodyRequest;
 };
 
+// Toggle the selection of school
 export const schoolSelectionToggle = async (
   arry,
   school,
@@ -234,6 +361,7 @@ export const schoolSelectionToggle = async (
   return res;
 };
 
+// Check questions fields validation
 export const checkQuestionValidation = async (arry) => {
   const findSelectedOffers = await arry?.filter((offer) => offer.selected);
   let validationError = false;

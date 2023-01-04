@@ -1,3 +1,4 @@
+/** @type {import("../types/schools.types").ISchoolResponse[]} */
 export const warmTransfersData = [
   {
     result_set_identifier: '3e2485af-6422-419c-813d-63faead43f8b',
