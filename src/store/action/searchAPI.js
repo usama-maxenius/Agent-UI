@@ -2,10 +2,10 @@
 /* eslint-disable no-undef */
 import { get, post } from '../../helper/api_handler';
 
-// let myIP = async () => {
-//   let result = await get('https://geolocation-db.com/json/');
-//   return result.IPv4;
-// };
+let myIP = async () => {
+  let result = await get('https://geolocation-db.com/json/');
+  return result;
+};
 const area_of_interests = [];
 export let searchSchools = (data, navigate) => {
   // area_of_interests.push(data.area_of_interest);
@@ -141,6 +141,10 @@ export let searchSchools = (data, navigate) => {
     //   },
     // };
     console.log('body');
+    // console.log('myIP', myIP);
+    const IPGOt = await myIP();
+    console.log('myIP', IPGOt);
+
     let body = {
       accesskey: 'e10b29a532-3dd36-d1675-36f4e-87b94',
       prospect: {
@@ -150,13 +154,13 @@ export let searchSchools = (data, navigate) => {
         email: email,
         phone: phone,
         phone2: '',
-        address_line1: address_line1,
+        address_line1: '961 birch rd',
         address_line2: '',
-        city: city,
-        state: state,
-        zip_code: zip_code,
+        city: 'phoenix',
+        state: 'AZ',
+        zip_code: '85005',
         computer_internet_access: computer_internet_access,
-        age: age,
+        age: '23',
         hsyear: hsyear,
         current_education_level: current_education_level,
         preferred_education_level: '',
@@ -168,7 +172,7 @@ export let searchSchools = (data, navigate) => {
         },
         preferred_enrollment: preferred_enrollment,
         online_or_campus: online_or_campus,
-        ip: '172.70.175.11',
+        ip: '184.187.45.158',
       },
       search: {
         areas_of_interest: area_of_interests,
@@ -177,7 +181,7 @@ export let searchSchools = (data, navigate) => {
         teaching_certificate: 'no',
         is_contacted_by_school: is_contacted_by_school,
         graduated_in_us: graduated_in_us,
-        channel_name: 'web',
+        channel_name: 'WEB',
         ss1: '9829',
         ss2: 'organic',
         ss3: '',
@@ -231,7 +235,7 @@ export let searchSchools = (data, navigate) => {
       },
     };
 
-    console.log('body', body);
+    // console.log('body', body);
 
     let url = 'https://api.cmicon.com/v3/search';
 
@@ -253,15 +257,17 @@ export let searchSchools = (data, navigate) => {
 export let ResultSchools = (searchIdentifier, navigate) => {
   return async (dispatch) => {
     let body = {
-      accesskey: process.env.REACT_APP_ACCESS_KEY,
+      accesskey: 'e10b29a532-3dd36-d1675-36f4e-87b94',
       search_identifier: searchIdentifier,
     };
 
+    // console.log('body: ', body);
     let url = 'https://api.cmicon.com/v3/results';
 
     let response = await post(url, JSON.stringify(body));
+    // console.log(response);
 
-    console.log('response', response);
+    // console.log('response', response);
     if (Array.isArray(response)) {
       if (navigate) navigate('/school/matches/?search=' + searchIdentifier);
       dispatch({
