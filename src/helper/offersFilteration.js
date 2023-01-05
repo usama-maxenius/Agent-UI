@@ -363,10 +363,9 @@ export const schoolSelectionToggle = async (
 
 // Check questions fields validation
 export const checkQuestionValidation = async (arry) => {
-  const findSelectedOffers = await arry?.filter((offer) => offer.selected);
   let validationError = false;
-  const result = await findSelectedOffers?.map((school) => {
-    if (school.selected_program?.questions?.length > 0) {
+  const result = await arry?.map((school) => {
+    if (school.selected && school.selected_program?.questions?.length > 0) {
       school.selected_program?.questions?.map((quest) => {
         if (quest.IsVisible && !quest?.value?.OptionValue.length) {
           quest.required = true;
