@@ -8,7 +8,7 @@ const MainWrapper = styled.div`
   margin-top: 42px;
 `;
 const RegularPoppin = styled.div`
-  color: ${(props) => (props.title ? '#161616' : '#2541B2')};
+  color: ${(props) => (props.title == 'true' ? '#161616' : '#2541B2')};
   color: ${(props) => props.blue && '#2541B2'};
   font-family: 'Poppins';
   font-weight: 400;
