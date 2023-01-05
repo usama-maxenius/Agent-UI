@@ -36,8 +36,8 @@ export let searchSchools = (data, navigate) => {
       another_areas_of_interest,
       any_other_areas_of_interest,
     } = data;
-    console.log('🚀 ~ file: searchAPI.js:39 ~ return ~ data', data);
 
+    const calculateAge = new Date().getFullYear() - age;
     let body = {
       accesskey,
       prospect: {
@@ -54,7 +54,7 @@ export let searchSchools = (data, navigate) => {
         // state: 'AZ',
         zip_code: zip_code,
         computer_internet_access: computer_internet_access,
-        age: '29',
+        age: `${calculateAge}`,
         hsyear: hsyear,
         current_education_level: current_education_level,
         preferred_education_level: '',
@@ -135,7 +135,7 @@ export let searchSchools = (data, navigate) => {
       },
     };
 
-    console.log('body', body);
+    console.log('🚀 ~ file: searchAPI.js:39 ~ return ~ data', body, data);
 
     let url = 'https://api.cmicon.com/v3/search';
 
