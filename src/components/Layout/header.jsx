@@ -43,11 +43,12 @@ const HeaderWrapper = styled(Paper)(({ expand }) => ({
 const TitleWrapper = styled(Box)((props) => ({
   color: '#161616',
   display: 'flex',
-  flexDirection: props.row ? 'row' : 'column',
-  alignItems: props.flexStart ? 'flex-start' : 'center',
-  justifyContent: props.spaceBetween ? 'space-between' : 'center',
-  marginTop: props.marginTop ? '5px' : 0,
-  borderBottom: props.active ? '2px solid #3D885B' : '2px solid transparent',
+  flexDirection: props.row == 'true' ? 'row' : 'column',
+  alignItems: props.flexstart === 'true' ? 'flex-start' : 'center',
+  justifyContent: props.spacebetween == 'true' ? 'space-between' : 'center',
+  marginTop: props.marginTop == 'true' ? '5px' : 0,
+  borderBottom:
+    props.active == 'true' ? '2px solid #3D885B' : '2px solid transparent',
 }));
 const IconWrapper = styled(Box)(() => ({
   display: 'flex',
@@ -275,9 +276,9 @@ const Header = () => {
     <HeaderWrapper expand={expand}>
       <Grid container spacing={0}>
         <Grid item xs={3}>
-          <TitleWrapper row spaceBetween marginTop>
+          <TitleWrapper row="true" spacebetween="true" marginTop="true">
             {data.map((item, idx) => (
-              <TitleWrapper flexStart key={idx}>
+              <TitleWrapper flexstart="true" key={idx}>
                 <Typography component="p" style={style.title}>
                   {item.title}
                 </Typography>
@@ -354,10 +355,10 @@ const Header = () => {
           xs={4}
           style={{ display: 'flex', justifyContent: 'flex-end' }}
         >
-          <TitleWrapper row spaceBetween marginTop>
+          <TitleWrapper row="true" spacebetween="true" marginTop="true">
             {/* {data2.map((item, idx) => (
               <>
-                <TitleWrapper flexStart key={idx}>
+                <TitleWrapper flexstart key={idx}>
                   <Typography component="p" style={style.title}>
                     {item.title}
                   </Typography>

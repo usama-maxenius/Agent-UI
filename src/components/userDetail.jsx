@@ -644,7 +644,7 @@ const UserDetails = () => {
               return (
                 <Grid item xs={4} key={key}>
                   <ItemWrapper>
-                    <RegularPoppin title>
+                    <RegularPoppin title="true">
                       {key.replaceAll('_', ' ')}
                     </RegularPoppin>
                     <RegularPoppin description>

@@ -104,7 +104,9 @@ export default function DropdownWithSearch({
               callerID == true
                 ? 'border-blue  h-[52px] font-Poppin text-base rounded-[8px]'
                 : 'sm:text-sm',
-              changeColor ? `border border-blue` : `border border-[#16161640]`
+              changeColor == 'true'
+                ? `border border-blue`
+                : `border border-[#16161640]`
             )}
           >
             <span

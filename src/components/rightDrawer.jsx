@@ -4,9 +4,21 @@ import EastRoundedIcon from '@mui/icons-material/EastRounded';
 import { classNames } from '../helper/classNames';
 import { useContextCustom } from '../store/context';
 import constant from '../store/constant';
-
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { searchSchools } from '../store/action/searchAPI';
+import { useNavigate } from 'react-router-dom';
 function RightDrawer({ children }) {
   const { state, dispatch } = useContextCustom();
+  const dispatchRedux = useDispatch();
+  const navigation = useNavigate();
+  const { paramDetails } = useSelector((state) => state.SearchDetail);
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    dispatchRedux(searchSchools(paramDetails, navigation));
+  };
   return (
     <main
       className={
@@ -34,7 +46,10 @@ function RightDrawer({ children }) {
                   <p className="text-blue  text-[22px] font-Poppin font-semibold">
                     Caller details
                   </p>
-                  <button className="bg-blue text-white h-[36px] w-[150px] rounded-3xl font-IBM_serif text-sm">
+                  <button
+                    onClick={submitHandler}
+                    className="bg-blue text-white h-[36px] w-[150px] rounded-3xl font-IBM_serif text-sm"
+                  >
                     Resubmit
                   </button>
                 </div>
