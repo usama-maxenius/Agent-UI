@@ -130,7 +130,6 @@ const submitMatch = ({
         await updateOffersHandler(data);
       } else {
         const { count } = await directOffersSubmit(state);
-        console.log('🚀 ~ file: submitMatch.jsx:96 ~ submit ~ count', count);
         if (count > 0) await updateSuccessCountsHandler(true, count);
       }
     }

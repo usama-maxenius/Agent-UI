@@ -22,7 +22,7 @@ export const directOffersSubmit = async (directOffers) => {
       if (valid_questions.length) {
         answers = valid_questions?.map((question) => {
           return {
-            question_key: question.value?.OptionLabel,
+            question_key: question?.QuestionFieldName,
             question_value: question.value?.OptionValue,
           };
         });
@@ -31,8 +31,9 @@ export const directOffersSubmit = async (directOffers) => {
     return {
       accesskey,
       search_identifier: search_identifier,
-      search_result_identifier: offer.result_identifier,
-      search_result_set_identifier: offer.result_set_identifier,
+      search_result_identifier: offer.selected_program?.result_identifier,
+      search_result_set_identifier:
+        offer?.selected_program?.result_set_identifier,
       answers: answers ?? [],
     };
   });

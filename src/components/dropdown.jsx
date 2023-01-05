@@ -98,11 +98,12 @@ export default function DropdownWithSearch({
     setSelected(prop);
 
     if (name === 'state') {
+      console.log('🚀 ~ file: dropdown.jsx:101 ~ onChangeHandler ~ name', prop);
       dispatch({
         type: 'USER_DETAILS',
-        payload: { ...state, [name]: prop.name },
+        payload: { ...state, [name]: prop.state_code },
       });
-      setState({ ...state, [name]: prop.name });
+      setState({ ...state, [name]: prop.state_code });
     } else if (name === 'city') {
       dispatch({
         type: 'USER_DETAILS',
