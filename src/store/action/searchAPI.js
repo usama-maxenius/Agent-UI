@@ -38,6 +38,7 @@ export let searchSchools = (data, navigate) => {
     } = data;
 
     const calculateAge = new Date().getFullYear() - age;
+    const graduated_in_us_format = graduated_in_us.includes('yes') ? '1' : '0';
     let body = {
       accesskey,
       prospect: {
@@ -51,7 +52,6 @@ export let searchSchools = (data, navigate) => {
         address_line2: '',
         city: city,
         state: state,
-        // state: 'AZ',
         zip_code: zip_code,
         computer_internet_access: computer_internet_access,
         age: `${calculateAge}`,
@@ -79,7 +79,7 @@ export let searchSchools = (data, navigate) => {
         rn_license: 'no',
         teaching_certificate: 'no',
         is_contacted_by_school: is_contacted_by_school,
-        graduated_in_us: '1',
+        graduated_in_us: graduated_in_us_format,
         channel_name: 'CALLCENTER',
         ss1: '9829',
         ss2: 'organic',
