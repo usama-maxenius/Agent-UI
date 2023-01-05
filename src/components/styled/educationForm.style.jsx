@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 const MainWrapper = styled.div`
   display: flex;
-  padding-left: 29px;
+  padding-left: ${(props) => (props.rightDrawerCaller ? '0px' : '29px')};
   padding-top: 10px;
   flex-direction: column;
   height: calc(100% - 10px);
   width: 595px;
-  overflow-y: scroll;
+  overflow-y: ${(props) => (props.rightDrawerCaller ? 'hidden' : 'scroll')};
   &::-webkit-scrollbar {
     display: none;
   }

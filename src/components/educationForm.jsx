@@ -492,7 +492,6 @@ const EducationForm = (props) => {
       paramDetails.city.length > 0 &&
       paramDetails.state.length > 0
     ) {
-      console.log("I'm not coming here");
       dispatchRedux(searchSchools(paramDetails, navigation));
 
       dispatchRedux({
@@ -500,8 +499,6 @@ const EducationForm = (props) => {
         payload: null,
       });
     } else {
-      console.log('because coming here');
-
       setShowPopup(true);
     }
   };

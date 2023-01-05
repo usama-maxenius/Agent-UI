@@ -48,16 +48,15 @@ function FormCard({ item, key, setState, state }) {
     >
       <CardContent
         sx={
-          item.noPad
-            ? {
-                padding: 0,
-                paddingBottom: '0 !important',
-              }
-            : {}
+          item.noPad && {
+            padding: 0,
+            paddingBottom: '0 !important',
+          }
         }
       >
         {item.title && <Typography sx={title}>{item.title}</Typography>}
-        <div className={item.styleClasses + ' ' + item?.styleHeight}>
+
+        <div className={item?.styleClasses + ' ' + item?.styleHeight}>
           {item.ticked && (
             <InputRightIcon
               setState={setState}
@@ -116,7 +115,7 @@ function FormCard({ item, key, setState, state }) {
         </div>
         {item.bottomLine && (
           <BottomLine>
-            <RegularPoppin title blue>
+            <RegularPoppin title="true" blue>
               If the line is bad or you just need to check, you can check the
               spelling using phonetics
             </RegularPoppin>

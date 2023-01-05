@@ -72,9 +72,14 @@ const WelcomeNotes = () => {
       </p>
       <div>
         <p className="font-Poppin font-normal my-4 text-base">
-          Hello this is {isAuthenticated ? user.name : '...'} from Degree
-          Transfers on a <strong>recorded line</strong>, am I speaking with
-          Angel?
+          Hello this is{' '}
+          {isAuthenticated
+            ? user?.name?.includes('@')
+              ? user?.nickname
+              : user?.name
+            : '...'}{' '}
+          from Degree Transfers on a <strong>recorded line</strong>, am I
+          speaking with Angel?
         </p>
         <p className="font-Poppin font-normal my-4">
           Hello Angel, it looks like you have been online recently looking into
