@@ -21,6 +21,7 @@ import LaptopRoundedIcon from '@mui/icons-material/LaptopRounded';
 import { MediumPoppin16, MediumPoppin22 } from '../styled/commonDesign';
 import Dropdown from '../dropdown/index';
 import { schoolSelectionToggle } from '../../helper/offersFilteration';
+import { toWords } from '../../helper/toWords';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
@@ -49,15 +50,18 @@ const ExpandablesCard = ({
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [programQuestions, setProgramQuestions] = React.useState([]);
+  // const [selectedProgram, setSelectedProgram] = React.useState({
+  //   OptionLabel: 'Select a program',
+  //   OptionValue: 'Select a program',
+  // });
+  // const [selectedQuestion, setSelectedQuestion] = React.useState({
+  //   OptionLabel: 'Additional Question',
+  //   OptionValue: 'Additional Question',
+  // });
 
   // Filtering Questions on the basis of IsVisible property
   React.useEffect(() => {
     const selected_program = school.selected_program;
-    console.log(
-      '🚀 ~ file: ExpandablesCard.jsx:56 ~ React.useEffect ~ selected_program',
-      school,
-      selected_program
-    );
     if (selected_program?.questions) {
       const filterVisibleQuestions = selected_program?.questions?.filter(
         (qest) => qest.IsVisible
@@ -69,16 +73,9 @@ const ExpandablesCard = ({
   // Select program handler
   const programsHandler = React.useCallback((prog) => {
     const updateSelectedProgram = state?.map((st) => {
-      console.log(
-        '🚀 ~ file: ExpandablesCard.jsx:73 ~ updateSelectedProgram ~ st',
-        st
-      );
       if (st.schoolid === school.schoolid) {
         st.required = false;
-        st.selected_program = {
-          ...prog,
-          // questions: st.questions,
-        };
+        st.selected_program = prog;
         return st;
       }
       return st;
@@ -133,6 +130,12 @@ const ExpandablesCard = ({
         setProgramQuestions
       );
       await updateOffersHandler(res);
+      if (!school?.selected_program) {
+        // setSelectedProgram({
+        //   OptionLabel: 'Select a program',
+        //   OptionValue: 'Select a program',
+        // });
+      }
       return;
     }
   }, []);
@@ -224,6 +227,8 @@ const ExpandablesCard = ({
           }
           placeholder="Select a program"
           options={school.programs}
+          // selectedOption={selectedProgram}
+          // setSelectedOption={setSelectedProgram}
           clickHandler={programsHandler}
         />
       </div>
@@ -259,7 +264,9 @@ const ExpandablesCard = ({
                     : 'default'
                 }
                 options={question?.QuestionOptions}
-                placeholder="Additional Question One?"
+                // selectedOption={selectedQuestion}
+                // setSelectedOption={setSelectedQuestion}
+                placeholder={`Additional Question ${toWords(key + 1)} ?`}
                 clickHandler={questionsHandler}
               />
             </div>

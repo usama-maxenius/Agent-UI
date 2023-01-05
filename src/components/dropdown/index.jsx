@@ -20,8 +20,9 @@ function Dropdown({
   clickHandler,
   colorClass = 'default',
   question,
+  // selectedOption,
+  // setSelectedOption
 }) {
-  const [changeColor, setChangeColor] = useState(false);
   const [selectedOption, setSelectedOption] = useState({
     OptionLabel: placeholder,
     OptionValue: placeholder,
