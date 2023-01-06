@@ -530,6 +530,14 @@ const EducationForm = (props) => {
     if (data?.gender.includes('f')) {
       data.gender = 'Female';
     }
+    const checkString = /^[A-Za-z\s]+$/;
+
+    if (!data?.last_name.match(checkString)) {
+      data.last_name = '';
+    }
+    if (!data?.first_name.match(checkString)) {
+      data.first_name = '';
+    }
 
     dispatchRedux(searchData(data));
   };
