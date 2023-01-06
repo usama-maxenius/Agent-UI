@@ -154,23 +154,28 @@ export const filterAndMergeOffers = async (
       });
 
       updateOffersHandler(result);
+      console.log(
+        '🚀 ~ file: offersFilteration.js:158 ~ result 1st time offers',
+        result
+      );
     }
   } else {
     /** @type {import('../types/schools.types').IDirectOffers[]} */
     const stateOffers = [...state.directOffers];
-
+    console.log('test');
     await directOffers?.forEach((school) => {
-      // check school exist
       const schoolExist = state.directOffers?.find(
         (sch) => sch.schoolid === school.schoolid
       );
-
+      console.log(
+        '🚀 ~ file: offersFilteration.js:170 ~ awaitdirectOffers?.forEach ~ schoolExist',
+        schoolExist
+      );
       if (schoolExist) {
         // check program already exist or not
         const programExist = schoolExist?.programs?.find(
           (e) => school.result_set_identifier === e.result_set_identifier
         );
-
         if (programExist) {
           return school;
         } else {
@@ -185,7 +190,6 @@ export const filterAndMergeOffers = async (
             }
             return quest;
           });
-
           // add new program in school programs Array
           schoolExist.programs?.push({
             OptionLabel: school.program,
@@ -197,7 +201,7 @@ export const filterAndMergeOffers = async (
           });
         }
       } else {
-        stateOffers.push({
+        return stateOffers.push({
           ...school,
           selected: false,
           selected_program: null,
@@ -207,7 +211,11 @@ export const filterAndMergeOffers = async (
         });
       }
     });
-    updateOffersHandler(stateOffers);
+    console.log(
+      '🚀 ~ file: offersFilteration.js:219 ~ result 2ndst time offers',
+      stateOffers
+    );
+    // updateOffersHandler(stateOffers);
   }
 
   // -----------------  External Offers ---------------------
