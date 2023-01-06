@@ -27,6 +27,7 @@ function classNames(...classes) {
 }
 
 const ExpandMore = styled((props) => {
+  console.log('props', props);
   const { expand, ...other } = props;
   return <IconButton {...other} />;
 })(({ theme, expand }) => ({
