@@ -31,27 +31,33 @@ export const filterAndMergeOffers = async (
     }
 
     // Initialize some additional properties
-    warmOffersWithNestedPrograms?.forEach((school) => {
-      school.selected = school.selected ?? false;
-      school.selected_program = school.selected_program ?? null;
-      school.required = school.required ?? false;
-      if (school?.programs && school.programs.length) {
-        school.programs.forEach((prog) => {
-          prog.questions = prog?.questions.map((question) => {
-            if (question.IsVisible) {
-              question.required = false;
-              question.value = {
-                OptionLabel: '',
-                OptionValue: '',
-              };
+    if (warmOffersWithNestedPrograms) {
+      /** @type {import('../types/schools.types').IWarmTransferOffers[]} */
+      const result = warmOffersWithNestedPrograms?.map((school) => {
+        school.selected = school.selected ?? false;
+        school.selected_program = school.selected_program ?? null;
+        school.required = school.required ?? false;
+        if (school?.programs?.length > 0) {
+          school.programs = school.programs?.map((prog) => {
+            prog.questions = prog?.questions?.map((question) => {
+              if (question.IsVisible) {
+                question.required = false;
+                question.value = {
+                  OptionLabel: '',
+                  OptionValue: '',
+                };
+                return question;
+              }
               return question;
-            }
-            return question;
+            });
+            return prog;
           });
-        });
-      }
-    });
-    updateOffersHandler(warmOffers);
+          return school;
+        }
+        return school;
+      });
+      updateOffersHandler(result);
+    }
   } else {
     /** @type {import('../types/schools.types').IWarmTransferOffers[]} */
     const stateOffers = [...state.warmTransfers];
@@ -122,27 +128,33 @@ export const filterAndMergeOffers = async (
     }
 
     // Initialize some additional properties
-    await directOffersWithNestedPrograms?.forEach((school) => {
-      school.selected = school.selected ?? false;
-      school.selected_program = school.selected_program ?? null;
-      school.required = school.required ?? false;
-      if (school?.programs?.length > 0) {
-        school.programs?.forEach((prog) => {
-          prog.questions = prog?.questions?.map((question) => {
-            if (question.IsVisible) {
-              question.required = false;
-              question.value = {
-                OptionLabel: '',
-                OptionValue: '',
-              };
+    if (directOffersWithNestedPrograms) {
+      /** @type {import('../types/schools.types').IDirectOffers[]} */
+      const result = await directOffersWithNestedPrograms?.map((school) => {
+        school.selected = school.selected ?? false;
+        school.selected_program = school.selected_program ?? null;
+        school.required = school.required ?? false;
+        if (school?.programs?.length > 0) {
+          school.programs = school.programs?.map((prog) => {
+            prog.questions = prog?.questions?.map((question) => {
+              if (question.IsVisible) {
+                question.required = false;
+                question.value = {
+                  OptionLabel: '',
+                  OptionValue: '',
+                };
+                return question;
+              }
               return question;
-            }
-            return question;
+            });
+            return prog;
           });
-        });
-      }
-    });
-    updateOffersHandler(directOffers);
+        }
+        return school;
+      });
+
+      updateOffersHandler(result);
+    }
   } else {
     /** @type {import('../types/schools.types').IDirectOffers[]} */
     const stateOffers = [...state.directOffers];
@@ -183,7 +195,6 @@ export const filterAndMergeOffers = async (
             result_identifier: school.result_identifier,
             result_set_identifier: school.result_set_identifier,
           });
-          return school;
         }
       } else {
         stateOffers.push({
@@ -194,7 +205,6 @@ export const filterAndMergeOffers = async (
           programs: [],
           result_type: 'lead',
         });
-        return school;
       }
     });
     updateOffersHandler(stateOffers);
@@ -219,27 +229,32 @@ export const filterAndMergeOffers = async (
     }
 
     // Initialize some additional properties
-    externalOffersWithNestedPrograms?.forEach((school) => {
-      school.selected = school.selected ?? false;
-      school.selected_program = school.selected_program ?? null;
-      school.required = school.required ?? false;
-      if (school?.programs?.length > 0) {
-        school.programs.forEach((prog) => {
-          prog.questions = prog?.questions.map((question) => {
-            if (question.IsVisible) {
-              question.required = false;
-              question.value = {
-                OptionLabel: '',
-                OptionValue: '',
-              };
+    if (externalOffersWithNestedPrograms) {
+      /** @type {import('../types/schools.types').IExternalOffers[]} */
+      const result = await externalOffersWithNestedPrograms?.map((school) => {
+        school.selected = school.selected ?? false;
+        school.selected_program = school.selected_program ?? null;
+        school.required = school.required ?? false;
+        if (school?.programs?.length > 0) {
+          school.programs = school.programs?.map((prog) => {
+            prog.questions = prog?.questions?.map((question) => {
+              if (question.IsVisible) {
+                question.required = false;
+                question.value = {
+                  OptionLabel: '',
+                  OptionValue: '',
+                };
+                return question;
+              }
               return question;
-            }
-            return question;
+            });
+            return prog;
           });
-        });
-      }
-    });
-    updateOffersHandler(externalOffers);
+        }
+        return school;
+      });
+      updateOffersHandler(result);
+    }
   } else {
     /** @type {import('../types/schools.types').IExternalOffers[]} */
     const stateOffers = [...state.externalOffers];

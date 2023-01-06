@@ -91,60 +91,60 @@ const Education = () => {
   }, []);
 
   // Update and Merge the results in the state
-  // useEffect(() => {
-  //   (async () => {
-  //     if (schoolsList)
-  //       await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
-  //   })();
-  // }, [schoolsList]);
-
   useEffect(() => {
     (async () => {
-      if (data) {
-        let warmOffers = data?.filter(
-          (item) => item.result_type === 'transfer' && item
-        );
-        warmOffers = warmOffers?.length
-          ? mergeSchoolPrograms(warmOffers)
-          : warmOffers;
-        warmOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        let externalOffers = data?.filter(
-          (item) =>
-            item.result_type !== 'lead' && item.result_type !== 'transfer'
-        );
-        externalOffers = externalOffers?.length
-          ? mergeSchoolPrograms(externalOffers)
-          : externalOffers;
-        externalOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        let directOffers = data?.filter((item) => item.result_type === 'lead');
-        directOffers = directOffers?.length
-          ? mergeSchoolPrograms(directOffers)
-          : directOffers;
-        directOffers?.forEach((item) => {
-          item.selected = item.selected ?? false;
-          item.selected_program = item.selected_program ?? null;
-          item.required = item.required ?? false;
-        });
-
-        setOffers({
-          ...offers,
-          directOffers,
-          warmTransfers: warmOffers,
-          externalOffers,
-        });
-      }
+      if (schoolsList)
+        await filterAndMergeOffers(schoolsList, offers, updateOffersHandler);
     })();
-  }, [data]);
+  }, [schoolsList]);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     if (data) {
+  //       let warmOffers = data?.filter(
+  //         (item) => item.result_type === 'transfer' && item
+  //       );
+  //       warmOffers = warmOffers?.length
+  //         ? mergeSchoolPrograms(warmOffers)
+  //         : warmOffers;
+  //       warmOffers?.forEach((item) => {
+  //         item.selected = item.selected ?? false;
+  //         item.selected_program = item.selected_program ?? null;
+  //         item.required = item.required ?? false;
+  //       });
+
+  //       let externalOffers = data?.filter(
+  //         (item) =>
+  //           item.result_type !== 'lead' && item.result_type !== 'transfer'
+  //       );
+  //       externalOffers = externalOffers?.length
+  //         ? mergeSchoolPrograms(externalOffers)
+  //         : externalOffers;
+  //       externalOffers?.forEach((item) => {
+  //         item.selected = item.selected ?? false;
+  //         item.selected_program = item.selected_program ?? null;
+  //         item.required = item.required ?? false;
+  //       });
+
+  //       let directOffers = data?.filter((item) => item.result_type === 'lead');
+  //       directOffers = directOffers?.length
+  //         ? mergeSchoolPrograms(directOffers)
+  //         : directOffers;
+  //       directOffers?.forEach((item) => {
+  //         item.selected = item.selected ?? false;
+  //         item.selected_program = item.selected_program ?? null;
+  //         item.required = item.required ?? false;
+  //       });
+
+  //       setOffers({
+  //         ...offers,
+  //         directOffers,
+  //         warmTransfers: warmOffers,
+  //         externalOffers,
+  //       });
+  //     }
+  //   })();
+  // }, [data]);
 
   // Update State when switching tabs
   useEffect(() => {

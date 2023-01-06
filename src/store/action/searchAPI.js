@@ -78,7 +78,9 @@ export let searchSchools = (data, navigate) => {
         can_complete_enrollment: 'no',
         rn_license: 'no',
         teaching_certificate: 'no',
-        is_contacted_by_school: is_contacted_by_school,
+        is_contacted_by_school: is_contacted_by_school.includes('yes')
+          ? '1'
+          : '0',
         graduated_in_us: graduated_in_us_format,
         channel_name: 'CALLCENTER',
         ss1: '9829',
