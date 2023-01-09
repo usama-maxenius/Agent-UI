@@ -12,7 +12,8 @@ const RegularPoppin = styled.div`
   color: ${(props) => props.blue && '#2541B2'};
   font-family: 'Poppins';
   font-weight: 400;
-  text-transform: capitalize;
+  text-transform: ${(props) =>
+    props.values == 'true' ? 'lowercase' : 'capitalize'};
   font-size: ${(props) => (props.title ? '10px' : '16px')};
 `;
 const MediumPoppin = styled.span`
