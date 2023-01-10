@@ -6,7 +6,10 @@ import { post } from '../helper/api_handler';
 const BaseUrl = process.env.REACT_APP_BASE_URL;
 
 export const useSchoolResults = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(
+    // /** @type {import('../types/schools.types').ISchoolResponse[] | null} */
+    null
+  );
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 

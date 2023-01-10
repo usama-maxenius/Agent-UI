@@ -74,6 +74,7 @@ function FormCard({ item, key, setState, state }) {
               name={item.HomeIconName}
             />
           )}
+
           {item.dropdown && (
             <Dropdown
               item={item}

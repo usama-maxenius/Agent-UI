@@ -647,7 +647,7 @@ const UserDetails = () => {
                     <RegularPoppin title="true">
                       {key.replaceAll('_', ' ')}
                     </RegularPoppin>
-                    <RegularPoppin description>
+                    <RegularPoppin values="true" description>
                       {paramDetails[key] ? paramDetails[key] : 'none'}
                     </RegularPoppin>
                   </ItemWrapper>

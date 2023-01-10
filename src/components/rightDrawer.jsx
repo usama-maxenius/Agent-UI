@@ -56,8 +56,8 @@ function RightDrawer({ children }) {
               ) : (
                 <div
                   className={classNames(
-                    'flex items-stretch w-[144px] relative h-15 items-center border rounded-3xl ml-[202px]',
-                    'hover:w-[346px] focus-within:w-[346px] hover:border-blue focus-within:border-blue',
+                    'flex items-stretch w-[346px] relative h-15 items-center border rounded-3xl ',
+                    ' hover:border-blue focus-within:border-blue',
                     'hover:text-blue focus-within:text-blue',
                     'hover:ml-0 focus-within:ml-0'
                   )}

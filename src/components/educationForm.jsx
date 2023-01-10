@@ -474,7 +474,7 @@ const EducationForm = (props) => {
     e.preventDefault();
     const checkString = /^[A-Za-z\s]+$/;
 
-    const phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+    const phoneNo = /(\d{0,3})(\d{0,3})(\d{0,4})/im;
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,9})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
@@ -504,20 +504,27 @@ const EducationForm = (props) => {
   };
 
   const dispatchHandler = (data) => {
-    const phoneFormat = data?.phone
-      ?.split('-')
-      .join('')
-      ?.split('(')
-      .join('')
-      ?.split(')')
-      .join('')
-      .split(' ')
-      .join('')
-      .match(/.{1,3}/g)
-      ?.join('-');
+    if (data?.is_contacted_by_school.includes('1')) {
+      data.is_contacted_by_school = 'No';
+    }
+    if (data?.is_contacted_by_school.includes('0')) {
+      data.is_contacted_by_school = 'Yes';
+    }
 
-    data.phone = phoneFormat;
-    console.log(phoneFormat);
+    if (data?.gender.includes('m')) {
+      data.gender = 'Male';
+    }
+    if (data?.gender.includes('f')) {
+      data.gender = 'Female';
+    }
+    const checkString = /^[A-Za-z\s]+$/;
+
+    if (!data?.last_name.match(checkString)) {
+      data.last_name = '';
+    }
+    if (!data?.first_name.match(checkString)) {
+      data.first_name = '';
+    }
 
     dispatchRedux(searchData(data));
   };

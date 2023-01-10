@@ -50,14 +50,14 @@ const ExpandablesCard = ({
 }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [programQuestions, setProgramQuestions] = React.useState([]);
-  // const [selectedProgram, setSelectedProgram] = React.useState({
-  //   OptionLabel: 'Select a program',
-  //   OptionValue: 'Select a program',
-  // });
-  // const [selectedQuestion, setSelectedQuestion] = React.useState({
-  //   OptionLabel: 'Additional Question',
-  //   OptionValue: 'Additional Question',
-  // });
+  const [selectedProgram, setSelectedProgram] = React.useState({
+    OptionLabel: 'Select a program',
+    OptionValue: 'Select a program',
+  });
+  const [selectedQuestion, setSelectedQuestion] = React.useState({
+    OptionLabel: 'Additional Question',
+    OptionValue: 'Additional Question',
+  });
 
   // Filtering Questions on the basis of IsVisible property
   React.useEffect(() => {
@@ -131,10 +131,10 @@ const ExpandablesCard = ({
       );
       await updateOffersHandler(res);
       if (!school?.selected_program) {
-        // setSelectedProgram({
-        //   OptionLabel: 'Select a program',
-        //   OptionValue: 'Select a program',
-        // });
+        setSelectedProgram({
+          OptionLabel: 'Select a program',
+          OptionValue: 'Select a program',
+        });
       }
       return;
     }
@@ -227,8 +227,8 @@ const ExpandablesCard = ({
           }
           placeholder="Select a program"
           options={school.programs}
-          // selectedOption={selectedProgram}
-          // setSelectedOption={setSelectedProgram}
+          selectedOption={selectedProgram}
+          setSelectedOption={setSelectedProgram}
           clickHandler={programsHandler}
         />
       </div>
@@ -264,8 +264,11 @@ const ExpandablesCard = ({
                     : 'default'
                 }
                 options={question?.QuestionOptions}
-                // selectedOption={selectedQuestion}
-                // setSelectedOption={setSelectedQuestion}
+                selectedOption={{
+                  OptionLabel: `Additional Question ${toWords(key + 1)} ?`,
+                  OptionValue: `Additional Question ${toWords(key + 1)} ?`,
+                }}
+                setSelectedOption={setSelectedQuestion}
                 placeholder={`Additional Question ${toWords(key + 1)} ?`}
                 clickHandler={questionsHandler}
               />

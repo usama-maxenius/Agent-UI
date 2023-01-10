@@ -91,6 +91,7 @@ export default function DropdownWithSearch({
           }
       : people[0]
   );
+
   const [changeColor, setChangeColor] = useState(false);
 
   const onChangeHandler = (prop) => {
@@ -186,7 +187,7 @@ export default function DropdownWithSearch({
                 <div
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? '  ' : 'text-gray-900'
+                      active ? ' ' : 'text-gray-900'
                     }`
                   }
                 >

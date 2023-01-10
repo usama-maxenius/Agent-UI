@@ -39,7 +39,36 @@ const CallerDetail = ({ rightDrawerCaller }) => {
     e.preventDefault();
     dispatchRedux(searchSchools(paramDetails, navigate));
   };
+  const valueHandler = (data) => {
+    const phoneFormat = data?.phone
+      ?.split('-')
+      .join('')
+      ?.split('(')
+      .join('')
+      ?.split(')')
+      .join('')
+      .split(' ')
+      .join('')
+      .match(/.{1,3}/g)
+      ?.join('-');
 
+    data.phone = phoneFormat;
+    if (data?.is_contacted_by_school.includes('1')) {
+      data.is_contacted_by_school = 'No';
+    }
+    if (data?.is_contacted_by_school.includes('0')) {
+      data.is_contacted_by_school = 'Yes';
+    }
+
+    if (data?.gender.includes('m')) {
+      data.gender = 'Male';
+    }
+    if (data?.gender.includes('f')) {
+      data.gender = 'Female';
+    }
+
+    dispatchRedux(searchData(data));
+  };
   return (
     <MainWrapper rightDrawerCaller={rightDrawerCaller ? true : false}>
       {!rightDrawerCaller && (
@@ -96,7 +125,8 @@ const CallerDetail = ({ rightDrawerCaller }) => {
           <div className="flex flex-col pb-[26px]">
             <DragnDropForm
               // setValue={setState}
-              setValue={(data) => dispatchRedux(searchData(data))}
+              // setValue={(data) => dispatchRedux(searchData(data))}
+              setValue={(data) => valueHandler(data)}
               value={paramDetails && paramDetails}
             />
           </div>

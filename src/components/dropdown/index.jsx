@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
+import React from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
 
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import React, { useEffect } from 'react';
 import { Fragment, useState } from 'react';
 
 function classNames(...classes) {
@@ -20,14 +20,14 @@ function Dropdown({
   clickHandler,
   colorClass = 'default',
   question,
-  // selectedOption,
-  // setSelectedOption
+  selectedOption,
+  setSelectedOption,
 }) {
-  const [selectedOption, setSelectedOption] = useState({
-    OptionLabel: placeholder,
-    OptionValue: placeholder,
-  });
-
+  // const [selectedOption, setSelectedOption] = useState({
+  //   OptionLabel: "Select",
+  //   OptionValue: placeholder,
+  // });
+  const defaultLabels = ['Select a program', 'Additional Question'];
   const handleClick = React.useCallback((option, question) => {
     setSelectedOption(option);
     return clickHandler(option, question);
@@ -107,10 +107,10 @@ function Dropdown({
                 ''
               )}
 
-              {options?.map((option, personIdx) => {
+              {options?.map((option, index) => {
                 return (
                   <Listbox.Option
-                    key={personIdx}
+                    key={index}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-5 pr-4 ${
                         active ? ' ' : 'text-darkBlack'
@@ -119,25 +119,22 @@ function Dropdown({
                     value={option}
                     onClick={() => handleClick(option, question)}
                   >
-                    {({ selected }) => (
-                      <>
-                        <span
-                          className={`block truncate ${
-                            selected ? 'font-medium' : 'font-normal'
-                          }`}
-                        >
-                          {/* {recommendedIcon && personIdx < 3 && (
-                              <RecommendRoundedIcon className="text-blue" />
-                            )} */}
-                          {option?.OptionLabel}
+                    <>
+                      <span
+                        className={`block truncate ${
+                          selectedOption.OptionLabel === option?.OptionLabel
+                            ? 'font-medium'
+                            : 'font-normal'
+                        }`}
+                      >
+                        {option?.OptionLabel}
+                      </span>
+                      {selectedOption.OptionLabel === option?.OptionLabel ? (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-0">
+                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
                         </span>
-                        {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-0">
-                            <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                          </span>
-                        ) : null}
-                      </>
-                    )}
+                      ) : null}
+                    </>
                   </Listbox.Option>
                 );
               })}
