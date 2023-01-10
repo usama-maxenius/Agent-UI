@@ -29,6 +29,9 @@ const ItemWrapper = styled.div`
   ${'' /* height: 64px; */}
   padding: 15px 0 0;
   line-break: anywhere;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export { MainWrapper, RegularPoppin, ItemWrapper, MediumPoppin };

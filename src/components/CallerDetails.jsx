@@ -28,8 +28,6 @@ const Wrapper = styled('div')(() => ({
 }));
 
 const CallerDetail = ({ rightDrawerCaller }) => {
-  // const { state } = props;
-
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
   const dispatchRedux = useDispatch();
@@ -40,19 +38,6 @@ const CallerDetail = ({ rightDrawerCaller }) => {
     dispatchRedux(searchSchools(paramDetails, navigate));
   };
   const valueHandler = (data) => {
-    const phoneFormat = data?.phone
-      ?.split('-')
-      .join('')
-      ?.split('(')
-      .join('')
-      ?.split(')')
-      .join('')
-      .split(' ')
-      .join('')
-      .match(/.{1,3}/g)
-      ?.join('-');
-
-    data.phone = phoneFormat;
     if (data?.is_contacted_by_school.includes('1')) {
       data.is_contacted_by_school = 'No';
     }
@@ -124,8 +109,6 @@ const CallerDetail = ({ rightDrawerCaller }) => {
         <div className="bg-white w-[570px] mt-[26px] rounded-box">
           <div className="flex flex-col pb-[26px]">
             <DragnDropForm
-              // setValue={setState}
-              // setValue={(data) => dispatchRedux(searchData(data))}
               setValue={(data) => valueHandler(data)}
               value={paramDetails && paramDetails}
             />

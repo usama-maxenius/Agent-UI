@@ -30,45 +30,6 @@ import ImportingCSV from './pages/ImportingCSV';
 import ImportingCSVError from './pages/ImportingCSVError';
 
 function App() {
-  // eslint-disable-next-line no-unused-vars
-  // const obj = {
-  //   gender: '',
-  //   first_name: '',
-  //   last_name: '',
-  //   email: '',
-  //   phone: '',
-  //   address_line1: '',
-  //   city: '',
-  //   state: '',
-  //   zip_code: '',
-  //   computer_internet_access: '',
-  //   age: '',
-  //   hsyear: '',
-  //   current_education_level: '',
-  //   us_citizen: '',
-  //   military_status: '',
-  //   online_or_campus: '',
-  //   can_complete_enrollment: '',
-  //   is_contacted_by_school: '',
-  //   graduated_in_us: '',
-  //   time_to_call: '',
-  //   areas_of_interest: '',
-  //   another_areas_of_interest: '',
-  //   any_other_areas_of_interest: '',
-  // };
-
-  // useEffect(() => {
-  //   dispatch(searchData(obj));
-  // }, []);
-
-  // const form = localStorage.getItem('form');
-  // const form2 = form && JSON.parse(form);
-  // if (form2) {
-  //   console.log('already axist:');
-  // } else {
-  //   localStorage.setItem('form', JSON.stringify(userDetailParams));
-  // }
-
   return (
     <ContextProvider>
       <Router>

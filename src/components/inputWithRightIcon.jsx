@@ -37,6 +37,7 @@ const Wrapper = styled.div`
 InputIcon.propTypes = {
   isDouble: PropTypes.bool,
 };
+
 export default function InputIcon({
   isDouble,
   callerID,
@@ -98,6 +99,7 @@ export default function InputIcon({
         className=" bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
+        id={name}
         value={state !== undefined ? state[name] : null}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
