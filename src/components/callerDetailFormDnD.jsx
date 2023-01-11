@@ -432,6 +432,7 @@ function App({ setValue, value }) {
                         >
                           {dropdown ? (
                             <div
+                              id={name}
                               className={classNames(
                                 'w-[477px] mt-4 flex flex-row justify-between p-[5px] items-center ml-[26px]',
                                 state.isDraggable

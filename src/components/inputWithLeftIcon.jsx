@@ -10,7 +10,7 @@ const Input = styled.input`
   width: ${(props) => (props.widthControl ? '82%' : `99%`)};
   height: 50px;
   background: white;
-  color: #16161680;
+  color: #2541b2;
   padding-left: 42px;
   margin-top: 10px;
   font-size: 20px;
@@ -63,7 +63,7 @@ export default function InputIcon({
 
   return (
     <React.Fragment>
-      <span>
+      <span style={{ color: '#2541B2', fontWeight: '400' }}>
         <HomeRounded sx={leftIconStyle} />
         <Input
           widthControl={widthControl}

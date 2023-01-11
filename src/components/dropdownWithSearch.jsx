@@ -98,6 +98,7 @@ export default function DropdownWithSearch({
       <Listbox>
         <div className="relative mt-1">
           <Listbox.Button
+            id={name}
             className={classNames(
               'relative w-full cursor-default md:rounded-lg bg-lightGray font-medium py-2 pl-3 pr-10 text-left rounded focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
               // program == true ? 'border-red' : 'border-gray',

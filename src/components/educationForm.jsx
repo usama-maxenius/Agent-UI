@@ -474,7 +474,7 @@ const EducationForm = (props) => {
     e.preventDefault();
     const checkString = /^[A-Za-z\s]+$/;
 
-    const phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+    const phoneNo = /(\d{0,3})(\d{0,3})(\d{0,4})/im;
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,9})+$/;
     const zipRegex = /^\d{5}(-\d{4})?$/;
@@ -492,7 +492,19 @@ const EducationForm = (props) => {
       paramDetails.city.length > 0 &&
       paramDetails.state.length > 0
     ) {
-      dispatchRedux(searchSchools(paramDetails, navigation));
+      const supplier_trustedform_token = document.getElementById(
+        'xxTrustedFormToken_0'
+      );
+      const supplier_trustedform_url = document.getElementById(
+        'xxTrustedFormCertUrl_0'
+      );
+
+      const trustedForm = {
+        supplier_trustedform_token: supplier_trustedform_token?.value,
+        supplier_trustedform_url: supplier_trustedform_url?.value,
+      };
+
+      dispatchRedux(searchSchools(paramDetails, trustedForm, navigation));
 
       dispatchRedux({
         type: 'SELECTED_SCHOOL',
@@ -504,19 +516,6 @@ const EducationForm = (props) => {
   };
 
   const dispatchHandler = (data) => {
-    const phoneFormat = data?.phone
-      ?.split('-')
-      .join('')
-      ?.split('(')
-      .join('')
-      ?.split(')')
-      .join('')
-      .split(' ')
-      .join('')
-      .match(/.{1,3}/g)
-      ?.join('-');
-    data.phone = phoneFormat;
-
     if (data?.is_contacted_by_school.includes('1')) {
       data.is_contacted_by_school = 'No';
     }
@@ -545,111 +544,113 @@ const EducationForm = (props) => {
   return (
     <>
       <MainWrapper>
-        <Grid container>
-          <Grid item xs={6}>
-            <FormHeader>
-              <MediumPoppin>Education</MediumPoppin>
-            </FormHeader>
+        <form>
+          <Grid container>
+            <Grid item xs={6}>
+              <FormHeader>
+                <MediumPoppin>Education</MediumPoppin>
+              </FormHeader>
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              sx={{
+                display: 'flex',
+                justifyContent: 'right',
+                alignItems: 'right',
+              }}
+            >
+              <IconWrapper>
+                <IconButton
+                  onClick={() => {
+                    dispatch({
+                      type: constant.HELP_DRAWER,
+                    });
+                  }}
+                >
+                  <LiveHelpRoundedIcon />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    dispatch({
+                      type: constant.SECURITY_DRAWER,
+                    });
+                  }}
+                >
+                  <PolicyRoundedIcon />
+                </IconButton>
+              </IconWrapper>
+            </Grid>
           </Grid>
-          <Grid
-            item
-            xs={6}
-            sx={{
-              display: 'flex',
-              justifyContent: 'right',
-              alignItems: 'right',
-            }}
-          >
-            <IconWrapper>
-              <IconButton
-                onClick={() => {
-                  dispatch({
-                    type: constant.HELP_DRAWER,
-                  });
-                }}
-              >
-                <LiveHelpRoundedIcon />
-              </IconButton>
-              <IconButton
-                onClick={() => {
-                  dispatch({
-                    type: constant.SECURITY_DRAWER,
-                  });
-                }}
-              >
-                <PolicyRoundedIcon />
-              </IconButton>
-            </IconWrapper>
+          {data.map((item, key) => {
+            return (
+              <Fragment key={key}>
+                <FormCard
+                  item={item}
+                  setState={dispatchHandler}
+                  state={paramDetails}
+                />
+              </Fragment>
+            );
+          })}
+          <Grid container>
+            <Grid item xs={12}>
+              <FormHeader>
+                <MediumPoppin>Personal information</MediumPoppin>
+              </FormHeader>
+            </Grid>
           </Grid>
-        </Grid>
-        {data.map((item, key) => {
-          return (
-            <Fragment key={key}>
-              <FormCard
-                item={item}
-                setState={dispatchHandler}
-                state={paramDetails}
-              />
-            </Fragment>
-          );
-        })}
-        <Grid container>
-          <Grid item xs={12}>
-            <FormHeader>
-              <MediumPoppin>Personal information</MediumPoppin>
-            </FormHeader>
+          {personalDetails.map((item, key) => {
+            return (
+              <Fragment key={key}>
+                <FormCard
+                  item={item}
+                  setState={dispatchHandler}
+                  state={paramDetails}
+                />
+              </Fragment>
+            );
+          })}
+          <Grid container>
+            <Grid item xs={12}>
+              <FormHeader>
+                <MediumPoppin>Enrollment & interests</MediumPoppin>
+              </FormHeader>
+            </Grid>
           </Grid>
-        </Grid>
-        {personalDetails.map((item, key) => {
-          return (
-            <Fragment key={key}>
-              <FormCard
-                item={item}
-                setState={dispatchHandler}
-                state={paramDetails}
-              />
-            </Fragment>
-          );
-        })}
-        <Grid container>
-          <Grid item xs={12}>
-            <FormHeader>
-              <MediumPoppin>Enrollment & interests</MediumPoppin>
-            </FormHeader>
+          {enrolment.map((item, key) => {
+            return (
+              <Fragment key={key}>
+                <FormCard
+                  item={item}
+                  setState={dispatchHandler}
+                  state={paramDetails}
+                />
+              </Fragment>
+            );
+          })}
+          <Grid container>
+            <Grid item xs={12}>
+              <FormHeader>
+                <MediumPoppin>Contact information</MediumPoppin>
+              </FormHeader>
+            </Grid>
           </Grid>
-        </Grid>
-        {enrolment.map((item, key) => {
-          return (
-            <Fragment key={key}>
-              <FormCard
-                item={item}
-                setState={dispatchHandler}
-                state={paramDetails}
-              />
-            </Fragment>
-          );
-        })}
-        <Grid container>
-          <Grid item xs={12}>
-            <FormHeader>
-              <MediumPoppin>Contact information</MediumPoppin>
-            </FormHeader>
-          </Grid>
-        </Grid>
-        {contact.map((item, key) => {
-          return (
-            <Fragment key={key}>
-              <FormCard
-                item={item}
-                setState={dispatchHandler}
-                state={paramDetails}
-              />
-            </Fragment>
-          );
-        })}
-        <BottomNoteWrapper>
-          <FinishedNotes searchHandler={searchHandler} />
-        </BottomNoteWrapper>
+          {contact.map((item, key) => {
+            return (
+              <Fragment key={key}>
+                <FormCard
+                  item={item}
+                  setState={dispatchHandler}
+                  state={paramDetails}
+                />
+              </Fragment>
+            );
+          })}
+          <BottomNoteWrapper>
+            <FinishedNotes searchHandler={searchHandler} />
+          </BottomNoteWrapper>
+        </form>
       </MainWrapper>
       {showPopup && (
         <Transition appear show={showPopup} as={Fragment}>

@@ -43,17 +43,13 @@ const WelcomeNotes = () => {
     if (code === null) {
       for (const [key, value] of queryParams) {
         if (key === 'phone') {
-          obj[key] = value
-            ?.split('-')
-            .join('')
-            ?.split('(')
-            .join('')
-            ?.split(')')
-            .join('')
-            .split(' ')
-            .join('')
-            .match(/.{1,3}/g)
-            ?.join('-');
+          var phoneNo = /(\d{0,3})(\d{0,3})(\d{0,4})/im;
+          let x = value.replace(/\D/g, '').match(phoneNo);
+
+          let values = !x[2]
+            ? x[1]
+            : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+          obj[key] = values;
         } else {
           obj[key] = value;
         }

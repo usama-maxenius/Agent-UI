@@ -28,8 +28,6 @@ const Wrapper = styled('div')(() => ({
 }));
 
 const CallerDetail = ({ rightDrawerCaller }) => {
-  // const { state } = props;
-
   const { dispatch } = useContextCustom();
   const navigate = useNavigate();
   const dispatchRedux = useDispatch();
@@ -37,22 +35,21 @@ const CallerDetail = ({ rightDrawerCaller }) => {
 
   const searchHandler = (e) => {
     e.preventDefault();
-    dispatchRedux(searchSchools(paramDetails, navigate));
+    const supplier_trustedform_token = document.getElementById(
+      'xxTrustedFormToken_0'
+    );
+    const supplier_trustedform_url = document.getElementById(
+      'xxTrustedFormCertUrl_0'
+    );
+
+    const trustedForm = {
+      supplier_trustedform_token: supplier_trustedform_token?.value,
+      supplier_trustedform_url: supplier_trustedform_url?.value,
+    };
+
+    dispatchRedux(searchSchools(paramDetails, trustedForm, navigate));
   };
   const valueHandler = (data) => {
-    const phoneFormat = data?.phone
-      ?.split('-')
-      .join('')
-      ?.split('(')
-      .join('')
-      ?.split(')')
-      .join('')
-      .split(' ')
-      .join('')
-      .match(/.{1,3}/g)
-      ?.join('-');
-
-    data.phone = phoneFormat;
     if (data?.is_contacted_by_school.includes('1')) {
       data.is_contacted_by_school = 'No';
     }
@@ -65,6 +62,14 @@ const CallerDetail = ({ rightDrawerCaller }) => {
     }
     if (data?.gender.includes('f')) {
       data.gender = 'Female';
+    }
+    const checkString = /^[A-Za-z\s]+$/;
+
+    if (!data?.last_name.match(checkString)) {
+      data.last_name = '';
+    }
+    if (!data?.first_name.match(checkString)) {
+      data.first_name = '';
     }
 
     dispatchRedux(searchData(data));
@@ -121,16 +126,16 @@ const CallerDetail = ({ rightDrawerCaller }) => {
         </Grid>
       )}
       <Wrapper>
-        <div className="bg-white w-[570px] mt-[26px] rounded-box">
-          <div className="flex flex-col pb-[26px]">
-            <DragnDropForm
-              // setValue={setState}
-              // setValue={(data) => dispatchRedux(searchData(data))}
-              setValue={(data) => valueHandler(data)}
-              value={paramDetails && paramDetails}
-            />
+        <form>
+          <div className="bg-white w-[570px] mt-[26px] rounded-box">
+            <div className="flex flex-col pb-[26px]">
+              <DragnDropForm
+                setValue={(data) => valueHandler(data)}
+                value={paramDetails && paramDetails}
+              />
+            </div>
           </div>
-        </div>
+        </form>
         {!rightDrawerCaller && (
           <div className="w-[519px] h-full flex flex-col justify-center mx-auto mt-[42px]">
             <p className="text-blue text-[22px] font-Poppin font-semibold">

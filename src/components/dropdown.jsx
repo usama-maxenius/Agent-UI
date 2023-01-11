@@ -91,6 +91,7 @@ export default function DropdownWithSearch({
           }
       : people[0]
   );
+
   const [changeColor, setChangeColor] = useState(false);
 
   const onChangeHandler = (prop) => {
@@ -148,6 +149,7 @@ export default function DropdownWithSearch({
               'relative w-full cursor-default rounded-lg border rounded-box items-center bg-lightGray  px-1.5 text-blue bg-lightGray py-2 pl-3 pr-10 text-left  focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 ',
               changeColor ? `border border-blue` : `border border-[#16161640]`
             )}
+            id={name}
           >
             <span
               className={classNames(
@@ -186,7 +188,7 @@ export default function DropdownWithSearch({
                 <div
                   className={({ active }) =>
                     `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                      active ? '  ' : 'text-gray-900'
+                      active ? ' ' : 'text-gray-900'
                     }`
                   }
                 >

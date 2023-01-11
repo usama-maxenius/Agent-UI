@@ -37,6 +37,7 @@ const Wrapper = styled.div`
 InputIcon.propTypes = {
   isDouble: PropTypes.bool,
 };
+
 export default function InputIcon({
   isDouble,
   callerID,
@@ -83,43 +84,31 @@ export default function InputIcon({
         setShowIcon(true);
       }
     }
-  }, []);
+  }, [showIcon]);
 
   return (
     <div
+      style={{ color: '#2541B2', fontWeight: '400' }}
       className={`flex flex-row w-full rounded-box items-center bg-lightGray ${
         showOutLine && empty
           ? 'outline outline-offset-2 outline-pink-400'
           : 'border border-[#16161640]'
-      }  px-1.5 text-blue`}
+      }  px-1.5  `}
     >
       <input
-        className="bg-transparent h-[50px] outline-none w-[90%]"
+        className=" bg-transparent h-[50px] outline-none w-[90%]"
         placeholder={placeholder ? placeholder : 'Your First Name'}
         name={name}
-        value={
-          state !== undefined
-            ? name == 'phone'
-              ? state[name]
-                  ?.split('-')
-                  .join('')
-                  ?.split('(')
-                  .join('')
-                  ?.split(')')
-                  .join('')
-                  .split(' ')
-                  .join('')
-                  .match(/.{1,3}/g)
-                  ?.join('-')
-              : state[name]
-            : null
-        }
+        id={name}
+        value={state !== undefined ? state[name] : null}
         type={inputType ? inputType : 'text'}
         onChange={(e) => {
           var checkString = /^[A-Za-z\s]+$/;
           // var phoneNo =
           //   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-          var phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+          // var phoneNo = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/im;
+          var phoneNo = /(\d{0,3})(\d{0,3})(\d{0,4})/im;
+
           var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,9})+$/;
           var zipRegex = /^\d{5}(-\d{4})?$/;
 
@@ -148,6 +137,11 @@ export default function InputIcon({
               break;
             case 'phone':
               if (e.target.value.replace(/\D/g, '').match(phoneNo)) {
+                let x = e.target.value.replace(/\D/g, '').match(phoneNo);
+
+                e.target.value = !x[2]
+                  ? x[1]
+                  : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
                 setShowIcon(true);
                 setShowOutLine(false);
                 setEmpty(false);

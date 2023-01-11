@@ -10,6 +10,8 @@ import {
   RegularPoppin,
 } from './styled/userDetails.style';
 import { useSearchParams } from 'react-router-dom';
+// import { useContextCustom } from '../store/scrollContext';
+import { scrollIntoView } from '../hooks/useScrollForm';
 
 // const data = [
 //   {
@@ -635,6 +637,7 @@ const UserDetails = () => {
   useEffect(() => {
     setUserData();
   }, [paramDetails]);
+
   return (
     <MainWrapper>
       <Box sx={{ flexGrow: 1 }}>
@@ -643,7 +646,7 @@ const UserDetails = () => {
             Object.keys(paramDetails).map((key) => {
               return (
                 <Grid item xs={4} key={key}>
-                  <ItemWrapper>
+                  <ItemWrapper onClick={() => scrollIntoView(key)}>
                     <RegularPoppin title="true">
                       {key.replaceAll('_', ' ')}
                     </RegularPoppin>
