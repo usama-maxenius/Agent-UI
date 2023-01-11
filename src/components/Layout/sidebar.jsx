@@ -12,11 +12,11 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import { useContextCustom } from '../../store/context';
 
-const SideBarWrapper = styled(Paper)((props) => ({
+const SideBarWrapper = styled(Paper)(({ expand }) => ({
   backgroundColor: '#2541B2',
-  textAlign: props.expand ? 'left' : 'center',
+  textAlign: expand == 'true' ? 'left' : 'center',
   color: 'white',
-  width: props.expand ? 130 : 60,
+  width: expand == 'true' ? 130 : 60,
   height: '100%',
   position: 'fixed',
   left: 0,
@@ -25,8 +25,8 @@ const SideBarWrapper = styled(Paper)((props) => ({
   borderRadius: 0,
   display: 'flex',
   flexDirection: 'column',
-  alignItems: props.expand ? 'flex-start' : 'center',
-  paddingLeft: props.expand && '15px',
+  alignItems: expand == 'true' ? 'flex-start' : 'center',
+  paddingLeft: expand == 'true' && '15px',
 }));
 
 const style = {
@@ -50,7 +50,7 @@ const SideBar = () => {
   };
 
   return (
-    <SideBarWrapper expand={expand}>
+    <SideBarWrapper expand={`${expand ? 'true' : 'false'}`}>
       <button
         onClick={expandHandler}
         className={classNames(

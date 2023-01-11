@@ -29,7 +29,7 @@ const HeaderWrapper = styled(Paper)(({ expand }) => ({
   width: '100%',
   height: '63px',
   borderRadius: 0,
-  paddingLeft: expand ? 160 : 87,
+  paddingLeft: expand == 'true' ? 160 : 87,
   paddingRight: '5%',
   display: 'flex',
   flexDirection: 'row',
@@ -273,7 +273,7 @@ const Header = () => {
   };
 
   return (
-    <HeaderWrapper expand={expand}>
+    <HeaderWrapper expand={`${expand ? 'true' : 'false'}`}>
       <Grid container spacing={0}>
         <Grid item xs={3}>
           <TitleWrapper row="true" spacebetween="true" marginTop="true">
@@ -332,6 +332,7 @@ const Header = () => {
             <SwitchLabel left checked={!mode ? true : false}>
               Beginner
             </SwitchLabel>
+            {console.log('modeee', mode)}
             <FormControlLabel
               control={
                 <IOSSwitch
@@ -342,7 +343,7 @@ const Header = () => {
                       type: 'CHANGE_MODE',
                     });
                   }}
-                  defaultChecked={mode}
+                  checked={mode}
                 />
               }
               sx={{ ml: 0, marginRight: '6px' }}

@@ -36,7 +36,7 @@ let title = {
   marginTop: '15px',
 };
 
-function FormCard({ item, key, setState, state }) {
+function FormCard({ item, myKey, setState, state }) {
   return (
     <Card
       sx={[
@@ -44,7 +44,7 @@ function FormCard({ item, key, setState, state }) {
         item.noPad && { padding: 0, paddingBottom: '0 !important' },
         item.noBackground && { backgroundColor: 'transparent' },
       ]}
-      key={key}
+      key={myKey}
     >
       <CardContent
         sx={

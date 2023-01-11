@@ -517,9 +517,10 @@ function App({ setValue, value }) {
                               {state.isDraggable && (
                                 <ReorderRoundedIcon className="hover:text-blue group-hover:text-white text-base  mr-[13px]" />
                               )}
+
                               <FormCard
+                                myKey={element.id}
                                 item={element}
-                                key={id}
                                 setState={setValue}
                                 state={value}
                               />
@@ -563,4 +564,4 @@ function App({ setValue, value }) {
   );
 }
 
-export default App;
+export default React.memo(App);

@@ -138,6 +138,7 @@ let data = [
 ];
 let personalDetails = [
   {
+    id: 0,
     title: 'And what year were you born?',
     options: generateArrayOfYears('Birth Year'),
     dropdown: true,
@@ -147,6 +148,8 @@ let personalDetails = [
     Icon: <CalendarMonthRoundedIcon />,
   },
   {
+    id: 1,
+
     title: 'Are you associated with the military at all?',
     options: [
       { OptionLabel: 'Military association', OptionValue: '0' },
@@ -161,6 +164,8 @@ let personalDetails = [
     Icon: <MilitaryTechRoundedIcon />,
   },
   {
+    id: 3,
+
     title:
       'Okay, and have you been in contact with any Schools in the past 6 months?',
     options: [
@@ -177,6 +182,7 @@ let personalDetails = [
 ];
 let enrolment = [
   {
+    id: 0,
     title: 'Please tell me the area of study you’re interested in:',
     options: [
       { OptionLabel: 'Area of study', OptionValue: 'Area of study' },
@@ -220,6 +226,8 @@ let enrolment = [
     Icon: <SchoolRoundedIcon />,
   },
   {
+    id: 1,
+
     title:
       'Aside from above interest is there another area of study you’re interested in?',
     options: [
@@ -264,6 +272,8 @@ let enrolment = [
     Icon: <SchoolRoundedIcon />,
   },
   {
+    id: 2,
+
     title: 'Any other area of study?',
     options: [
       { OptionLabel: 'Additional area of study', OptionValue: 'Area of study' },
@@ -307,6 +317,8 @@ let enrolment = [
     Icon: <SchoolRoundedIcon />,
   },
   {
+    id: 3,
+
     title:
       'Wow, great! And when you go back to school, are you looking for campus, online, or would you consider both options?',
     options: [
@@ -321,6 +333,8 @@ let enrolment = [
     Icon: <SchoolRoundedIcon />,
   },
   {
+    id: 4,
+
     title:
       'If you found the right school and program, would you be ready within 3 months?',
     options: [
@@ -338,6 +352,7 @@ let enrolment = [
 ];
 let contact = [
   {
+    id: 0,
     options: [
       { OptionLabel: 'Gender', OptionValue: '1' },
       { OptionLabel: 'Male', OptionValue: 'm' },
@@ -352,6 +367,8 @@ let contact = [
     genderWidth: true,
   },
   {
+    id: 1,
+
     title: 'Just to check how your last name is spelled',
     ticked: true,
     bottomLine: true,
@@ -360,6 +377,8 @@ let contact = [
     styleClasses: ' mt-[26px] w-[83%]',
   },
   {
+    id: 2,
+
     title:
       'In case we get disconnected is this the correct number so that I can call you back?',
     ticked: true,
@@ -368,6 +387,8 @@ let contact = [
     styleClasses: ' mt-[26px] w-[83%]',
   },
   {
+    id: 3,
+
     title:
       'Perfect, and when would be the best time for you to receive a call?',
     options: [
@@ -384,6 +405,8 @@ let contact = [
     Icon: <AccessTimeRoundedIcon />,
   },
   {
+    id: 4,
+
     title:
       'Great, now, before we get to the schools, is this your best email address?',
     ticked: true,
@@ -392,6 +415,8 @@ let contact = [
     styleClasses: 'mt-[26px] w-[83%]',
   },
   {
+    id: 5,
+
     title: 'Great, and lastly is what is your address?',
     dropdown: true,
     HomeIcon: true,
@@ -498,10 +523,12 @@ const EducationForm = (props) => {
       const supplier_trustedform_url = document.getElementById(
         'xxTrustedFormCertUrl_0'
       );
+      const supplier_jornaya_leadid = document.getElementById('leadid_token');
 
       const trustedForm = {
         supplier_trustedform_token: supplier_trustedform_token?.value,
         supplier_trustedform_url: supplier_trustedform_url?.value,
+        supplier_jornaya_leadid: supplier_jornaya_leadid?.value,
       };
 
       dispatchRedux(searchSchools(paramDetails, trustedForm, navigation));
@@ -586,6 +613,7 @@ const EducationForm = (props) => {
             return (
               <Fragment key={key}>
                 <FormCard
+                  myKey={item.id}
                   item={item}
                   setState={dispatchHandler}
                   state={paramDetails}
@@ -604,6 +632,7 @@ const EducationForm = (props) => {
             return (
               <Fragment key={key}>
                 <FormCard
+                  myKey={item.id}
                   item={item}
                   setState={dispatchHandler}
                   state={paramDetails}
@@ -622,6 +651,7 @@ const EducationForm = (props) => {
             return (
               <Fragment key={key}>
                 <FormCard
+                  myKey={item.id}
                   item={item}
                   setState={dispatchHandler}
                   state={paramDetails}
@@ -640,6 +670,7 @@ const EducationForm = (props) => {
             return (
               <Fragment key={key}>
                 <FormCard
+                  myKey={item.id}
                   item={item}
                   setState={dispatchHandler}
                   state={paramDetails}
