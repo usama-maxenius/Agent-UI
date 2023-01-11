@@ -175,10 +175,7 @@ export default function DropdownWithSearch({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options
-              id={name}
-              className="absolute z-30 no-scrollbar mt-1 max-h-80 w-full overflow-auto rounded-md bg-lightGray py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
-            >
+            <Listbox.Options className="absolute z-30 no-scrollbar mt-1 max-h-80 w-full overflow-auto rounded-md bg-lightGray py-1 text-base ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
               {![
                 'gender',
                 'graduated_in_us',
@@ -234,7 +231,6 @@ export default function DropdownWithSearch({
                   if (searchText?.length === 0) {
                     return (
                       <Listbox.Option
-                        id={name}
                         key={personIdx}
                         className={({ active }) =>
                           `relative cursor-default select-none py-2 pl-5 pr-4 ${
@@ -268,7 +264,6 @@ export default function DropdownWithSearch({
                   ) {
                     return (
                       <Listbox.Option
-                        id={name}
                         key={personIdx}
                         className={({ active }) =>
                           `relative cursor-default select-none py-2 pl-5 pr-4 ${

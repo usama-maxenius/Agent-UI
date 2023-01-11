@@ -8,7 +8,7 @@ import { get, post } from '../../helper/api_handler';
 //   return result.IPv4;
 // };
 const area_of_interests = [];
-export let searchSchools = (data, navigate) => {
+export let searchSchools = (data, trustedForm, navigate) => {
   return async (dispatch) => {
     // let IP = await myIP();
     let {
@@ -31,11 +31,15 @@ export let searchSchools = (data, navigate) => {
       preferred_enrollment,
       is_contacted_by_school,
       graduated_in_us,
+      supplier_trustedform_token,
       time_to_call,
+      supplier_trustedform_url,
       areas_of_interest,
       another_areas_of_interest,
       any_other_areas_of_interest,
     } = data;
+
+    console.log('trustedForm', trustedForm);
 
     const calculateAge = new Date().getFullYear() - age;
     const graduated_in_us_format = graduated_in_us.includes('yes') ? '1' : '0';
@@ -95,9 +99,8 @@ export let searchSchools = (data, navigate) => {
         traffic_trustedform_token: 'c52c65236469061b609a1046ec60e5b21b48939f',
         traffic_category: 'education',
         supplier_jornaya_leadid: '79d2d183-1012-02cf-6ef5-bf3aaec09570',
-        supplier_trustedform_token: 'c52c65236469061b609a1046ec60e5b21b48939f',
-        supplier_trustedform_url:
-          'https://cert.trustedform.com/c52c65236469061b609a1046ec60e5b21b48939f',
+        supplier_trustedform_token: trustedForm?.supplier_trustedform_token,
+        supplier_trustedform_url: trustedForm?.supplier_trustedform_url,
         time_to_call:
           'https://cert.trustedform.com/c52c65236469061b609a1046ec60e5b21b48939f',
         callcenter: {
