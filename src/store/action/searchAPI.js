@@ -40,6 +40,7 @@ export let searchSchools = (data, trustedForm, navigate) => {
     } = data;
 
     console.log('trustedForm', trustedForm);
+    console.log('phone', phone.replace(/[^+\d]+/g, ''));
 
     const calculateAge = new Date().getFullYear() - age;
     const graduated_in_us_format = graduated_in_us.includes('yes') ? '1' : '0';
@@ -50,7 +51,7 @@ export let searchSchools = (data, trustedForm, navigate) => {
         first_name: first_name,
         last_name: last_name,
         email: email,
-        phone: phone.replaceAll('-', ''),
+        phone: phone.replace(/[^+\d]+/g, ''),
         phone2: '',
         address_line1: address_line1,
         address_line2: '',

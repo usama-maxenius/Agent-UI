@@ -332,7 +332,7 @@ const Header = () => {
             <SwitchLabel left checked={!mode ? true : false}>
               Beginner
             </SwitchLabel>
-            {console.log('modeee', mode)}
+
             <FormControlLabel
               control={
                 <IOSSwitch
